@@ -7,12 +7,12 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 188px;
+  width: 240px;
   min-height: 100vh;
   padding: 18px 14px 16px;
   color: var(--sidebar-ink);
   background: var(--sidebar-teal);
-  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .sidebar__top {
@@ -31,7 +31,7 @@
   border-radius: 50%;
   color: #203f40;
   background: var(--sidebar-yellow);
-  font-family: Georgia, serif;
+  font-family: "Fraunces", serif;
   font-size: 18px;
   font-weight: 700;
 }
@@ -45,8 +45,8 @@
 
 .brand-copy strong {
   color: var(--sidebar-ink);
-  font-family: Georgia, serif;
-  font-size: 16px;
+  font-family: "Fraunces", serif;
+  font-size: 19px;
   letter-spacing: -0.4px;
 }
 
@@ -54,7 +54,8 @@
 .sidebar__label,
 .sidebar__privacy {
   color: var(--sidebar-muted);
-  font-size: 7px;
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -84,11 +85,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 31px;
+  min-height: 38px;
   padding: 0 10px;
   border-radius: 18px;
   color: #b7c5c1;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -102,7 +103,7 @@
   width: 14px;
   place-items: center;
   color: currentColor;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1;
 }
 
@@ -120,7 +121,7 @@
 .sidebar__nudge-title {
   margin: 0 0 11px;
   color: var(--sidebar-yellow);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -134,7 +135,7 @@
 .sidebar__nudge-copy {
   margin: 0;
   color: #c0cfca;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.55;
 }
 
@@ -144,7 +145,7 @@
   gap: 6px;
   margin: 15px 5px 0;
   color: #7e9a96;
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0;
   text-transform: none;
 }
