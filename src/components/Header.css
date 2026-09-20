@@ -1,0 +1,110 @@
+.header {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px 0 32px;
+  border-bottom: 1px solid #e8e4db;
+  color: #203f40;
+  background: #fbfaf6;
+}
+
+.header__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header__eyebrow {
+  color: #6f918d;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.header__actions,
+.header__profile,
+.header__notification {
+  display: flex;
+  align-items: center;
+}
+
+.header__actions {
+  gap: 24px;
+}
+
+.header__notification,
+.header__profile {
+  padding: 0;
+  border: 0;
+  color: #66827e;
+  background: transparent;
+  cursor: pointer;
+}
+
+.header__notification {
+  position: relative;
+  font-size: 19px;
+}
+
+.header__notification-dot {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f9c45d;
+}
+
+.header__divider {
+  width: 1px;
+  height: 34px;
+  background: #e3e1d8;
+}
+
+.header__profile {
+  gap: 12px;
+  color: #294d4b;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.header__avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fbfaf6;
+  background: #2a6c63;
+  font-size: 13px;
+}
+
+.header__notification:focus-visible,
+.header__profile:focus-visible {
+  outline: 2px solid #f9c45d;
+  outline-offset: 4px;
+}
+
+@media (max-width: 560px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .header__name {
+    display: none;
+  }
+}

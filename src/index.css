@@ -2,6 +2,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-display: "Fraunces", serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-data: "Space Mono", monospace;
+}
+
 html,
 body,
 #root {
@@ -12,4 +18,19 @@ body,
 
 body {
   min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+.data-value,
+[data-value] {
+  font-family: var(--font-data);
 }
