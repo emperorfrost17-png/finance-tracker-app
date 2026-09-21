@@ -1,4 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
+import { Header } from "../components/Header";
 import "./OverviewPage.css";
 
 export function OverviewPage() {
@@ -7,6 +8,8 @@ export function OverviewPage() {
       <Sidebar />
 
       <section className="main-content">
+        <Header title="Overview" />
+
         <div className="overview-content">
           <section className="welcome-row">
             <div>

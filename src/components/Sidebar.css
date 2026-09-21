@@ -87,6 +87,10 @@
   list-style: none;
 }
 
+.sidebar__list li {
+  margin: 0;
+}
+
 .sidebar__item {
   display: flex;
   align-items: center;
@@ -95,9 +99,15 @@
   padding: 0 10px;
   border-radius: 18px;
   color: #b7c5c1;
+  text-decoration: none;
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
+}
+
+.sidebar__item:hover {
+  color: var(--sidebar-ink);
+  background: var(--sidebar-teal-light);
 }
 
 .sidebar__item--active {

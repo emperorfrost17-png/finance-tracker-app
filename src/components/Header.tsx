@@ -1,11 +1,15 @@
 import "./Header.css";
 
-export function Header() {
+type HeaderProps = {
+  title?: string;
+};
+
+export function Header({ title }: HeaderProps) {
   return (
     <header className="header">
       <div className="header__heading">
         <span className="header__eyebrow">Your money, made clear</span>
-        <h1>Overview</h1>
+        <h1>{title}</h1>
       </div>
 
       <div className="header__actions">

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import "./Sidebar.css";
 
 export function Sidebar() {
@@ -16,33 +17,61 @@ export function Sidebar() {
       <nav className="sidebar__nav" aria-label="Workspace">
         <p className="sidebar__label">Workspace</p>
         <ul className="sidebar__list">
-          <li className="sidebar__item sidebar__item--active">
-            <span className="sidebar__icon" aria-hidden="true">
-              <i className="fa-solid fa-table-cells-large" />
-            </span>
-            <span>Overview</span>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `sidebar__item${isActive ? " sidebar__item--active" : ""}`
+              }
+              to="/"
+            >
+              <span className="sidebar__icon" aria-hidden="true">
+                <i className="fa-solid fa-table-cells-large" />
+              </span>
+              <span>Overview</span>
+            </NavLink>
           </li>
-          <li className="sidebar__item">
-            <span className="sidebar__icon" aria-hidden="true">
-              <i className="fa-solid fa-receipt" />
-            </span>
-            <span>Transactions</span>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `sidebar__item${isActive ? " sidebar__item--active" : ""}`
+              }
+              to="/transactions"
+            >
+              <span className="sidebar__icon" aria-hidden="true">
+                <i className="fa-solid fa-receipt" />
+              </span>
+              <span>Transactions</span>
+            </NavLink>
           </li>
-          <li className="sidebar__item">
-            <span className="sidebar__icon" aria-hidden="true">
-              <i className="fa-solid fa-bullseye" />
-            </span>
-            <span>Budgets</span>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `sidebar__item${isActive ? " sidebar__item--active" : ""}`
+              }
+              to="/budget"
+            >
+              <span className="sidebar__icon" aria-hidden="true">
+                <i className="fa-solid fa-bullseye" />
+              </span>
+              <span>Budgets</span>
+            </NavLink>
           </li>
         </ul>
 
         <p className="sidebar__label sidebar__label--personal">Personal</p>
         <ul className="sidebar__list">
-          <li className="sidebar__item">
-            <span className="sidebar__icon" aria-hidden="true">
-              <i className="fa-solid fa-sliders" />
-            </span>
-            <span>Settings</span>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `sidebar__item${isActive ? " sidebar__item--active" : ""}`
+              }
+              to="/settings"
+            >
+              <span className="sidebar__icon" aria-hidden="true">
+                <i className="fa-solid fa-sliders" />
+              </span>
+              <span>Settings</span>
+            </NavLink>
           </li>
         </ul>
       </nav>
