@@ -9,7 +9,12 @@
   flex-direction: column;
   width: 240px;
   flex: 0 0 240px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   padding: 18px 14px 16px;
   color: var(--sidebar-ink);
   background: var(--sidebar-teal);
@@ -161,9 +166,12 @@
 
 @media (max-width: 560px) {
   .sidebar {
+    position: static;
     width: 100%;
     flex-basis: 100%;
+    height: auto;
     min-height: auto;
+    max-height: none;
     padding: 14px;
   }
 

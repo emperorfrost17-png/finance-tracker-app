@@ -1,12 +1,14 @@
 import { Header } from "../components/Header";
+import { Sidebar } from "../components/Sidebar";
+import "./BudgetPage.css";
 export function BudgetPage() {
   return (
-    <div className="budget-page">
-      <Header />
-      <main className="budget-page__content">
-        <h2>Welcome to your budget</h2>
-        <p>This is where you can manage your budget and track your expenses.</p>
-      </main>
-    </div>
+    <main className="app">
+      <Sidebar />
+
+      <section className="main-content">
+        <Header />
+      </section>
+    </main>
   );
 }
