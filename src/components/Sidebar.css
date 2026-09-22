@@ -103,6 +103,7 @@
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease;
 }
 
 .sidebar__item:hover {
@@ -110,9 +111,19 @@
   background: var(--sidebar-teal-light);
 }
 
-.sidebar__item--active {
+.sidebar__item:active {
+  transform: translateY(1px);
+}
+
+.sidebar__item--active,
+.sidebar__item--active:hover {
   color: #213f40;
   background: var(--sidebar-yellow);
+  cursor: pointer;
+}
+
+.sidebar__item--active:active {
+  transform: translateY(1px);
 }
 
 .sidebar__icon {

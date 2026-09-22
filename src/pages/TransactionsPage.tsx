@@ -3,11 +3,14 @@ import { Header } from "../components/Header";
 import type { Transaction } from "../App";
 import "./TransactionsPage.css";
 
+interface TransactionsPageProps {
+  transactions: Transaction[];
+  setIsAddTransactionOpen: (isAddTransactionOpen: boolean) => void;
+}
 export function TransactionsPage({
   transactions,
-}: {
-  transactions: Transaction[];
-}) {
+  setIsAddTransactionOpen,
+}: TransactionsPageProps) {
   return (
     <main className="App transactions-page">
       <Sidebar />
@@ -16,10 +19,10 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              <p>10 entries in your space</p>
+              <p>{transactions.length} entries in your space</p>
               <h2>Transactions</h2>
             </div>
-            <button type="button" className="transaction-add">
+            <button type="button" className="transaction-add" onClick={() => setIsAddTransactionOpen(true)}>
               <span aria-hidden="true">+</span> Add transaction
             </button>
           </div>

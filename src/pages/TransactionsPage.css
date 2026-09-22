@@ -29,10 +29,26 @@
 
 .transaction-add {
   padding: 11px 18px;
+  border: 1px solid transparent;
   border-radius: 18px;
   color: #fffdfa;
   background: #287366;
   font: 700 13px var(--font-body);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.transaction-add:hover {
+  background: #236b5b;
+  box-shadow: 0 6px 14px rgba(40, 115, 102, 0.2);
+}
+
+.transaction-add:active {
+  transform: translateY(1px) scale(0.99);
+  background: #1d5b50;
 }
 
 .transaction-add span {
@@ -103,6 +119,20 @@
   font: 700 13px var(--font-body);
   white-space: nowrap;
   cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.transaction-filter:hover {
+  background: #f4f0ea;
+  border-color: #d7d0c6;
+}
+
+.transaction-filter:active {
+  transform: translateY(1px);
+  background: #efeae2;
 }
 
 .transaction-list {

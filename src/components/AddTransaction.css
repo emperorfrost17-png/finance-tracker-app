@@ -1,0 +1,215 @@
+.transaction-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(88, 94, 92, 0.22);
+  font-family: var(--font-body, "Inter", sans-serif);
+}
+
+.transaction-modal {
+  position: relative;
+  z-index: 1001;
+  width: min(100%, 500px);
+  padding: 22px 26px 20px;
+  border: 1px solid rgba(99, 108, 104, 0.16);
+  border-radius: 22px;
+  background: #fdfcfb;
+  box-shadow: 0 30px 50px rgba(32, 40, 38, 0.14);
+}
+
+.transaction-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.transaction-modal-eyebrow {
+  margin: 0;
+  color: #8e9f9b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.transaction-modal-close {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #5d706d;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+
+.transaction-modal-close:hover {
+  background: rgba(67, 94, 88, 0.06);
+  color: #2b3d3a;
+}
+
+.transaction-modal-close:active {
+  transform: translateY(1px);
+  background: rgba(67, 94, 88, 0.09);
+}
+
+.transaction-modal-close i {
+  display: block;
+  transform: translateY(-1px);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.transaction-modal-title {
+  margin: 0 0 18px;
+  color: #1f2d2d;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.transaction-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.transaction-field--inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.transaction-field label {
+  color: #4d5b59;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.transaction-input,
+.transaction-select,
+.transaction-date,
+.transaction-note {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #dfe2dd;
+  border-radius: 12px;
+  background: #fcfcfb;
+  color: #1c2c2b;
+  font: 400 15px/1.3 var(--font-body, "Inter", sans-serif);
+}
+
+.transaction-input {
+  border-color: #81b6a1;
+  box-shadow: inset 0 0 0 1px rgba(73, 143, 110, 0.04);
+}
+
+.transaction-input::placeholder,
+.transaction-note::placeholder {
+  color: #9ba8a5;
+}
+
+.transaction-select,
+.transaction-date {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #6e7f7d 50%),
+    linear-gradient(135deg, #6e7f7d 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) calc(50% - 2px),
+    calc(100% - 11px) calc(50% - 2px);
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.transaction-date {
+  color: #2f3d3c;
+}
+
+.transaction-note {
+  min-height: 88px;
+  resize: none;
+}
+
+.transaction-helper {
+  margin: 2px 0 14px;
+  color: #7d8d89;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.transaction-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.transaction-btn {
+  min-width: 96px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.transaction-btn--secondary {
+  border-color: transparent;
+  background: transparent;
+  color: #4d5f5b;
+}
+
+.transaction-btn--secondary:hover {
+  background: rgba(67, 94, 88, 0.06);
+}
+
+.transaction-btn--secondary:active {
+  transform: translateY(1px);
+  background: rgba(67, 94, 88, 0.1);
+}
+
+.transaction-btn--primary {
+  border-color: #2d7a66;
+  background: #2d7a66;
+  color: #fffdfb;
+}
+
+.transaction-btn--primary:hover {
+  background: #236d5f;
+  box-shadow: 0 6px 14px rgba(45, 122, 102, 0.18);
+}
+
+.transaction-btn--primary:active {
+  transform: translateY(1px);
+  background: #1d5e52;
+}
+
+@media (max-width: 520px) {
+  .transaction-modal {
+    width: calc(100% - 28px);
+    padding: 20px 18px 16px;
+  }
+
+  .transaction-field--inline {
+    grid-template-columns: 1fr;
+  }
+}
