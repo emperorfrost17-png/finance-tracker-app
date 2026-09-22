@@ -64,10 +64,29 @@
   align-items: center;
   min-height: 46px;
   padding: 0 16px;
+  border: 1px solid #e7e0d6;
   border-radius: 23px;
   color: #8ca09c;
   background: #f6f3ed;
   font: 13px var(--font-body);
+}
+
+.transaction-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #35504f;
+  font: 400 14px var(--font-body);
+}
+
+.transaction-search input::placeholder {
+  color: #839d9a;
+}
+
+.transaction-search input::-webkit-search-cancel-button {
+  display: none;
 }
 
 .transaction-search span:first-child {
@@ -83,10 +102,13 @@
   background: #fffdfa;
   font: 700 13px var(--font-body);
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .transaction-list {
+  margin: 0;
   padding: 0 24px;
+  list-style: none;
 }
 
 .transaction-row {
@@ -148,15 +170,36 @@
   font-family: var(--font-body);
 }
 
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
 .transaction-info strong {
   color: #35504f;
   font-size: 15px;
 }
 
 .transaction-info small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-top: 5px;
   color: #92a29f;
   font-size: 11px;
+  white-space: nowrap;
+}
+
+.transaction-info p {
+  margin: 8px 0 0;
+  color: #7b8d8a;
+  font: 400 12px/1.4 var(--font-body);
+}
+
+.transaction-meta-separator {
+  color: #9aaea8;
 }
 
 .transaction-amount {
