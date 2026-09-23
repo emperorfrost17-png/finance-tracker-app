@@ -67,6 +67,9 @@ export function AddTransaction({
     setNote(event.target.value);
   };
   const parsedAmount = Number(amount);
+
+  // Define a mapping of categories to tones
+  // This will help in assigning a tone based on the selected category
   const toneByCategory: Record<string, string> = {
     Housing: "blue",
     Transportation: "blue",
@@ -90,11 +93,13 @@ export function AddTransaction({
       return;
     }
 
-    
-
     const newTransaction: Transaction = {
       id: crypto.randomUUID(),
-      icon: type === "Expense" ? "↗" : "↘",
+      icon: (
+        <i
+          className={`fa-solid ${type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+        />
+      ),
       title: title,
       merchant: !merchant.trim() ? "Personal" : merchant,
       amount: {
@@ -105,6 +110,7 @@ export function AddTransaction({
       date: date,
       note: note,
       type: type,
+      // Assign tone based on category, defaulting to "gray" if not found
       tone: toneByCategory[category] || "gray",
     };
     setTransactions((prevTransactions) => [
@@ -150,7 +156,7 @@ export function AddTransaction({
               required
             />
           </div>
-       
+
           <div className="transaction-field transaction-field--inline">
             <div>
               <label htmlFor="merchant">Merchant</label>

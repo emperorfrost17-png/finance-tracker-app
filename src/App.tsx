@@ -3,13 +3,13 @@ import { TransactionsPage } from "./pages/TransactionsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { AddTransaction } from "./components/AddTransaction";
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import { Routes, Route } from "react-router";
 import "./App.css";
 
 export interface Transaction {
   readonly id: string;
-  icon: string;
+  icon: JSX.Element;
   title: string;
   amount: { expense: number; income: number };
   merchant?: string;
@@ -34,7 +34,10 @@ function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([
     {
       id: crypto.randomUUID(),
-      icon: "↗",
+      icon: (
+        <i
+          className="fa-solid fa-arrow-down" />
+      ),
       title: "Coffee catch-up",
       amount: { expense: 4.5, income: 0 },
       date: "Sep 18",
@@ -46,7 +49,10 @@ function App() {
     },
     {
       id: crypto.randomUUID(),
-      icon: "↗",
+      icon: (
+        <i
+          className="fa-solid fa-arrow-down" />
+      ),
       title: "Streaming bundle",
       amount: { expense: 19.99, income: 0 },
       date: "Sep 16",
@@ -58,7 +64,10 @@ function App() {
     },
     {
       id: crypto.randomUUID(),
-      icon: "↗",
+      icon: (
+        <i
+          className="fa-solid fa-arrow-up" />
+      ),
       title: "Yoga studio",
       amount: { expense: 0, income: 38.0 },
       date: "Sep 14",
@@ -82,7 +91,12 @@ function App() {
         <Route path="/" element={<OverviewPage />} />
         <Route
           path="/transactions"
-          element={<TransactionsPage transactions={transactions} setIsAddTransactionOpen={setIsAddTransactionOpen} />}
+          element={
+            <TransactionsPage
+              transactions={transactions}
+              setIsAddTransactionOpen={setIsAddTransactionOpen}
+            />
+          }
         />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/budget" element={<BudgetPage />} />

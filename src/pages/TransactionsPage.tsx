@@ -1,6 +1,7 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import type { Transaction } from "../App";
+import dayjs from "dayjs";
 import "./TransactionsPage.css";
 
 interface TransactionsPageProps {
@@ -22,7 +23,11 @@ export function TransactionsPage({
               <p>{transactions.length} entries in your space</p>
               <h2>Transactions</h2>
             </div>
-            <button type="button" className="transaction-add" onClick={() => setIsAddTransactionOpen(true)}>
+            <button
+              type="button"
+              className="transaction-add"
+              onClick={() => setIsAddTransactionOpen(true)}
+            >
               <span aria-hidden="true">+</span> Add transaction
             </button>
           </div>
@@ -70,7 +75,9 @@ export function TransactionsPage({
                     className={`transaction-icon transaction-icon--${transaction.tone}`}
                     aria-hidden="true"
                   >
-                    {transaction.icon}
+                    <i
+                      className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+                    />
                   </span>
                   <div className="transaction-info">
                     <strong>{transaction.title}</strong>
@@ -82,14 +89,25 @@ export function TransactionsPage({
                     <p>{transaction.note}</p>
                   </div>
                   <div className="transaction-amount">
-                    <strong
-                      className={transaction.amount.income > 0 ? "income" : ""}
+                    <div className="transaction-amount-values">
+                      <strong
+                        className={
+                          transaction.amount.income > 0 ? "income" : "expense"
+                        }
+                      >
+                        {transaction.amount.income > 0
+                          ? `+$${transaction.amount.income.toFixed(2)}`
+                          : `-$${transaction.amount.expense.toFixed(2)}`}
+                      </strong>
+                      <small>{dayjs(transaction.date).format("MMM D")}</small>
+                    </div>
+                    <button
+                      type="button"
+                      className="transaction-delete"
+                      aria-label={`Delete ${transaction.title}`}
                     >
-                      {transaction.amount.income > 0
-                        ? `+$${transaction.amount.income.toFixed(2)}`
-                        : `-$${transaction.amount.expense.toFixed(2)}`}
-                    </strong>
-                    <small>{transaction.date}</small>
+                      <i className="fa-regular fa-trash-can"></i>
+                    </button>
                   </div>
                 </li>
               ))}
