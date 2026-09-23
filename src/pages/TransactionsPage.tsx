@@ -18,7 +18,6 @@ export function TransactionsPage({
   setTransactions,
   setIsAddTransactionOpen,
 }: TransactionsPageProps) {
-
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
     setTransactions((currentTransactions: Transaction[]) =>
@@ -61,7 +60,9 @@ export function TransactionsPage({
                 className="transaction-search"
                 htmlFor="transaction-search-input"
               >
-                <span aria-hidden="true"><i className="fa-solid fa-magnifying-glass"></i></span>
+                <span aria-hidden="true">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </span>
                 <input
                   id="transaction-search-input"
                   type="search"
@@ -69,20 +70,46 @@ export function TransactionsPage({
                   aria-label="Search transactions"
                 />
               </label>
-              <button
-                type="button"
-                className="transaction-filter"
-                aria-label="Filter by type"
-              >
-                ☷ &nbsp; All types &nbsp;⌄
-              </button>
-              <button
-                type="button"
-                className="transaction-filter"
-                aria-label="Filter by category"
-              >
-                ☷ &nbsp; All categories &nbsp;⌄
-              </button>
+
+              <div className="transaction-filter-wrap">
+                <span className="transaction-filter-icon" aria-hidden="true">
+                  <i className="fa-solid fa-sliders"></i>
+                </span>
+                <select
+                  className="transaction-filter-select"
+                  defaultValue="All types"
+                  aria-label="Filter by type"
+                  id="all-types"
+                >
+                  <option>All types</option>
+                  <option>Expense</option>
+                  <option>Income</option>
+                </select>
+              </div>
+
+              <div className="transaction-filter-wrap">
+                <span className="transaction-filter-icon" aria-hidden="true">
+                  <i className="fa-solid fa-sliders"></i>
+                </span>
+                <select
+                  className="transaction-filter-select"
+                  defaultValue="All categories"
+                  aria-label="Filter by category"
+                  id="all-categories"
+                >
+                  <option>All categories</option>
+                  <option>Housing</option>
+                  <option>Transportation</option>
+                  <option>Food</option>
+                  <option>Wellness</option>
+                  <option>Salary</option>
+                  <option>Healthcare</option>
+                  <option>Savings & Investments</option>
+                  <option>Personal Spending</option>
+                  <option>Entertainment</option>
+                  <option>Other</option>
+                </select>
+              </div>
             </div>
             <ul className="transaction-list" aria-label="Transaction list">
               {transactions.map((transaction) => (

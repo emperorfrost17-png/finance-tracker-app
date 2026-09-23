@@ -31,22 +31,19 @@ export interface Transaction {
 }
 
 function App() {
-  
-
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
-  try {
-    const storedTransactions = localStorage.getItem("transactions");
-    return storedTransactions ? JSON.parse(storedTransactions) : [];
-  } catch {
-    return [];
-  }
-});
+    try {
+      const storedTransactions = localStorage.getItem("transactions");
+      return storedTransactions ? JSON.parse(storedTransactions) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
-  
-  
+
   useEffect(() => {
-  localStorage.setItem("transactions", JSON.stringify(transactions));
-}, [transactions]);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
   return (
     <>
       {isAddTransactionOpen && (
