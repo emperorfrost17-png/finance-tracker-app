@@ -7,11 +7,27 @@ import "./TransactionsPage.css";
 interface TransactionsPageProps {
   transactions: Transaction[];
   setIsAddTransactionOpen: (isAddTransactionOpen: boolean) => void;
+  setTransactions: (
+    transactions:
+      | Transaction[]
+      | ((newTransactions: Transaction[]) => Transaction[]),
+  ) => void;
 }
 export function TransactionsPage({
   transactions,
+  setTransactions,
   setIsAddTransactionOpen,
 }: TransactionsPageProps) {
+
+  // Function to handle the deletion of a transaction by its ID
+  const handleDeleteTransaction = (transactionId: string) => {
+    setTransactions((currentTransactions: Transaction[]) =>
+      currentTransactions.filter(
+        (transaction) => transaction.id !== transactionId,
+      ),
+    );
+  };
+
   return (
     <main className="App transactions-page">
       <Sidebar />
@@ -45,7 +61,7 @@ export function TransactionsPage({
                 className="transaction-search"
                 htmlFor="transaction-search-input"
               >
-                <span aria-hidden="true">⌕</span>
+                <span aria-hidden="true"><i className="fa-solid fa-magnifying-glass"></i></span>
                 <input
                   id="transaction-search-input"
                   type="search"
@@ -105,6 +121,7 @@ export function TransactionsPage({
                       type="button"
                       className="transaction-delete"
                       aria-label={`Delete ${transaction.title}`}
+                      onClick={() => handleDeleteTransaction(transaction.id)}
                     >
                       <i className="fa-regular fa-trash-can"></i>
                     </button>
