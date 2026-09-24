@@ -12,11 +12,13 @@ interface TransactionsPageProps {
       | Transaction[]
       | ((newTransactions: Transaction[]) => Transaction[]),
   ) => void;
+  handleEditTransaction: (transaction: Transaction) => void;
 }
 export function TransactionsPage({
   transactions,
   setTransactions,
   setIsAddTransactionOpen,
+  handleEditTransaction,
 }: TransactionsPageProps) {
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
@@ -156,8 +158,9 @@ export function TransactionsPage({
                     type="button"
                     className="transaction-edit"
                     aria-label={`Edit ${transaction.title}`}
+                    onClick={() => handleEditTransaction(transaction)}
                     >
-                      <i class="fa-regular fa-pen-to-square"></i>
+                      <i className="fa-regular fa-pen-to-square"></i>
                     </button>
                   </div>
                 </li>

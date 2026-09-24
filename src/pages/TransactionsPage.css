@@ -195,16 +195,19 @@
   border-bottom: 0;
 }
 
-.transaction-row .transaction-delete {
+.transaction-row .transaction-delete,
+.transaction-row .transaction-edit {
   opacity: 0;
   transition:
     opacity 0.15s ease,
     background 0.15s ease,
     border-color 0.15s ease,
-    color 0.15s ease;
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
-.transaction-row:hover .transaction-delete {
+.transaction-row:hover .transaction-delete,
+.transaction-row:hover .transaction-edit {
   opacity: 1;
 }
 
@@ -317,7 +320,8 @@
   font-size: 11px;
 }
 
-.transaction-delete {
+.transaction-delete,
+.transaction-edit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -328,21 +332,24 @@
   background: transparent;
   color: #7f918d;
   cursor: pointer;
-  opacity: 0;
-  transition:
-    opacity 0.15s ease,
-    background 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease;
 }
 
 .transaction-delete:hover {
   background: #fbe8e7;
   border-color: #e8b4b0;
   color: #d94d45;
+  transform: translateY(-1px);
 }
 
-.transaction-delete i {
+.transaction-edit:hover {
+  background: #e7f5f2;
+  border-color: #a8d6c8;
+  color: #236b5b;
+  transform: translateY(-1px);
+}
+
+.transaction-delete i,
+.transaction-edit i {
   font-size: 13px;
 }
 

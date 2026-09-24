@@ -3,7 +3,7 @@ import { TransactionsPage } from "./pages/TransactionsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { AddTransaction } from "./components/AddTransaction";
-import {EditTransaction} from "./components/EditTransaction";
+import { EditTransaction } from "./components/EditTransaction";
 import { useState, type JSX, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import "./App.css";
@@ -41,8 +41,13 @@ function App() {
     }
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
-  const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false)
-  
+  const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
+  const [TaskToEdit, setTaskToEdit] = useState<Transaction | null>(null);
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setTaskToEdit(transaction);
+    setIsEditTransactionOpen(true);
+  }
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -55,6 +60,9 @@ function App() {
           setTransactions={setTransactions}
         />
       )}
+      {isEditTransactionOpen && (
+        <EditTransaction setEditTransaction={setIsEditTransactionOpen} taskToEdit={TaskToEdit} />
+      )}
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route
@@ -64,6 +72,7 @@ function App() {
               transactions={transactions}
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
+              handleEditTransaction={handleEditTransaction}
             />
           }
         />

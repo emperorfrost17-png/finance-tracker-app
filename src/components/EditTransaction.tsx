@@ -1,12 +1,72 @@
 import "./AddTransaction.css";
-import type {Transaction} from "../App";
+import type { Transaction } from "../App";
 import dayjs from "dayjs";
-import {useEffect, useState} from "react";
+import { useState, useEffect } from "react";
+interface EditTransactionProps {
+  setEditTransaction: (editTransaction: boolean) => void;
+  taskToEdit: Transaction | null;
+}
+export function EditTransaction({
+  setEditTransaction,
+  taskToEdit,
+}: EditTransactionProps) {
+  const [newTitle, setNewTitle] = useState("");
+  const [newMerchant, setNewMerchant] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newType, setNewType] = useState<"Expense" | "Income">("Expense");
+  const [newCategory, setNewCategory] =
+    useState<Transaction["category"]>("Other");
+  const [newDate, setNewDate] = useState("");
+  const [newNote, setNewNote] = useState("");
 
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(event.target.value);
+  };
 
-export function EditTransaction() {
-    
-    return (
+  const handleMerchantChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewMerchant(event.target.value);
+  };
+
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAmount(event.target.value);
+  };
+
+  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setNewType(event.target.value as "Expense" | "Income");
+  };
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setNewCategory(event.target.value as Transaction["category"]);
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewDate(event.target.value);
+  };
+
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewNote(event.target.value);
+  };
+
+  useEffect(() => {
+    if (taskToEdit) {
+      // eslint-disable-next-line
+      setNewTitle(taskToEdit.title);
+      setNewMerchant(taskToEdit.merchant || "");
+      setNewAmount(
+        taskToEdit.amount.income > 0
+          ? taskToEdit.amount.income.toString()
+          : taskToEdit.amount.expense.toString(),
+      );
+      setNewType(taskToEdit.type);
+      setNewCategory(taskToEdit.category);
+      setNewDate(dayjs(taskToEdit.date).format("YYYY-MM-DD"));
+      setNewNote(taskToEdit.note || "");
+    }
+  }, [taskToEdit]);
+
+  return (
     <div className="transaction-modal-backdrop" aria-hidden="false">
       <section
         className="transaction-modal"
@@ -14,14 +74,14 @@ export function EditTransaction() {
         aria-modal="true"
         aria-labelledby="add-transaction-title"
       >
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="transaction-modal-header">
             <p className="transaction-modal-eyebrow">Edit entry</p>
             <button
               type="button"
               className="transaction-modal-close"
               aria-label="Close"
-              onClick={() => setAddTransaction(false)}
+              onClick={() => setEditTransaction(false)}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -38,8 +98,8 @@ export function EditTransaction() {
               className="transaction-input"
               type="text"
               placeholder="g. Weekly groceries"
-              value={title}
-              onChange={savedTitle}
+              value={newTitle}
+              onChange={handleTitleChange}
               required
             />
           </div>
@@ -52,8 +112,8 @@ export function EditTransaction() {
                 className="transaction-input"
                 type="text"
                 placeholder="e.g. Marlow Market"
-                value={merchant}
-                onChange={savedMerchant}
+                value={newMerchant}
+                onChange={handleMerchantChange}
               />
             </div>
 
@@ -64,8 +124,8 @@ export function EditTransaction() {
                 className="transaction-input"
                 type="number"
                 placeholder="0.00"
-                value={amount}
-                onChange={savedAmount}
+                value={newAmount}
+                onChange={handleAmountChange}
                 required
               />
             </div>
@@ -77,9 +137,9 @@ export function EditTransaction() {
               <select
                 id="type"
                 className="transaction-select"
-                value={type}
-                onChange={savedType}
                 aria-label="Type"
+                value={newType}
+                onChange={handleTypeChange}
               >
                 <option>Expense</option>
                 <option>Income</option>
@@ -91,9 +151,9 @@ export function EditTransaction() {
               <select
                 id="category"
                 className="transaction-select"
-                value={category}
-                onChange={savedCategory}
                 aria-label="Category"
+                value={newCategory}
+                onChange={handleCategoryChange}
               >
                 <option>Food</option>
                 <option>Housing</option>
@@ -115,8 +175,8 @@ export function EditTransaction() {
               id="date"
               className="transaction-date"
               type="date"
-              value={date}
-              onChange={savedDate}
+              value={newDate}
+              onChange={handleDateChange}
             />
           </div>
 
@@ -126,8 +186,8 @@ export function EditTransaction() {
               id="note"
               className="transaction-note"
               placeholder="A little context for later"
-              value={note}
-              onChange={savedNote}
+              value={newNote}
+              onChange={handleNoteChange}
             />
           </div>
 
@@ -135,7 +195,7 @@ export function EditTransaction() {
             <button
               type="button"
               className="transaction-btn transaction-btn--secondary"
-              onClick={() => setAddTransaction(false)}
+              onClick={() => setEditTransaction(false)}
             >
               Cancel
             </button>

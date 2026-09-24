@@ -114,8 +114,8 @@ export function AddTransaction({
       tone: toneByCategory[category] || "gray",
     };
     setTransactions((prevTransactions) => [
-      ...prevTransactions,
       newTransaction,
+      ...prevTransactions,
     ]);
     setAddTransaction(false);
   };
@@ -256,7 +256,7 @@ export function AddTransaction({
               type="submit"
               className="transaction-btn transaction-btn--primary"
             >
-              Save transaction
+              Add transaction
             </button>
           </div>
         </form>
