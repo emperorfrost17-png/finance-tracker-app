@@ -3,6 +3,7 @@ import { TransactionsPage } from "./pages/TransactionsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { AddTransaction } from "./components/AddTransaction";
+import {EditTransaction} from "./components/EditTransaction";
 import { useState, type JSX, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import "./App.css";
@@ -40,6 +41,8 @@ function App() {
     }
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
+  const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false)
+  
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));

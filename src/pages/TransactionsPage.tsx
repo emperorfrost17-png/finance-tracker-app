@@ -152,6 +152,13 @@ export function TransactionsPage({
                     >
                       <i className="fa-regular fa-trash-can"></i>
                     </button>
+                    <button
+                    type="button"
+                    className="transaction-edit"
+                    aria-label={`Edit ${transaction.title}`}
+                    >
+                      <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
                   </div>
                 </li>
               ))}
