@@ -13,8 +13,8 @@ export interface Transaction {
   icon: JSX.Element;
   title: string;
   amount: { expense: number; income: number };
-  merchant?: string;
-  note?: string;
+  merchant: string | null;
+  note: string | null;
   category:
     | "Housing"
     | "Transportation"

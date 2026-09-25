@@ -1,5 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
+import { NothingMatches } from "../components/NothingMatches";
 import type { Transaction } from "../App";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -25,6 +26,13 @@ export function TransactionsPage({
     "All types" | "Expense" | "Income"
   >("All types");
   const [categoryFilter, setCategoryFilter] = useState("All categories");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchQueryChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSearchQuery(event.target.value);
+  };
 
   const handleTypeFilterChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
@@ -45,8 +53,17 @@ export function TransactionsPage({
       const categoryMatches =
         categoryFilter === "All categories" ||
         transaction.category === categoryFilter;
+      const searchMatches =
+        transaction.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.category
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        (transaction.merchant &&
+          transaction.merchant
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()));
 
-      return typeMatches && categoryMatches;
+      return typeMatches && categoryMatches && searchMatches;
     });
   };
   // Function to handle the deletion of a transaction by its ID
@@ -99,6 +116,8 @@ export function TransactionsPage({
                   type="search"
                   placeholder="Search transactions..."
                   aria-label="Search transactions"
+                  value={searchQuery}
+                  onChange={handleSearchQueryChange}
                 />
               </label>
 
@@ -146,6 +165,9 @@ export function TransactionsPage({
                 </select>
               </div>
             </div>
+            {filteredTransactions().length === 0 && (
+              <NothingMatches />
+            ) }
             <ul className="transaction-list" aria-label="Transaction list">
               {filteredTransactions().map((transaction) => (
                 <li className="transaction-row" key={transaction.id}>

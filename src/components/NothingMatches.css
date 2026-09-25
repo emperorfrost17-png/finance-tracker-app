@@ -1,0 +1,34 @@
+.nothing-matches {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 148px;
+  padding: 22px 24px 28px;
+  text-align: center;
+}
+
+.nothing-matches-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  color: #4d8a7d;
+  background: #fff0d2;
+  font-size: 17px;
+}
+
+.nothing-matches h2 {
+  margin: 0;
+  color: #35504f;
+  font: 700 15px/1.25 var(--font-body);
+}
+
+.nothing-matches p {
+  margin: 7px 0 0;
+  color: #8a9b98;
+  font: 400 12px/1.4 var(--font-body);
+}
