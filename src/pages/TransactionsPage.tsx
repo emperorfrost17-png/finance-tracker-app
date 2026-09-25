@@ -1,6 +1,7 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import type { Transaction } from "../App";
+import { useState } from "react";
 import dayjs from "dayjs";
 import "./TransactionsPage.css";
 
@@ -10,7 +11,7 @@ interface TransactionsPageProps {
   setTransactions: (
     transactions:
       | Transaction[]
-      | ((newTransactions: Transaction[]) => Transaction[]),
+      | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
   handleEditTransaction: (transaction: Transaction) => void;
 }
@@ -20,6 +21,31 @@ export function TransactionsPage({
   setIsAddTransactionOpen,
   handleEditTransaction,
 }: TransactionsPageProps) {
+  const [typeFilter, setTypeFilter] = useState<
+    "All types" | "Expense" | "Income"
+  >("All types");
+  const handleTypeFilterChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setTypeFilter(event.target.value as "All types" | "Expense" | "Income");
+  };
+  const filteredTransactions = () => {
+    if (typeFilter === "All types") {
+      return transactions;
+    }
+    if (typeFilter === "Expense") {
+      return transactions.filter(
+        (transaction) => transaction.type === "Expense",
+      );
+    }
+    if (typeFilter === "Income") {
+      return transactions.filter(
+        (transaction) => transaction.type === "Income",
+      );
+    }
+      return transactions
+
+  };
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
     setTransactions((currentTransactions: Transaction[]) =>
@@ -37,7 +63,7 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              <p>{transactions.length} entries in your space</p>
+              <p>{filteredTransactions().length} entries in your space</p>
               <h2>Transactions</h2>
             </div>
             <button
@@ -82,6 +108,8 @@ export function TransactionsPage({
                   defaultValue="All types"
                   aria-label="Filter by type"
                   id="all-types"
+                  value={typeFilter}
+                  onChange={handleTypeFilterChange}
                 >
                   <option>All types</option>
                   <option>Expense</option>
@@ -114,7 +142,7 @@ export function TransactionsPage({
               </div>
             </div>
             <ul className="transaction-list" aria-label="Transaction list">
-              {transactions.map((transaction) => (
+              {filteredTransactions().map((transaction) => (
                 <li className="transaction-row" key={transaction.id}>
                   <span
                     className={`transaction-icon transaction-icon--${transaction.tone}`}
@@ -155,10 +183,10 @@ export function TransactionsPage({
                       <i className="fa-regular fa-trash-can"></i>
                     </button>
                     <button
-                    type="button"
-                    className="transaction-edit"
-                    aria-label={`Edit ${transaction.title}`}
-                    onClick={() => handleEditTransaction(transaction)}
+                      type="button"
+                      className="transaction-edit"
+                      aria-label={`Edit ${transaction.title}`}
+                      onClick={() => handleEditTransaction(transaction)}
                     >
                       <i className="fa-regular fa-pen-to-square"></i>
                     </button>

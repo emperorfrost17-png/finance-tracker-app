@@ -8,7 +8,7 @@ interface EditTransactionProps {
   setTransactions: (
     transactions:
       | Transaction[]
-      | ((newTransactions: Transaction[]) => Transaction[]),
+      | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
 }
 export function EditTransaction({
