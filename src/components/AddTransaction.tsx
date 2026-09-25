@@ -1,5 +1,7 @@
 import "./AddTransaction.css";
 import type { Transaction } from "../App";
+import { useNavigate } from "react-router";
+
 import dayjs from "dayjs";
 import { useState } from "react";
 interface AddTransactionProps {
@@ -16,6 +18,8 @@ export function AddTransaction({
   setTransactions,
   setShowAddedTaskNotification,
 }: AddTransactionProps) {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [merchant, setMerchant] = useState("");
   const [amount, setAmount] = useState("");
@@ -121,7 +125,8 @@ export function AddTransaction({
       ...prevTransactions,
     ]);
     setAddTransaction(false);
-    setShowAddedTaskNotification(true)
+    setShowAddedTaskNotification(true);
+    navigate("/transactions");
   };
   return (
     <div className="transaction-modal-backdrop" aria-hidden="false">

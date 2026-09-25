@@ -1,8 +1,24 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
+import type { Transaction } from "../App";
 import "./OverviewPage.css";
 
-export function OverviewPage() {
+interface OverviewPageProps {
+  transactions: Transaction[];
+  setIsAddTransactionOpen: (isOpen: boolean) => void;
+}
+export function OverviewPage({
+  transactions,
+  setIsAddTransactionOpen,
+}: OverviewPageProps) {
+  let availableBalance = 0;
+  let totalIncome = 0;
+  let totalExpenses = 0;
+  transactions.forEach((transaction) => {
+    totalIncome += transaction.amount.income;
+    totalExpenses += transaction.amount.expense;
+    availableBalance = totalIncome - totalExpenses;
+  });
   return (
     <main className="App">
       <Sidebar />
@@ -25,7 +41,11 @@ export function OverviewPage() {
                 <span aria-hidden="true">▣</span> September 2026{" "}
                 <span aria-hidden="true">⌄</span>
               </button>
-              <button className="add-button" type="button">
+              <button
+                className="add-button"
+                type="button"
+                onClick={() => setIsAddTransactionOpen(true)}
+              >
                 <span aria-hidden="true">+</span> Add
               </button>
             </div>
@@ -34,7 +54,12 @@ export function OverviewPage() {
           <section className="balance-banner">
             <div className="balance-copy">
               <span className="panel-kicker">Available balance</span>
-              <strong>$2K</strong>
+              <strong>
+                $
+                {availableBalance >= 1000
+                  ? `${(availableBalance / 1000).toFixed(1)}K`
+                  : `${availableBalance.toFixed(2)}`}
+              </strong>
               <p>
                 <span className="status-pill">On track</span> for your september
               </p>
@@ -42,19 +67,37 @@ export function OverviewPage() {
             <div className="balance-stats">
               <div>
                 <span>Income</span>
-                <strong>$5K</strong>
+                <strong>
+                  $
+                  {totalIncome >= 1000
+                    ? `${(totalIncome / 1000).toFixed(1)}K`
+                    : `${totalIncome.toFixed(2)}`}
+                </strong>
               </div>
               <div>
                 <span>Spent</span>
-                <strong>$2K</strong>
+                <strong>
+                  $
+                  {totalExpenses >= 1000
+                    ? `${(totalExpenses / 1000).toFixed(1)}K`
+                    : `${totalExpenses.toFixed(2)}`}
+                </strong>
               </div>
               <div>
                 <span>Savings rate</span>
-                <strong>66%</strong>
+                <strong>
+                  {totalIncome > 0
+                    ? (
+                        ((totalIncome - totalExpenses) / totalIncome) *
+                        100
+                      ).toFixed(1)
+                    : "0.0"}
+                  %
+                </strong>
               </div>
               <div>
                 <span>Transactions</span>
-                <strong>10</strong>
+                <strong>{transactions.length}</strong>
               </div>
             </div>
           </section>

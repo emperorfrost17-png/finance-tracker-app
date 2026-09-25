@@ -43,16 +43,22 @@ function App() {
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
   const [TaskToEdit, setTaskToEdit] = useState<Transaction | null>(null);
-  const [showAddedTaskNotification, setShowAddedTaskNotification] = useState(false);
-  const [showEditTaskNotification, setShowEditTaskNotification] = useState(false);
-  const [showDeleteTaskNotification, setShowDeleteTaskNotification] = useState(false);
+  const [showAddedTaskNotification, setShowAddedTaskNotification] =
+    useState(false);
+  const [showEditTaskNotification, setShowEditTaskNotification] =
+    useState(false);
+  const [showDeleteTaskNotification, setShowDeleteTaskNotification] =
+    useState(false);
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
     setIsEditTransactionOpen(true);
   };
   useEffect(() => {
-    const isActive = showAddedTaskNotification || showEditTaskNotification || showDeleteTaskNotification;
+    const isActive =
+      showAddedTaskNotification ||
+      showEditTaskNotification ||
+      showDeleteTaskNotification;
     if (!isActive) return;
     const timer = setTimeout(() => {
       setShowAddedTaskNotification(false);
@@ -60,7 +66,11 @@ function App() {
       setShowDeleteTaskNotification(false);
     }, 3000);
     return () => clearTimeout(timer);
-  }, [showAddedTaskNotification, showEditTaskNotification, showDeleteTaskNotification]);
+  }, [
+    showAddedTaskNotification,
+    showEditTaskNotification,
+    showDeleteTaskNotification,
+  ]);
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -83,7 +93,10 @@ function App() {
         />
       )}
       <Routes>
-        <Route path="/" element={<OverviewPage />} />
+        <Route
+          path="/"
+          element={<OverviewPage transactions={transactions} setIsAddTransactionOpen={setIsAddTransactionOpen} />}
+        />
         <Route
           path="/transactions"
           element={
@@ -117,7 +130,6 @@ function App() {
           <p>Transaction deleted</p>
         </div>
       )}
-      
     </>
   );
 }
