@@ -61,7 +61,7 @@ function App() {
         />
       )}
       {isEditTransactionOpen && (
-        <EditTransaction setEditTransaction={setIsEditTransactionOpen} taskToEdit={TaskToEdit} />
+        <EditTransaction setEditTransaction={setIsEditTransactionOpen} taskToEdit={TaskToEdit} setTransactions={setTransactions}   />
       )}
       <Routes>
         <Route path="/" element={<OverviewPage />} />

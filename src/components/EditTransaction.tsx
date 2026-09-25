@@ -5,10 +5,16 @@ import { useState, useEffect } from "react";
 interface EditTransactionProps {
   setEditTransaction: (editTransaction: boolean) => void;
   taskToEdit: Transaction | null;
+  setTransactions: (
+    transactions:
+      | Transaction[]
+      | ((newTransactions: Transaction[]) => Transaction[]),
+  ) => void;
 }
 export function EditTransaction({
   setEditTransaction,
   taskToEdit,
+  setTransactions,
 }: EditTransactionProps) {
   const [newTitle, setNewTitle] = useState("");
   const [newMerchant, setNewMerchant] = useState("");
@@ -48,7 +54,18 @@ export function EditTransaction({
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewNote(event.target.value);
   };
-
+  const toneByCategory: Record<string, string> = {
+    Housing: "blue",
+    Transportation: "blue",
+    Food: "coral",
+    Wellness: "olive",
+    Salary: "mint",
+    Healthcare: "pink",
+    "Savings & Investments": "peach",
+    "Personal Spending": "lavender",
+    Entertainment: "coral",
+    Other: "blue",
+  };
   useEffect(() => {
     if (taskToEdit) {
       // eslint-disable-next-line
@@ -66,6 +83,34 @@ export function EditTransaction({
     }
   }, [taskToEdit]);
 
+  const handleSaveChanges = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!newTitle || !newAmount || !newDate) {
+      return;
+    }
+    setTransactions((currentTransactions) =>
+      currentTransactions.map((transaction) => {
+        if (transaction.id === taskToEdit?.id) {
+          return {
+            ...transaction,
+            title: newTitle,
+            merchant: newMerchant,
+            amount: {
+              expense: newType === "Expense" ? parseFloat(newAmount) : 0,
+              income: newType === "Income" ? parseFloat(newAmount) : 0,
+            },
+            type: newType,
+            category: newCategory,
+            date: newDate,
+            note: newNote,
+            tone: toneByCategory[newCategory] || "blue",
+          };
+        }
+        return transaction;
+      }),
+    );
+    setEditTransaction(false);
+  };
   return (
     <div className="transaction-modal-backdrop" aria-hidden="false">
       <section
@@ -74,7 +119,7 @@ export function EditTransaction({
         aria-modal="true"
         aria-labelledby="add-transaction-title"
       >
-        <form>
+        <form onSubmit={handleSaveChanges}>
           <div className="transaction-modal-header">
             <p className="transaction-modal-eyebrow">Edit entry</p>
             <button

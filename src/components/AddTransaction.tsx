@@ -66,7 +66,8 @@ export function AddTransaction({
   const savedNote = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
   };
-  const parsedAmount = Number(amount);
+  // Parse the amount to a number for validation
+  const parsedAmount = parseFloat(amount);
 
   // Define a mapping of categories to tones
   // This will help in assigning a tone based on the selected category
@@ -111,7 +112,7 @@ export function AddTransaction({
       note: note,
       type: type,
       // Assign tone based on category, defaulting to "gray" if not found
-      tone: toneByCategory[category] || "gray",
+      tone: toneByCategory[category] || "blue",
     };
     setTransactions((prevTransactions) => [
       newTransaction,
