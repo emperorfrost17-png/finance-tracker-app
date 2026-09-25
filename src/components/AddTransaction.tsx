@@ -9,10 +9,12 @@ interface AddTransactionProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
+  setShowAddedTaskNotification: (showAddedTaskNotification: boolean) => void;
 }
 export function AddTransaction({
   setAddTransaction,
   setTransactions,
+  setShowAddedTaskNotification,
 }: AddTransactionProps) {
   const [title, setTitle] = useState("");
   const [merchant, setMerchant] = useState("");
@@ -119,6 +121,7 @@ export function AddTransaction({
       ...prevTransactions,
     ]);
     setAddTransaction(false);
+    setShowAddedTaskNotification(true)
   };
   return (
     <div className="transaction-modal-backdrop" aria-hidden="false">

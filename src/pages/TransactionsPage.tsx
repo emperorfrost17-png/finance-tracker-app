@@ -14,6 +14,7 @@ interface TransactionsPageProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
+  setShowDeleteTaskNotification: (showDeleteTaskNotification: boolean) => void;
   handleEditTransaction: (transaction: Transaction) => void;
 }
 export function TransactionsPage({
@@ -21,6 +22,7 @@ export function TransactionsPage({
   setTransactions,
   setIsAddTransactionOpen,
   handleEditTransaction,
+  setShowDeleteTaskNotification,
 }: TransactionsPageProps) {
   const [typeFilter, setTypeFilter] = useState<
     "All types" | "Expense" | "Income"
@@ -83,7 +85,14 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              <p>{filteredTransactions().length} entries in your space</p>
+              {filteredTransactions().length === transactions.length ? (
+                <p>{filteredTransactions().length} entries in your space</p>
+              ) : (
+                <p>
+                  {filteredTransactions().length} of {transactions.length}{" "}
+                  entries in your space
+                </p>
+              )}
               <h2>Transactions</h2>
             </div>
             <button
@@ -165,9 +174,7 @@ export function TransactionsPage({
                 </select>
               </div>
             </div>
-            {filteredTransactions().length === 0 && (
-              <NothingMatches />
-            ) }
+            {filteredTransactions().length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
               {filteredTransactions().map((transaction) => (
                 <li className="transaction-row" key={transaction.id}>
@@ -205,7 +212,10 @@ export function TransactionsPage({
                       type="button"
                       className="transaction-delete"
                       aria-label={`Delete ${transaction.title}`}
-                      onClick={() => handleDeleteTransaction(transaction.id)}
+                      onClick={() => {
+                        handleDeleteTransaction(transaction.id);
+                        setShowDeleteTaskNotification(true);
+                      }}
                     >
                       <i className="fa-regular fa-trash-can"></i>
                     </button>

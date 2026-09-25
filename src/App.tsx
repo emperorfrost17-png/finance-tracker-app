@@ -43,11 +43,24 @@ function App() {
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
   const [TaskToEdit, setTaskToEdit] = useState<Transaction | null>(null);
+  const [showAddedTaskNotification, setShowAddedTaskNotification] = useState(false);
+  const [showEditTaskNotification, setShowEditTaskNotification] = useState(false);
+  const [showDeleteTaskNotification, setShowDeleteTaskNotification] = useState(false);
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
     setIsEditTransactionOpen(true);
-  }
+  };
+  useEffect(() => {
+    const isActive = showAddedTaskNotification || showEditTaskNotification || showDeleteTaskNotification;
+    if (!isActive) return;
+    const timer = setTimeout(() => {
+      setShowAddedTaskNotification(false);
+      setShowEditTaskNotification(false);
+      setShowDeleteTaskNotification(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [showAddedTaskNotification, showEditTaskNotification, showDeleteTaskNotification]);
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -58,10 +71,16 @@ function App() {
         <AddTransaction
           setAddTransaction={setIsAddTransactionOpen}
           setTransactions={setTransactions}
+          setShowAddedTaskNotification={setShowAddedTaskNotification}
         />
       )}
       {isEditTransactionOpen && (
-        <EditTransaction setEditTransaction={setIsEditTransactionOpen} taskToEdit={TaskToEdit} setTransactions={setTransactions}   />
+        <EditTransaction
+          setEditTransaction={setIsEditTransactionOpen}
+          taskToEdit={TaskToEdit}
+          setTransactions={setTransactions}
+          setShowEditTaskNotification={setShowEditTaskNotification}
+        />
       )}
       <Routes>
         <Route path="/" element={<OverviewPage />} />
@@ -73,12 +92,32 @@ function App() {
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
+              setShowDeleteTaskNotification={setShowDeleteTaskNotification}
             />
           }
         />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/budget" element={<BudgetPage />} />
       </Routes>
+      {showAddedTaskNotification && (
+        <div className="notification" role="status" aria-live="polite">
+          <i className="fa-solid fa-check" aria-hidden="true"></i>
+          <p>Transaction added</p>
+        </div>
+      )}
+      {showEditTaskNotification && (
+        <div className="notification" role="status" aria-live="polite">
+          <i className="fa-solid fa-check" aria-hidden="true"></i>
+          <p>Transaction updated</p>
+        </div>
+      )}
+      {showDeleteTaskNotification && (
+        <div className="notification" role="status" aria-live="polite">
+          <i className="fa-solid fa-check" aria-hidden="true"></i>
+          <p>Transaction deleted</p>
+        </div>
+      )}
+      
     </>
   );
 }

@@ -10,11 +10,13 @@ interface EditTransactionProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
+  setShowEditTaskNotification: (showEditTaskNotification: boolean) => void;
 }
 export function EditTransaction({
   setEditTransaction,
   taskToEdit,
   setTransactions,
+  setShowEditTaskNotification,
 }: EditTransactionProps) {
   const [newTitle, setNewTitle] = useState("");
   const [newMerchant, setNewMerchant] = useState("");
@@ -110,6 +112,7 @@ export function EditTransaction({
       }),
     );
     setEditTransaction(false);
+    setShowEditTaskNotification(true);
   };
   return (
     <div className="transaction-modal-backdrop" aria-hidden="false">

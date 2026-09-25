@@ -8,3 +8,43 @@
   min-width: 0;
   background: #fbfaf6;
 }
+
+.notification {
+  position: fixed;
+  z-index: 20;
+  bottom: 15px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 35px;
+  padding: 0 18px;
+  border-radius: 20px;
+  color: #fffdfa;
+  background: #287366;
+  box-shadow: 0 7px 16px rgba(40, 115, 102, 0.2);
+  transform: translateX(-50%);
+  animation: notification-in 0.2s ease-out;
+}
+
+.notification i {
+  font-size: 11px;
+}
+
+.notification p {
+  margin: 0;
+  font: 700 13px/1 var(--font-body);
+  white-space: nowrap;
+}
+
+@keyframes notification-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
