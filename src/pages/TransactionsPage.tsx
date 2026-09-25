@@ -24,27 +24,30 @@ export function TransactionsPage({
   const [typeFilter, setTypeFilter] = useState<
     "All types" | "Expense" | "Income"
   >("All types");
+  const [categoryFilter, setCategoryFilter] = useState("All categories");
+
   const handleTypeFilterChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setTypeFilter(event.target.value as "All types" | "Expense" | "Income");
   };
+  const handleCategoryFilterChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setCategoryFilter(event.target.value);
+  };
+  // Keep transactions that match the selected type and category filters.
   const filteredTransactions = () => {
-    if (typeFilter === "All types") {
-      return transactions;
-    }
-    if (typeFilter === "Expense") {
-      return transactions.filter(
-        (transaction) => transaction.type === "Expense",
-      );
-    }
-    if (typeFilter === "Income") {
-      return transactions.filter(
-        (transaction) => transaction.type === "Income",
-      );
-    }
-      return transactions
+    return transactions.filter((transaction) => {
+      const typeMatches =
+        typeFilter === "All types" || transaction.type === typeFilter;
 
+      const categoryMatches =
+        categoryFilter === "All categories" ||
+        transaction.category === categoryFilter;
+
+      return typeMatches && categoryMatches;
+    });
   };
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
@@ -126,6 +129,8 @@ export function TransactionsPage({
                   defaultValue="All categories"
                   aria-label="Filter by category"
                   id="all-categories"
+                  value={categoryFilter}
+                  onChange={handleCategoryFilterChange}
                 >
                   <option>All categories</option>
                   <option>Housing</option>
