@@ -2,7 +2,8 @@ import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import type { Transaction } from "../App";
 import { NoSpendingYet } from "../components/NoSpendingYet";
-import {Link} from "react-router";
+import dayjs from "dayjs";
+import { Link } from "react-router";
 import "./OverviewPage.css";
 
 interface OverviewPageProps {
@@ -39,7 +40,6 @@ export function OverviewPage({
               </h1>
             </div>
             <div className="overview-actions">
-              
               <button
                 className="add-button"
                 type="button"
@@ -214,7 +214,7 @@ export function OverviewPage({
                   <h2>Budget pulse</h2>
                 </div>
                 <Link to="/budget" className="panel-note">
-                <span className="panel-note">Manage</span>
+                  <span className="panel-note">Manage</span>
                 </Link>
               </div>
               <div className="budget-list">
@@ -249,70 +249,55 @@ export function OverviewPage({
                   <h2>Recent activity</h2>
                 </div>
                 <Link to="/transactions" className="panel-note">
-                <span className="panel-note">See all</span>
+                  <span className="panel-note">See all</span>
                 </Link>
               </div>
               <div className="activity-list">
-                {[
-                  [
-                    "↗",
-                    "Coffee catch-up",
-                    "Kindred Coffee  ·  Food",
-                    "-$14.50",
-                    "Sep 18",
-                    "peach",
-                  ],
-                  [
-                    "↗",
-                    "Streaming bundle",
-                    "Peach+ Play  ·  Entertainment",
-                    "-$19.99",
-                    "Sep 16",
-                    "pink",
-                  ],
-                  [
-                    "↗",
-                    "Yoga studio",
-                    "Moss Movement  ·  Wellness",
-                    "-$38.00",
-                    "Sep 14",
-                    "olive",
-                  ],
-                  [
-                    "↘",
-                    "Project retainer",
-                    "Juniper Press  ·  Freelance",
-                    "+$620.00",
-                    "Sep 12",
-                    "blue",
-                  ],
-                  [
-                    "↗",
-                    "New running shoes",
-                    "Field & Form  ·  Shopping",
-                    "-$128.00",
-                    "Sep 10",
-                    "lavender",
-                  ],
-                ].map(([icon, title, detail, amount, date, tone]) => (
-                  <div className="activity-row" key={title}>
-                    <span className={`activity-icon activity-icon--${tone}`}>
-                      {icon}
+                {transactions.length === 0 ? (
+                  <div className="activity-empty">
+                    <span className="activity-empty-icon" aria-hidden="true">
+                      <i className="fa-solid fa-arrow-right-arrow-left" />
+                    </span>
+                    <strong>No activity yet</strong>
+                    <p>Your recent transactions will show up here.</p>
+                    <button
+                      className="activity-empty-action"
+                      type="button"
+                      onClick={() => setIsAddTransactionOpen(true)}
+                    >
+                      <i className="fa-solid fa-plus" aria-hidden="true" />
+                      Add transaction
+                    </button>
+                  </div>
+                ) : (
+                  transactions.slice(0, 5).map((transaction) => (
+                  <div className="activity-row" key={transaction.id}>
+                    <span
+                      className={`activity-icon activity-icon--${transaction.tone}`}
+                    >
+                      <i
+                        className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+                      />
                     </span>
                     <div>
-                      <strong>{title}</strong>
-                      <small>{detail}</small>
+                      <strong>{transaction.title}</strong>
+                      <small>{transaction.note}</small>
                     </div>
                     <div className="activity-amount">
                       <strong
-                        className={amount.startsWith("+") ? "income" : ""}
+                        className={
+                          transaction.amount.income > 0 ? "income" : "expense"
+                        }
                       >
-                        {amount}
+                        {transaction.amount.expense > 0
+                          ? `-$${transaction.amount.expense.toFixed(2)}`
+                          : `+$${transaction.amount.income.toFixed(2)}`}
                       </strong>
-                      <small>{date}</small>
+                      <small>{dayjs(transaction.date).format("MMM D")}</small>
                     </div>
                   </div>
-                ))}
+                  ))
+                )}
               </div>
             </section>
           </div>

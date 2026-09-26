@@ -4,13 +4,12 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { AddTransaction } from "./components/AddTransaction";
 import { EditTransaction } from "./components/EditTransaction";
-import { useState, type JSX, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import "./App.css";
 
 export interface Transaction {
   readonly id: string;
-  icon: JSX.Element;
   title: string;
   amount: { expense: number; income: number };
   merchant: string | null;

@@ -103,11 +103,6 @@ export function AddTransaction({
 
     const newTransaction: Transaction = {
       id: crypto.randomUUID(),
-      icon: (
-        <i
-          className={`fa-solid ${type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
-        />
-      ),
       title: title,
       merchant: !merchant.trim() ? "Personal" : merchant,
       amount: {

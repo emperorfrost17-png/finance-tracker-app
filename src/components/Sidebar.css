@@ -103,12 +103,16 @@
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.12s ease;
 }
 
 .sidebar__item:hover {
   color: var(--sidebar-ink);
   background: var(--sidebar-teal-light);
+  text-decoration: none;
 }
 
 .sidebar__item:active {
