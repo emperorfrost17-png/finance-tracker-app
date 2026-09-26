@@ -21,6 +21,14 @@ body {
   font-family: var(--font-body);
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 h1,
 h2,
 h3,

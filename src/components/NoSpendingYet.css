@@ -1,0 +1,35 @@
+.no-spending-yet {
+  display: flex;
+  min-height: 190px;
+  padding: 20px 22px 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.no-spending-yet-icon {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 11px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #287366;
+  background: #fff0d2;
+  font-size: 16px;
+}
+
+.no-spending-yet h2 {
+  margin: 0;
+  color: #35504f;
+  font: 700 14px/1.3 var(--font-body);
+}
+
+.no-spending-yet p {
+  max-width: 260px;
+  margin: 6px 0 0;
+  color: #829592;
+  font: 400 11px/1.5 var(--font-body);
+}

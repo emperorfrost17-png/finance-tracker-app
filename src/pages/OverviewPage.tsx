@@ -1,6 +1,8 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import type { Transaction } from "../App";
+import { NoSpendingYet } from "../components/NoSpendingYet";
+import {Link} from "react-router";
 import "./OverviewPage.css";
 
 interface OverviewPageProps {
@@ -37,10 +39,7 @@ export function OverviewPage({
               </h1>
             </div>
             <div className="overview-actions">
-              <button className="month-select" type="button">
-                <span aria-hidden="true">▣</span> September 2026{" "}
-                <span aria-hidden="true">⌄</span>
-              </button>
+              
               <button
                 className="add-button"
                 type="button"
@@ -153,28 +152,56 @@ export function OverviewPage({
                   <span className="panel-kicker">By category</span>
                   <h2>Where it goes</h2>
                 </div>
-                <span className="panel-note">View all</span>
+                <Link to="/transactions" className="panel-note">
+                  View all
+                </Link>
               </div>
               <div className="category-list">
-                {[
-                  ["Housing", "$1,420.00", "teal", "78%"],
-                  ["Food", "$165.72", "gold", "10%"],
-                  ["Shopping", "$128.00", "blue", "7%"],
-                  ["Transport", "$72.00", "coral", "4%"],
-                  ["Wellness", "$38.00", "olive", "3%"],
-                ].map(([name, amount, color, width]) => (
-                  <div className="category-row" key={name}>
-                    <div>
-                      <span className={`category-dot category-dot--${color}`} />
-                      <strong>{name}</strong>
-                      <small>{amount}</small>
-                    </div>
-                    <span
-                      className={`category-bar category-bar--${color}`}
-                      style={{ width }}
-                    />
-                  </div>
-                ))}
+                {totalExpenses === 0 && <NoSpendingYet />}
+
+                {(() => {
+                  // Group expenses by category
+                  const byCategory: Record<
+                    string,
+                    { amount: number; tone: string }
+                  > = {};
+                  transactions
+                    .filter((t) => t.amount.expense > 0)
+                    .forEach((t) => {
+                      if (!byCategory[t.category]) {
+                        byCategory[t.category] = { amount: 0, tone: t.tone };
+                      }
+                      byCategory[t.category].amount += t.amount.expense;
+                    });
+
+                  // Converts your object into an array of [key, value] pairs:
+                  return (
+                    Object.entries(byCategory)
+                      //ignore the key and just sort by the value (total expense) in descending order
+                      .sort(([, a], [, b]) => b.amount - a.amount) // Sort by highest spending
+                      .map(([category, data]) => {
+                        const percentage = (
+                          (data.amount / totalExpenses) *
+                          100
+                        ).toFixed(1);
+                        return (
+                          <div className="category-row" key={category}>
+                            <div>
+                              <span
+                                className={`category-dot category-dot--${data.tone}`}
+                              />
+                              <strong>{category}</strong>
+                              <small>${data.amount.toFixed(2)}</small>
+                            </div>
+                            <span
+                              className={`category-bar category-bar--${data.tone}`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        );
+                      })
+                  );
+                })()}
               </div>
             </section>
           </div>
@@ -186,7 +213,9 @@ export function OverviewPage({
                   <span className="panel-kicker">A gentle check-in</span>
                   <h2>Budget pulse</h2>
                 </div>
+                <Link to="/budget" className="panel-note">
                 <span className="panel-note">Manage</span>
+                </Link>
               </div>
               <div className="budget-list">
                 {[
@@ -219,7 +248,9 @@ export function OverviewPage({
                   <span className="panel-kicker">Latest moves</span>
                   <h2>Recent activity</h2>
                 </div>
+                <Link to="/transactions" className="panel-note">
                 <span className="panel-note">See all</span>
+                </Link>
               </div>
               <div className="activity-list">
                 {[

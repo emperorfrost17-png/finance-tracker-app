@@ -1,5 +1,6 @@
 import "./AddTransaction.css";
 import type { Transaction } from "../App";
+
 import { useNavigate } from "react-router";
 
 import dayjs from "dayjs";
@@ -119,6 +120,8 @@ export function AddTransaction({
       type: type,
       // Assign tone based on category, defaulting to "gray" if not found
       tone: toneByCategory[category] || "blue",
+      createdAt: dayjs().toISOString(),
+      
     };
     setTransactions((prevTransactions) => [
       newTransaction,

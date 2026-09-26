@@ -29,6 +29,7 @@ export interface Transaction {
   date: string;
   tone: string;
   type: "Expense" | "Income";
+  createdAt: string; // ISO string representation of the date and time when the transaction was created
 }
 
 function App() {
