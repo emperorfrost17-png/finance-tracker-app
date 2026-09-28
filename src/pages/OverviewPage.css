@@ -222,34 +222,17 @@
   white-space: nowrap;
 }
 .bar-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 9px;
-  height: 170px;
-  margin: 39px 0 7px;
-  padding: 0 1px;
-  border-bottom: 1px solid #f0ebe1;
-}
-.bar {
-  flex: 1;
-  min-width: 8px;
-  border-radius: 10px 10px 0 0;
-  background: #f7e7c8;
-}
-.bar--recent {
-  background: #f8c45c;
-}
-.chart-axis,
-.chart-legend {
-  display: flex;
-  justify-content: space-between;
-  color: #8ba09d;
-  font: 11px var(--font-body);
+  position: relative;
+  height: 190px;
+  margin: 25px 0 4px;
 }
 .chart-legend {
+  display: flex;
   justify-content: flex-start;
   gap: 12px;
-  margin-top: 14px;
+  color: #8ba09d;
+  font: 11px var(--font-body);
+  margin-top: 8px;
 }
 .chart-legend i {
   display: inline-block;

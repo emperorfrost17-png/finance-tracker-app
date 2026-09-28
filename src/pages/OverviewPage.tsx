@@ -2,6 +2,7 @@ import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import type { Transaction } from "../App";
 import { NoSpendingYet } from "../components/NoSpendingYet";
+import { BarChart } from "../components/BarChart";
 import dayjs from "dayjs";
 import { Link } from "react-router";
 import "./OverviewPage.css";
@@ -102,49 +103,7 @@ export function OverviewPage({
           </section>
 
           <div className="overview-grid overview-grid--top">
-            <section className="dashboard-panel spending-panel">
-              <div className="panel-heading">
-                <div>
-                  <span className="panel-kicker">This month</span>
-                  <h2>Spending rhythm</h2>
-                </div>
-                <span className="panel-note">⌁ 8.4% vs last month</span>
-              </div>
-              <div
-                className="bar-chart"
-                aria-label="Static spending rhythm chart"
-              >
-                {[38, 55, 44, 70, 51, 78, 65, 87, 73, 81, 67, 96].map(
-                  (height, index) => (
-                    <span
-                      className={index > 8 ? "bar bar--recent" : "bar"}
-                      style={{ height: `${height}%` }}
-                      key={index}
-                    />
-                  ),
-                )}
-              </div>
-              <div className="chart-axis">
-                <span>1</span>
-                <span>4</span>
-                <span>7</span>
-                <span>10</span>
-                <span>13</span>
-                <span>16</span>
-                <span>19</span>
-                <span>22</span>
-                <span>25</span>
-                <span>28</span>
-              </div>
-              <div className="chart-legend">
-                <span>
-                  <i /> Daily spending
-                </span>
-                <span>
-                  <i /> Recent days
-                </span>
-              </div>
-            </section>
+            <BarChart transactions={transactions} />
 
             <section className="dashboard-panel category-panel">
               <div className="panel-heading">
@@ -271,31 +230,31 @@ export function OverviewPage({
                   </div>
                 ) : (
                   transactions.slice(0, 5).map((transaction) => (
-                  <div className="activity-row" key={transaction.id}>
-                    <span
-                      className={`activity-icon activity-icon--${transaction.tone}`}
-                    >
-                      <i
-                        className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
-                      />
-                    </span>
-                    <div>
-                      <strong>{transaction.title}</strong>
-                      <small>{transaction.note}</small>
-                    </div>
-                    <div className="activity-amount">
-                      <strong
-                        className={
-                          transaction.amount.income > 0 ? "income" : "expense"
-                        }
+                    <div className="activity-row" key={transaction.id}>
+                      <span
+                        className={`activity-icon activity-icon--${transaction.tone}`}
                       >
-                        {transaction.amount.expense > 0
-                          ? `-$${transaction.amount.expense.toFixed(2)}`
-                          : `+$${transaction.amount.income.toFixed(2)}`}
-                      </strong>
-                      <small>{dayjs(transaction.date).format("MMM D")}</small>
+                        <i
+                          className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+                        />
+                      </span>
+                      <div>
+                        <strong>{transaction.title}</strong>
+                        <small>{transaction.note}</small>
+                      </div>
+                      <div className="activity-amount">
+                        <strong
+                          className={
+                            transaction.amount.income > 0 ? "income" : "expense"
+                          }
+                        >
+                          {transaction.amount.expense > 0
+                            ? `-$${transaction.amount.expense.toFixed(2)}`
+                            : `+$${transaction.amount.income.toFixed(2)}`}
+                        </strong>
+                        <small>{dayjs(transaction.date).format("MMM D")}</small>
+                      </div>
                     </div>
-                  </div>
                   ))
                 )}
               </div>
