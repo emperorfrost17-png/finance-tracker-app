@@ -14,16 +14,16 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
   const daysInMonth = dayjs().daysInMonth();
-  // Generate an array of days for the current month (1 to daysInMonth)
+  //? Generate an array of days for the current month (1 to daysInMonth)
   const days = Array.from({ length: daysInMonth }, (_, i) =>
     (i + 1).toString(),
   );
+  //! Calculate daily spending for each day of the month
+  //! parseInt(day) and .date() is used to convert the day string back to a number for comparison with the transaction date
   const dailySpending = days.map((day) => {
-    return transactions
-      .filter(
-        (t) => dayjs(t.date).date() === parseInt(day) && t.type === "Expense",
-      )
-      .reduce((sum, t) => sum + t.amount.expense, 0);
+    return transactions.filter(
+      (t) => dayjs(t.date).date() === parseInt(day) && t.type === "Expense",
+    ).reduce((sum, t) => sum + t.amount.expense, 0);
   });
   const data = {
     labels: days,
