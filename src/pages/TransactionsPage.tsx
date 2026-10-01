@@ -68,6 +68,9 @@ export function TransactionsPage({
       return typeMatches && categoryMatches && searchMatches;
     });
   };
+  const sortByDateAscending = [...filteredTransactions()].sort((a, b) =>
+  dayjs(a.date).diff(dayjs(b.date)),
+);
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
     setTransactions((currentTransactions: Transaction[]) =>
@@ -85,11 +88,11 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              {filteredTransactions().length === transactions.length ? (
-                <p>{filteredTransactions().length} entries in your space</p>
+              {sortByDateAscending.length === transactions.length ? (
+                <p>{sortByDateAscending.length} entries in your space</p>
               ) : (
                 <p>
-                  {filteredTransactions().length} of {transactions.length}{" "}
+                  {sortByDateAscending.length} of {transactions.length}{" "}
                   entries in your space
                 </p>
               )}
@@ -173,9 +176,9 @@ export function TransactionsPage({
                 </select>
               </div>
             </div>
-            {filteredTransactions().length === 0 && <NothingMatches />}
+            {sortByDateAscending.length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
-              {filteredTransactions().map((transaction) => (
+              {sortByDateAscending.map((transaction) => (
                 <li className="transaction-row" key={transaction.id}>
                   <span
                     className={`transaction-icon transaction-icon--${transaction.tone}`}
