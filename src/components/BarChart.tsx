@@ -23,7 +23,10 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
   const dailySpending = days.map((day) => {
     return transactions
       .filter(
-        (t) => dayjs(t.date).date() === parseInt(day) && t.type === "Expense",
+        (t) =>
+          dayjs(t.date).date() === parseInt(day) &&
+          dayjs(t.date).isSame(dayjs(), "month") &&
+          t.type === "Expense",
       )
       .reduce((sum, t) => sum + t.amount.expense, 0);
   });
