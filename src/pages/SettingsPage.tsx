@@ -37,7 +37,7 @@ export function SettingsPage() {
                   <strong>Currency</strong>
                   <span>Used across balances and budgets</span>
                 </div>
-                  <select className="settings-value settings-select" defaultValue="USD">
+                  <select className="settings-value settings-select" value="USD">
                     <option value="USD">USD — US Dollar</option>
                     <option value="EUR">EUR — Euro</option>
                     <option value="GBP">GBP — Pound Sterling</option>

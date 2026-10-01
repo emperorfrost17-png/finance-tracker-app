@@ -21,10 +21,33 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
   //! Calculate daily spending for each day of the month
   //! parseInt(day) and .date() is used to convert the day string back to a number for comparison with the transaction date
   const dailySpending = days.map((day) => {
-    return transactions.filter(
-      (t) => dayjs(t.date).date() === parseInt(day) && t.type === "Expense",
-    ).reduce((sum, t) => sum + t.amount.expense, 0);
+    return transactions
+      .filter(
+        (t) => dayjs(t.date).date() === parseInt(day) && t.type === "Expense",
+      )
+      .reduce((sum, t) => sum + t.amount.expense, 0);
   });
+  const currentMonthTotalSpending = transactions
+    .filter(
+      (t) => dayjs(t.date).isSame(dayjs(), "month") && t.type === "Expense",
+    )
+    .reduce((sum, t) => sum + t.amount.expense, 0);
+
+  const lastMonth = dayjs().subtract(1, "month");
+
+  const lastMonthTotalSpending = transactions
+    .filter(
+      (t) => dayjs(t.date).isSame(lastMonth, "month") && t.type === "Expense",
+    )
+    .reduce((sum, t) => sum + t.amount.expense, 0);
+  const spendingChangePercentage =
+    lastMonthTotalSpending === 0
+      ? 0
+      : ((currentMonthTotalSpending - lastMonthTotalSpending) /
+          lastMonthTotalSpending) *
+        100;
+  const isIncrease = spendingChangePercentage > 0;
+
   const data = {
     labels: days,
     datasets: [
@@ -88,7 +111,16 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
           <h2>Spending rhythm</h2>
         </div>
         <span className="panel-note">
-          <span aria-hidden="true">&#8599;</span> 8.4% vs last month
+          <span aria-hidden="true">
+            <i
+              className={
+                isIncrease
+                  ? "fa-solid fa-arrow-trend-up"
+                  : "fa-solid fa-arrow-trend-down"
+              }
+            ></i>
+          </span>{" "}
+          {Math.abs(spendingChangePercentage).toFixed(1)}% vs last month
         </span>
       </div>
       <div

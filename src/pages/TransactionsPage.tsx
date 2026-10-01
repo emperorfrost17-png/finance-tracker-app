@@ -136,7 +136,7 @@ export function TransactionsPage({
                 </span>
                 <select
                   className="transaction-filter-select"
-                  defaultValue="All types"
+                  
                   aria-label="Filter by type"
                   id="all-types"
                   value={typeFilter}
@@ -154,7 +154,6 @@ export function TransactionsPage({
                 </span>
                 <select
                   className="transaction-filter-select"
-                  defaultValue="All categories"
                   aria-label="Filter by category"
                   id="all-categories"
                   value={categoryFilter}
