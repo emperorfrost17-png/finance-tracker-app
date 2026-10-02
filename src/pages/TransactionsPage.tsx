@@ -2,7 +2,6 @@ import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import { NothingMatches } from "../components/NothingMatches";
 import type { Transaction } from "../App";
-import { useState } from "react";
 import dayjs from "dayjs";
 import "./TransactionsPage.css";
 
@@ -16,6 +15,13 @@ interface TransactionsPageProps {
   ) => void;
   setShowDeleteTaskNotification: (showDeleteTaskNotification: boolean) => void;
   handleEditTransaction: (transaction: Transaction) => void;
+  typeFilter: "All types" | "Expense" | "Income";
+  categoryFilter: string;
+  searchQuery: string;
+  setTypeFilter: (typeFilter: "All types" | "Expense" | "Income") => void;
+  setCategoryFilter: (categoryFilter: string) => void;
+  setSearchQuery: (searchQuery: string) => void;
+  sortByDateAscending: Transaction[];
 }
 export function TransactionsPage({
   transactions,
@@ -23,13 +29,15 @@ export function TransactionsPage({
   setIsAddTransactionOpen,
   handleEditTransaction,
   setShowDeleteTaskNotification,
+  typeFilter,
+  categoryFilter,
+  searchQuery,
+  setTypeFilter,
+  setCategoryFilter,
+  setSearchQuery,
+  sortByDateAscending,
 }: TransactionsPageProps) {
-  const [typeFilter, setTypeFilter] = useState<
-    "All types" | "Expense" | "Income"
-  >("All types");
-  const [categoryFilter, setCategoryFilter] = useState("All categories");
-  const [searchQuery, setSearchQuery] = useState("");
-
+  
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -47,30 +55,7 @@ export function TransactionsPage({
     setCategoryFilter(event.target.value);
   };
   // Keep transactions that match the selected type and category filters.
-  const filteredTransactions = () => {
-    return transactions.filter((transaction) => {
-      const typeMatches =
-        typeFilter === "All types" || transaction.type === typeFilter;
-
-      const categoryMatches =
-        categoryFilter === "All categories" ||
-        transaction.category === categoryFilter;
-      const searchMatches =
-        transaction.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        transaction.category
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        (transaction.merchant &&
-          transaction.merchant
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()));
-
-      return typeMatches && categoryMatches && searchMatches;
-    });
-  };
-  const sortByDateAscending = [...filteredTransactions()].sort((a, b) =>
-  dayjs(a.date).diff(dayjs(b.date)),
-);
+  
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
     setTransactions((currentTransactions: Transaction[]) =>

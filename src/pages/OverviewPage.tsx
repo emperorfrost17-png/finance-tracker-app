@@ -10,10 +10,12 @@ import "./OverviewPage.css";
 interface OverviewPageProps {
   transactions: Transaction[];
   setIsAddTransactionOpen: (isOpen: boolean) => void;
+  sortByDateAscending: Transaction[];
 }
 export function OverviewPage({
   transactions,
   setIsAddTransactionOpen,
+  sortByDateAscending,
 }: OverviewPageProps) {
   let availableBalance = 0;
   let totalIncome = 0;
@@ -61,7 +63,7 @@ export function OverviewPage({
                   : `${availableBalance.toFixed(2)}`}
               </strong>
               <p>
-                <span className="status-pill">On track</span> for your september
+                <span className="status-pill">On track</span> for your {dayjs().format("MMMM")} budget
               </p>
             </div>
             <div className="balance-stats">
@@ -229,7 +231,7 @@ export function OverviewPage({
                     </button>
                   </div>
                 ) : (
-                  transactions.slice(0, 5).map((transaction) => (
+                  sortByDateAscending.slice(0, 5).map((transaction) => (
                     <div className="activity-row" key={transaction.id}>
                       <span
                         className={`activity-icon activity-icon--${transaction.tone}`}

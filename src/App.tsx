@@ -6,6 +6,7 @@ import { AddTransaction } from "./components/AddTransaction";
 import { EditTransaction } from "./components/EditTransaction";
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
+import dayjs from "dayjs";
 import "./App.css";
 
 export interface Transaction {
@@ -49,11 +50,40 @@ function App() {
     useState(false);
   const [showDeleteTaskNotification, setShowDeleteTaskNotification] =
     useState(false);
+  const [typeFilter, setTypeFilter] = useState<
+    "All types" | "Expense" | "Income"
+  >("All types");
+  const [categoryFilter, setCategoryFilter] = useState("All categories");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
     setIsEditTransactionOpen(true);
   };
+  const filteredTransactions = () => {
+    return transactions.filter((transaction) => {
+      const typeMatches =
+        typeFilter === "All types" || transaction.type === typeFilter;
+
+      const categoryMatches =
+        categoryFilter === "All categories" ||
+        transaction.category === categoryFilter;
+      const searchMatches =
+        transaction.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.category
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        (transaction.merchant &&
+          transaction.merchant
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()));
+
+      return typeMatches && categoryMatches && searchMatches;
+    });
+  };
+  const sortByDateAscending = [...filteredTransactions()].sort((a, b) =>
+    dayjs(a.date).diff(dayjs(b.date)),
+  );
   useEffect(() => {
     const isActive =
       showAddedTaskNotification ||
@@ -95,17 +125,30 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<OverviewPage transactions={transactions} setIsAddTransactionOpen={setIsAddTransactionOpen} />}
+          element={
+            <OverviewPage
+            transactions={transactions}
+            sortByDateAscending={sortByDateAscending}
+              setIsAddTransactionOpen={setIsAddTransactionOpen}
+            />
+          }
         />
         <Route
           path="/transactions"
           element={
             <TransactionsPage
-              transactions={transactions}
+            transactions={transactions}
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
               setShowDeleteTaskNotification={setShowDeleteTaskNotification}
+              sortByDateAscending={sortByDateAscending}
+              typeFilter={typeFilter}
+              categoryFilter={categoryFilter}
+              searchQuery={searchQuery}
+              setTypeFilter={setTypeFilter}
+              setCategoryFilter={setCategoryFilter}
+              setSearchQuery={setSearchQuery}
             />
           }
         />
