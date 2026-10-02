@@ -1,18 +1,17 @@
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import type { Transaction } from "../App";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./BudgetPage.css";
 
 interface Budget {
   id: string;
   name: string;
   icon: string;
-  spent: string;
   limit: number;
   remaining: string;
   tone: string;
-};
+}
 
 export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
   const handleBudgetLimitChange = (
@@ -21,10 +20,12 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
   ) => {
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
-        budget.id === budgetId ? { ...budget, limit: parseFloat(event.target.value) } : budget
-      )
+        budget.id === budgetId
+          ? { ...budget, limit: parseFloat(event.target.value) }
+          : budget,
+      ),
     );
-    
+
     // Here you can also update the budget limit in your state or context if needed
   };
   const [budgets, setBudgets] = useState<Budget[]>([
@@ -32,8 +33,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       id: crypto.randomUUID(),
       name: "Housing",
       icon: "◎",
-      spent: "$1,420.00",
-      limit:  2000,
+      limit: 2000,
       remaining: "100% of room left",
       tone: "coral",
     },
@@ -41,7 +41,6 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       id: crypto.randomUUID(),
       name: "Food",
       icon: "▣",
-      spent: "$165.72",
       limit: 540,
       remaining: "100% of room left",
       tone: "gold",
@@ -50,52 +49,39 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       id: crypto.randomUUID(),
       name: "Transportation",
       icon: "✦",
-      spent: "$72.00",
       limit: 180,
       remaining: "100% of room left",
       tone: "coral",
     },
-    {
-      id: crypto.randomUUID(),
-      name: "Shopping",
-      icon: "●",
-      spent: "$128.00",
-      limit: 300,
-      remaining: "100% of room left",
-      tone: "blue",
-    },
+
     {
       id: crypto.randomUUID(),
       name: "Personal Spending",
       icon: "●",
-      spent: "$128.00",
       limit: 300,
       remaining: "100% of room left",
       tone: "blue",
     },
     {
-       id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       name: "Savings & Investments",
       icon: "●",
-      spent: "$128.00",
       limit: 300,
       remaining: "100% of room left",
       tone: "blue",
     },
     {
-       id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       name: "Healthcare",
       icon: "●",
-      spent: "$128.00",
       limit: 300,
       remaining: "100% of room left",
       tone: "blue",
     },
     {
-       id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       name: "Other",
       icon: "●",
-      spent: "$128.00",
       limit: 300,
       remaining: "100% of room left",
       tone: "blue",
@@ -104,7 +90,6 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       id: crypto.randomUUID(),
       name: "Wellness",
       icon: "✦",
-      spent: "$38.00",
       limit: 160,
       remaining: "100% of room left",
       tone: "olive",
@@ -113,23 +98,26 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       id: crypto.randomUUID(),
       name: "Entertainment",
       icon: "●",
-      spent: "$19.99",
       limit: 100,
       remaining: "100% of room left",
       tone: "plum",
     },
   ]);
 
-  
-
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,
     0,
   );
+
+  const spentBudgetForMonth = transactions
+    .filter((transaction) => transaction.type === "Expense")
+    .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
+    useEffect(() => {
+  localStorage.setItem("budgets", JSON.stringify(budgets));
+}, [budgets]);
+
   return (
-    
     <main className="App budgets-page">
-      
       <Sidebar />
 
       <section className="main-content">
@@ -154,7 +142,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
             <div className="summary-card">
               <i>▣</i>
               <span>Spent so far</span>
-              <strong>$2K</strong>
+              <strong>${spentBudgetForMonth.toFixed(2)}</strong>
             </div>
             <div className="summary-card">
               <i>✦</i>
@@ -164,38 +152,54 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
           </section>
 
           <section className="budget-grid">
-            {budgets.map((budget) => (
-              <article className="budget-card" key={budget.id}>
-                <div className="budget-card__heading">
-                  <div>
-                    <i className={`budget-dot budget-dot--${budget.tone}`}>
-                      {budget.icon}
-                    </i>
-                    <h3>{budget.name}</h3>
+            {budgets.map((budget) => {
+              const spent = transactions
+                .filter(
+                  (transaction) =>
+                    transaction.category === budget.name &&
+                    transaction.type === "Expense",
+                )
+                .reduce(
+                  (total, transaction) => total + transaction.amount.expense,
+                  0,
+                );
+
+              return (
+                <article className="budget-card" key={budget.id}>
+                  <div className="budget-card__heading">
+                    <div>
+                      <i className={`budget-dot budget-dot--${budget.tone}`}>
+                        {budget.icon}
+                      </i>
+                      <h3>{budget.name}</h3>
+                    </div>
+                    <span className="budget-limit">
+                      USD
+                      <input
+                        type="number"
+                        min={0}
+                        step="0.5"
+                        value={budget.limit}
+                        onChange={(event) =>
+                          handleBudgetLimitChange(budget.id, event)
+                        }
+                        aria-label={`${budget.name} budget limit`}
+                      />
+                      <i className="fa-solid fa-pen" aria-hidden="true"></i>
+                    </span>
                   </div>
-                  <span className="budget-limit">
-                    USD
-                    <input
-                      type="number"
-                      min={0}
-                      step="0.5"
-                      value={ budget.limit}
-                      onChange={(event) => handleBudgetLimitChange(budget.id, event)}
-                      aria-label={`${budget.name} budget limit`}
-                    />
-                  </span>
-                </div>
-                <p>{budget.remaining}</p>
-                <strong className="budget-amount">{budget.spent}</strong>
-                <div className="budget-card__meta">
-                  <span>of ${budget.limit.toFixed(2)} used</span>
-                  <b className="budget-percent">0%</b>
-                </div>
-                <div className="budget-progress">
-                  <i className="budget-progress__fill" />
-                </div>
-              </article>
-            ))}
+                  <p>{budget.remaining}</p>
+                  <strong className="budget-amount">${spent.toFixed(2)}</strong>
+                  <div className="budget-card__meta">
+                    <span>of ${budget.limit.toFixed(2)} used</span>
+                    <b className="budget-percent">0%</b>
+                  </div>
+                  <div className="budget-progress">
+                    <i className="budget-progress__fill" />
+                  </div>
+                </article>
+              );
+            })}
           </section>
         </div>
       </section>

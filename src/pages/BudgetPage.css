@@ -150,6 +150,11 @@
   outline: 1px solid #2d7b70;
   outline-offset: 2px;
 }
+.budget-limit .fa-pen {
+  flex: 0 0 auto;
+  color: #78908b;
+  font-size: 10px;
+}
 .budget-limit input::-webkit-inner-spin-button,
 .budget-limit input::-webkit-outer-spin-button {
   margin: 0;
