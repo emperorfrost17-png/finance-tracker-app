@@ -153,7 +153,7 @@ function App() {
           }
         />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/budget" element={<BudgetPage />} />
+        <Route path="/budget" element={<BudgetPage transactions={transactions} />} />
       </Routes>
       {showAddedTaskNotification && (
         <div className="notification" role="status" aria-live="polite">
