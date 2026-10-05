@@ -12,97 +12,39 @@ interface Budget {
   remaining: string;
   tone: string;
 }
+interface BudgetPageProps {
+  transactions: Transaction[];
+}
 
-export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
-  const handleBudgetLimitChange = (
-    budgetId: string,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+export function BudgetPage({ transactions }: BudgetPageProps) {
+  const handleBudgetLimitChange = (budgetId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const newLimit = parseFloat(event.target.value);
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
         budget.id === budgetId
-          ? { ...budget, limit: parseFloat(event.target.value) }
+          ? { ...budget, limit: newLimit }
           : budget,
       ),
     );
-
-    // Here you can also update the budget limit in your state or context if needed
   };
-  const [budgets, setBudgets] = useState<Budget[]>([
-    {
-      id: crypto.randomUUID(),
-      name: "Housing",
-      icon: "◎",
-      limit: 2000,
-      remaining: "100% of room left",
-      tone: "coral",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Food",
-      icon: "▣",
-      limit: 540,
-      remaining: "100% of room left",
-      tone: "gold",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Transportation",
-      icon: "✦",
-      limit: 180,
-      remaining: "100% of room left",
-      tone: "coral",
-    },
 
-    {
-      id: crypto.randomUUID(),
-      name: "Personal Spending",
-      icon: "●",
-      limit: 300,
-      remaining: "100% of room left",
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Savings & Investments",
-      icon: "●",
-      limit: 300,
-      remaining: "100% of room left",
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Healthcare",
-      icon: "●",
-      limit: 300,
-      remaining: "100% of room left",
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Other",
-      icon: "●",
-      limit: 300,
-      remaining: "100% of room left",
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Wellness",
-      icon: "✦",
-      limit: 160,
-      remaining: "100% of room left",
-      tone: "olive",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Entertainment",
-      icon: "●",
-      limit: 100,
-      remaining: "100% of room left",
-      tone: "plum",
-    },
-  ]);
+  const [budgets, setBudgets] = useState<Budget[]>(() => {
+    try {
+      const savedBudgets = localStorage.getItem("budgets");
+      if (savedBudgets) {
+        return JSON.parse(savedBudgets) as Budget[];
+      }
+    } catch (error) {
+      console.error("Failed to load saved budgets.", error);
+      return [];
+    }
+
+    
+  });
+
+  useEffect(() => {
+    localStorage.setItem("budgets", JSON.stringify(budgets));
+  }, [budgets]);
 
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,
@@ -112,9 +54,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
   const spentBudgetForMonth = transactions
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
-    useEffect(() => {
-  localStorage.setItem("budgets", JSON.stringify(budgets));
-}, [budgets]);
+   
 
   return (
     <main className="App budgets-page">
