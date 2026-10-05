@@ -112,8 +112,19 @@
 }
 
 .transaction-input {
+  border-color: #dfe2dd;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.transaction-note {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.transaction-input:focus,
+.transaction-note:focus {
   border-color: #81b6a1;
-  box-shadow: inset 0 0 0 1px rgba(73, 143, 110, 0.04);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(73, 143, 110, 0.2);
 }
 
 .transaction-input::placeholder,

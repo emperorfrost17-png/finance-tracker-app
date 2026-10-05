@@ -134,7 +134,7 @@ export function AddTransaction({
         aria-modal="true"
         aria-labelledby="add-transaction-title"
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="transaction-modal-header">
             <p className="transaction-modal-eyebrow">New entry</p>
             <button

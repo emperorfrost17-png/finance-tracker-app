@@ -122,7 +122,7 @@ export function EditTransaction({
         aria-modal="true"
         aria-labelledby="add-transaction-title"
       >
-        <form onSubmit={handleSaveChanges}>
+        <form onSubmit={handleSaveChanges} autoComplete="off">
           <div className="transaction-modal-header">
             <p className="transaction-modal-eyebrow">Edit entry</p>
             <button

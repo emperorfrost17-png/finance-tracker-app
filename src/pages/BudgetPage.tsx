@@ -130,6 +130,19 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
    
+  const remainingPercent = (budget: Budget) => {
+    const spent = transactions
+      .filter((transaction) => transaction.category === budget.name && transaction.type === "Expense")
+      .reduce((total, transaction) => total + transaction.amount.expense, 0);
+    const remaining = budget.limit - spent;
+    return (remaining / budget.limit) * 100;
+  }
+  const percentUsed = (budget: Budget) => {
+    const spent = transactions
+      .filter((transaction) => transaction.category === budget.name && transaction.type === "Expense")
+      .reduce((total, transaction) => total + transaction.amount.expense, 0);
+    return (spent / budget.limit) * 100;
+  }
 
   return (
     <main className="App budgets-page">
@@ -203,11 +216,11 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                       <i className="fa-solid fa-pen" aria-hidden="true"></i>
                     </span>
                   </div>
-                  <p>{budget.remaining} % of room left</p>
+                  <p>{remainingPercent(budget).toFixed(1)} % of room left</p>
                   <strong className="budget-amount">${spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
                     <span>of ${budget.limit.toFixed(2)} used</span>
-                    <b className="budget-percent">0%</b>
+                    <b className="budget-percent">{percentUsed(budget).toFixed(1)}%</b>
                   </div>
                   <div className="budget-progress">
                     <i className="budget-progress__fill" />
