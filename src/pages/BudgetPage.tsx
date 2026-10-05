@@ -12,18 +12,47 @@ interface Budget {
   remaining: string;
   tone: string;
 }
+
 interface BudgetPageProps {
   transactions: Transaction[];
 }
 
 export function BudgetPage({ transactions }: BudgetPageProps) {
-  const handleBudgetLimitChange = (budgetId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const createDefaultBudgets = (): Budget[] => [
+    {
+      id: "1",
+      name: "Food",
+      icon: "🍔",
+      limit: 500,
+      remaining: "Remaining",
+      tone: "blue",
+    },
+    {
+      id: "2",
+      name: "Transportation",
+      icon: "🚗",
+      limit: 300,
+      remaining: "Remaining",
+      tone: "green",
+    },
+    {
+      id: "3",
+      name: "Entertainment",
+      icon: "🎬",
+      limit: 200,
+      remaining: "Remaining",
+      tone: "purple",
+    },
+  ];
+
+  const handleBudgetLimitChange = (
+    budgetId: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const newLimit = parseFloat(event.target.value);
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
-        budget.id === budgetId
-          ? { ...budget, limit: newLimit }
-          : budget,
+        budget.id === budgetId ? { ...budget, limit: newLimit } : budget,
       ),
     );
   };
@@ -36,10 +65,9 @@ export function BudgetPage({ transactions }: BudgetPageProps) {
       }
     } catch (error) {
       console.error("Failed to load saved budgets.", error);
-      return [];
+      return createDefaultBudgets();
     }
-
-    
+    return createDefaultBudgets();
   });
 
   useEffect(() => {
@@ -54,7 +82,6 @@ export function BudgetPage({ transactions }: BudgetPageProps) {
   const spentBudgetForMonth = transactions
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
-   
 
   return (
     <main className="App budgets-page">
