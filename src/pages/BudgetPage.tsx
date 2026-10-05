@@ -9,7 +9,7 @@ interface Budget {
   name: string;
   icon: string;
   limit: number;
-  remaining: string;
+  remaining: number;
   tone: string;
 }
 
@@ -21,7 +21,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Housing",
       icon: "◎",
       limit: 2000,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "coral",
     },
     {
@@ -29,7 +29,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Food",
       icon: "▣",
       limit: 540,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "gold",
     },
     {
@@ -37,7 +37,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Transportation",
       icon: "✦",
       limit: 180,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "coral",
     },
 
@@ -46,7 +46,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Personal Spending",
       icon: "●",
       limit: 300,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "blue",
     },
     {
@@ -54,7 +54,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Savings & Investments",
       icon: "●",
       limit: 300,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "blue",
     },
     {
@@ -62,7 +62,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Healthcare",
       icon: "●",
       limit: 300,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "blue",
     },
     {
@@ -70,7 +70,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Other",
       icon: "●",
       limit: 300,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "blue",
     },
     {
@@ -78,7 +78,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Wellness",
       icon: "✦",
       limit: 160,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "olive",
     },
     {
@@ -86,7 +86,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       name: "Entertainment",
       icon: "●",
       limit: 100,
-      remaining: "100% of room left",
+      remaining: 100,
       tone: "plum",
     },
     ];
@@ -203,7 +203,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                       <i className="fa-solid fa-pen" aria-hidden="true"></i>
                     </span>
                   </div>
-                  <p>{budget.remaining}</p>
+                  <p>{budget.remaining} % of room left</p>
                   <strong className="budget-amount">${spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
                     <span>of ${budget.limit.toFixed(2)} used</span>
