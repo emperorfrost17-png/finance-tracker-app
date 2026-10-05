@@ -214,7 +214,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                   <strong className="budget-amount">${spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
                     <span>of ${budget.limit.toFixed(2)} used</span>
-                    <b className="budget-percent">{usedPercent > 100 ? 100 : usedPercent.toFixed(1)}%</b>
+                    <b className="budget-percent">{progressPercent.toFixed(1)}%</b>
                   </div>
                   <div
                     className="budget-progress"
