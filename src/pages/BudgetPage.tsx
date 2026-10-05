@@ -13,46 +13,92 @@ interface Budget {
   tone: string;
 }
 
-interface BudgetPageProps {
-  transactions: Transaction[];
-}
-
-export function BudgetPage({ transactions }: BudgetPageProps) {
-  const createDefaultBudgets = (): Budget[] => [
+export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
+  const createdDefaultBudgets = () => {
+    return [
     {
-      id: "1",
+      id: crypto.randomUUID(),
+      name: "Housing",
+      icon: "◎",
+      limit: 2000,
+      remaining: "100% of room left",
+      tone: "coral",
+    },
+    {
+      id: crypto.randomUUID(),
       name: "Food",
-      icon: "🍔",
-      limit: 500,
-      remaining: "Remaining",
+      icon: "▣",
+      limit: 540,
+      remaining: "100% of room left",
+      tone: "gold",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "Transportation",
+      icon: "✦",
+      limit: 180,
+      remaining: "100% of room left",
+      tone: "coral",
+    },
+
+    {
+      id: crypto.randomUUID(),
+      name: "Personal Spending",
+      icon: "●",
+      limit: 300,
+      remaining: "100% of room left",
       tone: "blue",
     },
     {
-      id: "2",
-      name: "Transportation",
-      icon: "🚗",
+      id: crypto.randomUUID(),
+      name: "Savings & Investments",
+      icon: "●",
       limit: 300,
-      remaining: "Remaining",
-      tone: "green",
+      remaining: "100% of room left",
+      tone: "blue",
     },
     {
-      id: "3",
-      name: "Entertainment",
-      icon: "🎬",
-      limit: 200,
-      remaining: "Remaining",
-      tone: "purple",
+      id: crypto.randomUUID(),
+      name: "Healthcare",
+      icon: "●",
+      limit: 300,
+      remaining: "100% of room left",
+      tone: "blue",
     },
-  ];
+    {
+      id: crypto.randomUUID(),
+      name: "Other",
+      icon: "●",
+      limit: 300,
+      remaining: "100% of room left",
+      tone: "blue",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "Wellness",
+      icon: "✦",
+      limit: 160,
+      remaining: "100% of room left",
+      tone: "olive",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "Entertainment",
+      icon: "●",
+      limit: 100,
+      remaining: "100% of room left",
+      tone: "plum",
+    },
+    ];
+  };
 
-  const handleBudgetLimitChange = (
-    budgetId: string,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleBudgetLimitChange = (budgetId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const newLimit = parseFloat(event.target.value);
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
-        budget.id === budgetId ? { ...budget, limit: newLimit } : budget,
+        budget.id === budgetId
+          ? { ...budget, limit: newLimit }
+          : budget,
       ),
     );
   };
@@ -65,9 +111,10 @@ export function BudgetPage({ transactions }: BudgetPageProps) {
       }
     } catch (error) {
       console.error("Failed to load saved budgets.", error);
-      return createDefaultBudgets();
+      return createdDefaultBudgets();
     }
-    return createDefaultBudgets();
+
+    return createdDefaultBudgets();
   });
 
   useEffect(() => {
@@ -82,6 +129,7 @@ export function BudgetPage({ transactions }: BudgetPageProps) {
   const spentBudgetForMonth = transactions
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
+   
 
   return (
     <main className="App budgets-page">
