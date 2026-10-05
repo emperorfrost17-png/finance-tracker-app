@@ -202,13 +202,23 @@
   color: #3d796e;
 }
 .budget-progress {
-  height: 9px;
+  height: 7px;
+  overflow: hidden;
   margin-top: 13px;
-  border-radius: 5px;
+  border-radius: 999px;
   background: #eeeae1;
 }
 .budget-progress__fill {
-  display: none;
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #3d796e;
+  transition: width 240ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .budget-progress__fill {
+    transition: none;
+  }
 }
 @media (max-width: 760px) {
   .budgets-content {

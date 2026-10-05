@@ -130,20 +130,6 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
    
-  const remainingPercent = (budget: Budget) => {
-    const spent = transactions
-      .filter((transaction) => transaction.category === budget.name && transaction.type === "Expense")
-      .reduce((total, transaction) => total + transaction.amount.expense, 0);
-    const remaining = budget.limit - spent;
-    return (remaining / budget.limit) * 100;
-  }
-  const percentUsed = (budget: Budget) => {
-    const spent = transactions
-      .filter((transaction) => transaction.category === budget.name && transaction.type === "Expense")
-      .reduce((total, transaction) => total + transaction.amount.expense, 0);
-    return (spent / budget.limit) * 100;
-  }
-
   return (
     <main className="App budgets-page">
       <Sidebar />
@@ -191,6 +177,14 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                   (total, transaction) => total + transaction.amount.expense,
                   0,
                 );
+              const usedPercent =
+                budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
+              const remainingPercent = 100 - usedPercent < 0 ? 0 : 100 - usedPercent;
+              const progressPercent = Math.min(
+                // this ensures that the progress bar does not go below 0% or above 100%
+                Math.max(usedPercent, 0),
+                100,
+              );
 
               return (
                 <article className="budget-card" key={budget.id}>
@@ -216,14 +210,24 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                       <i className="fa-solid fa-pen" aria-hidden="true"></i>
                     </span>
                   </div>
-                  <p>{remainingPercent(budget).toFixed(1)} % of room left</p>
+                  <p>{remainingPercent.toFixed(1)} % of room left</p>
                   <strong className="budget-amount">${spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
                     <span>of ${budget.limit.toFixed(2)} used</span>
-                    <b className="budget-percent">{percentUsed(budget).toFixed(1)}%</b>
+                    <b className="budget-percent">{usedPercent > 100 ? 100 : usedPercent.toFixed(1)}%</b>
                   </div>
-                  <div className="budget-progress">
-                    <i className="budget-progress__fill" />
+                  <div
+                    className="budget-progress"
+                    role="progressbar"
+                    aria-label={`${budget.name} budget used`}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={progressPercent}
+                  >
+                    <i
+                      className="budget-progress__fill"
+                      style={{ width: `${progressPercent}%` }}
+                    />
                   </div>
                 </article>
               );
