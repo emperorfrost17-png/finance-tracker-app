@@ -16,89 +16,90 @@ interface Budget {
 export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
   const createdDefaultBudgets = () => {
     return [
-    {
-      id: crypto.randomUUID(),
-      name: "Housing",
-      icon: "◎",
-      limit: 2000,
-      remaining: 100,
-      tone: "coral",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Food",
-      icon: "▣",
-      limit: 540,
-      remaining: 100,
-      tone: "gold",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Transportation",
-      icon: "✦",
-      limit: 180,
-      remaining: 100,
-      tone: "coral",
-    },
+      {
+        id: crypto.randomUUID(),
+        name: "Housing",
+        icon: "◎",
+        limit: 2000,
+        remaining: 100,
+        tone: "coral",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Food",
+        icon: "▣",
+        limit: 540,
+        remaining: 100,
+        tone: "gold",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Transportation",
+        icon: "✦",
+        limit: 180,
+        remaining: 100,
+        tone: "coral",
+      },
 
-    {
-      id: crypto.randomUUID(),
-      name: "Personal Spending",
-      icon: "●",
-      limit: 300,
-      remaining: 100,
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Savings & Investments",
-      icon: "●",
-      limit: 300,
-      remaining: 100,
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Healthcare",
-      icon: "●",
-      limit: 300,
-      remaining: 100,
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Other",
-      icon: "●",
-      limit: 300,
-      remaining: 100,
-      tone: "blue",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Wellness",
-      icon: "✦",
-      limit: 160,
-      remaining: 100,
-      tone: "olive",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Entertainment",
-      icon: "●",
-      limit: 100,
-      remaining: 100,
-      tone: "plum",
-    },
+      {
+        id: crypto.randomUUID(),
+        name: "Personal Spending",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Savings & Investments",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Healthcare",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Other",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Wellness",
+        icon: "✦",
+        limit: 160,
+        remaining: 100,
+        tone: "olive",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Entertainment",
+        icon: "●",
+        limit: 100,
+        remaining: 100,
+        tone: "plum",
+      },
     ];
   };
 
-  const handleBudgetLimitChange = (budgetId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBudgetLimitChange = (
+    budgetId: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const newLimit = parseFloat(event.target.value);
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
-        budget.id === budgetId
-          ? { ...budget, limit: newLimit }
-          : budget,
+        budget.id === budgetId ? { ...budget, limit: newLimit } : budget,
       ),
     );
   };
@@ -129,7 +130,19 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
   const spentBudgetForMonth = transactions
     .filter((transaction) => transaction.type === "Expense")
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
-   
+  const toneByCategory: Record<string, string> = {
+    Housing: "#75a1ae",
+    Transportation: "#75a1ae",
+    Food: "#d97b5e",
+    Wellness: "#a5ae79",
+    Salary: "#5f9b8e",
+    Healthcare: "#bd92a2",
+    "Savings & Investments": "#d79c57",
+    "Personal Spending": "#8299c4",
+    Entertainment: "#d97b5e",
+    Other: "#75a1ae",
+  };
+
   return (
     <main className="App budgets-page">
       <Sidebar />
@@ -179,7 +192,8 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                 );
               const usedPercent =
                 budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
-              const remainingPercent = 100 - usedPercent < 0 ? 0 : 100 - usedPercent;
+              const remainingPercent =
+                100 - usedPercent < 0 ? 0 : 100 - usedPercent;
               const progressPercent = Math.min(
                 // this ensures that the progress bar does not go below 0% or above 100%
                 Math.max(usedPercent, 0),
@@ -214,7 +228,9 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                   <strong className="budget-amount">${spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
                     <span>of ${budget.limit.toFixed(2)} used</span>
-                    <b className="budget-percent">{progressPercent.toFixed(1)}%</b>
+                    <b className="budget-percent">
+                      {progressPercent.toFixed(1)}%
+                    </b>
                   </div>
                   <div
                     className="budget-progress"
@@ -226,7 +242,10 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                   >
                     <i
                       className="budget-progress__fill"
-                      style={{ width: `${progressPercent}%` }}
+                      style={{
+                        width: `${progressPercent}%`,
+                        backgroundColor: toneByCategory[budget.name] ?? "#75a1ae",
+                      }}
                     />
                   </div>
                 </article>
