@@ -115,6 +115,7 @@ export function TransactionsPage({
                   aria-label="Search transactions"
                   value={searchQuery}
                   onChange={handleSearchQueryChange}
+                  autoComplete="off"
                 />
               </label>
 

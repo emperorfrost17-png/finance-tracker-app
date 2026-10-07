@@ -13,6 +13,7 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
+  const currentDay = dayjs().date();
   const daysInMonth = dayjs().daysInMonth();
   //? Generate an array of days for the current month (1 to daysInMonth)
   const days = Array.from({ length: daysInMonth }, (_, i) =>
@@ -58,7 +59,10 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
         label: "Daily spending",
         data: dailySpending,
         backgroundColor: days.map((_, index) =>
-          index >= 23 ? "#f8c45c" : "#f7e7c8",
+          // Highlight the last 7 days of the month with a different color
+          index >= Math.max(0, currentDay - 7) && index < currentDay
+            ? "#f8c45c"
+            : "#f7e7c8",
         ),
         borderRadius: { topLeft: 10, topRight: 10 },
         borderSkipped: "bottom" as const,
@@ -82,6 +86,8 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
         titleFont: { family: "DM Sans", size: 11 },
         bodyFont: { family: "DM Sans", size: 12, weight: "bold" },
         callbacks: {
+          title: (items) =>
+            dayjs().date(Number(items[0].label)).format("MMM D"),
           label: (context) => `$${(context.parsed.y ?? 0).toFixed(2)}`,
         },
       },
@@ -91,10 +97,12 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
         grid: { display: false },
         border: { color: "#f0ebe1" },
         ticks: {
+          autoSkip: false,
           color: "#8ba09d",
-          font: { family: "DM Sans", size: 8 },
+          font: { family: "DM Sans", size: 10 },
           padding: 8,
           maxRotation: 0,
+          callback: (_, i) => ((i + 1) % 5 === 0 || i === 0 ? i + 1 : ""),
         },
       },
       y: {

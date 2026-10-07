@@ -30,14 +30,14 @@ export function SettingsPage() {
                   <strong>Your name</strong>
                   <span>Used in your welcome message</span>
                 </div>
-                <div className="settings-value">Maya</div>
+                <div className="settings-value">Nathan</div>
               </div>
               <div className="settings-field">
                 <div>
                   <strong>Currency</strong>
                   <span>Used across balances and budgets</span>
                 </div>
-                  <select className="settings-value settings-select" value="USD">
+                  <select className="settings-value settings-select" aria-label="Select currency">
                     <option value="USD">USD — US Dollar</option>
                     <option value="EUR">EUR — Euro</option>
                     <option value="GBP">GBP — Pound Sterling</option>
