@@ -22,6 +22,8 @@ interface TransactionsPageProps {
   setCategoryFilter: (categoryFilter: string) => void;
   setSearchQuery: (searchQuery: string) => void;
   sortByDateAscending: Transaction[];
+  accountName: string;
+  currency: string;
 }
 export function TransactionsPage({
   transactions,
@@ -36,6 +38,8 @@ export function TransactionsPage({
   setCategoryFilter,
   setSearchQuery,
   sortByDateAscending,
+  accountName,
+  currency,
 }: TransactionsPageProps) {
   
   const handleSearchQueryChange = (
@@ -69,7 +73,7 @@ export function TransactionsPage({
     <main className="App transactions-page">
       <Sidebar />
       <section className="main-content">
-        <Header title="Transactions" />
+        <Header title="Transactions" name={accountName} />
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
@@ -191,8 +195,8 @@ export function TransactionsPage({
                         }
                       >
                         {transaction.amount.income > 0
-                          ? `+$${transaction.amount.income.toFixed(2)}`
-                          : `-$${transaction.amount.expense.toFixed(2)}`}
+                          ? `+${currency}${transaction.amount.income.toFixed(2)}`
+                          : `-${currency}${transaction.amount.expense.toFixed(2)}`}
                       </strong>
                       <small>{dayjs(transaction.date).format("MMM D")}</small>
                     </div>

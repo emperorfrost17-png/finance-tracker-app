@@ -101,6 +101,7 @@
 
 .settings-value {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   min-height: 46px;
@@ -110,6 +111,15 @@
   color: #3f5c58;
   background: #fbfaf6;
   font: 12px var(--font-body);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.settings-value:focus-visible {
+  border-color: #6b9e8f;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(45, 123, 112, 0.12);
 }
 
 .settings-select {
@@ -120,6 +130,12 @@
 .settings-value b {
   color: #35504f;
   font-size: 14px;
+}
+
+.settings-month {
+  display: block;
+  width: 100%;
+  font: 12px var(--font-body);
 }
 
 .reset-card {
@@ -142,6 +158,9 @@
 }
 
 .reset-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   flex: 0 0 auto;
   padding: 10px 15px;
   border: 1px solid #f0c5b8;
@@ -149,6 +168,22 @@
   color: #df6b59;
   background: #fffdfa;
   font: 700 12px var(--font-body);
+  cursor: pointer;
+}
+
+.reset-control:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.reset-control:not(:disabled):hover {
+  border-color: #df6b59;
+  background: #fff8f5;
+}
+
+.reset-control:not(:disabled):focus-visible {
+  outline: 2px solid #df6b59;
+  outline-offset: 3px;
 }
 
 .settings-privacy {

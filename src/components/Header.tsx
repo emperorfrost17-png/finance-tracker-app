@@ -2,9 +2,10 @@ import "./Header.css";
 
 type HeaderProps = {
   title?: string;
+  name?: string;
 };
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title, name }: HeaderProps) {
   return (
     <header className="header">
       <div className="header__heading">
@@ -28,7 +29,7 @@ export function Header({ title }: HeaderProps) {
           aria-label="Open Maya's profile"
         >
           <span className="header__avatar">M</span>
-          <span className="header__name">Maya</span>
+          <span className="header__name">{name}</span>
         </button>
       </div>
     </header>

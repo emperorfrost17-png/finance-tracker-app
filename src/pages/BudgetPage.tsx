@@ -13,7 +13,7 @@ interface Budget {
   tone: string;
 }
 
-export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
+export function BudgetPage({ transactions, accountName, currency }: { transactions: Transaction[]; accountName: string; currency: string }) {
   const createdDefaultBudgets = () => {
     return [
       {
@@ -148,7 +148,7 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
       <Sidebar />
 
       <section className="main-content">
-        <Header title="Budgets" />
+        <Header title="Budgets" name={accountName} />
         <div className="budgets-content">
           <section className="budgets-intro">
             <p>A plan that flexes with real life</p>
@@ -164,12 +164,12 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
             <div className="summary-card">
               <i>◎</i>
               <span>Planned this month</span>
-              <strong>${totalBudgetLimitForMonth.toFixed(2)} </strong>
+              <strong>{currency}{totalBudgetLimitForMonth.toFixed(2)} </strong>
             </div>
             <div className="summary-card">
               <i>▣</i>
               <span>Spent so far</span>
-              <strong>${spentBudgetForMonth.toFixed(2)}</strong>
+              <strong>{currency}{spentBudgetForMonth.toFixed(2)}</strong>
             </div>
             <div className="summary-card">
               <i>✦</i>
@@ -225,9 +225,9 @@ export function BudgetPage({ transactions }: { transactions: Transaction[] }) {
                     </span>
                   </div>
                   <p>{remainingPercent.toFixed(1)} % of room left</p>
-                  <strong className="budget-amount">${spent.toFixed(2)}</strong>
+                  <strong className="budget-amount">{currency}{spent.toFixed(2)}</strong>
                   <div className="budget-card__meta">
-                    <span>of ${budget.limit.toFixed(2)} used</span>
+                    <span>of {currency}{budget.limit.toFixed(2)} used</span>
                     <b className="budget-percent">
                       {progressPercent.toFixed(1)}%
                     </b>

@@ -41,6 +41,15 @@ function App() {
       return [];
     }
   });
+  const [accountName, setAccountName] = useState(() => {
+    try {
+      const storedAccountName = localStorage.getItem("accountName");
+      return storedAccountName ? JSON.parse(storedAccountName) : "Nathan";
+    } catch {
+      return "Nathan";
+    }
+    
+  });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
   const [TaskToEdit, setTaskToEdit] = useState<Transaction | null>(null);
@@ -55,6 +64,15 @@ function App() {
   >("All types");
   const [categoryFilter, setCategoryFilter] = useState("All categories");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currency, setCurrency] = useState(() => {
+    try {
+      const storedCurrency = localStorage.getItem("currency");
+      return storedCurrency ? JSON.parse(storedCurrency) : "$";
+    } catch {
+      return "$";
+    }
+    
+  });
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
@@ -104,7 +122,9 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
-  }, [transactions]);
+    localStorage.setItem("accountName", JSON.stringify(accountName));
+    localStorage.setItem("currency", JSON.stringify(currency));
+  }, [transactions, accountName, currency]);
   return (
     <>
       {isAddTransactionOpen && (
@@ -130,6 +150,8 @@ function App() {
             transactions={transactions}
             sortByDateAscending={sortByDateAscending}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
+              accountName={accountName}
+              currency={currency}
             />
           }
         />
@@ -149,11 +171,13 @@ function App() {
               setTypeFilter={setTypeFilter}
               setCategoryFilter={setCategoryFilter}
               setSearchQuery={setSearchQuery}
+              accountName={accountName}
+              currency={currency}
             />
           }
         />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/budget" element={<BudgetPage transactions={transactions} />} />
+        <Route path="/settings" element={<SettingsPage accountName={accountName} setAccountName={setAccountName} currency={currency} setCurrency={setCurrency} />} />
+        <Route path="/budget" element={<BudgetPage transactions={transactions} accountName={accountName} currency={currency} />} />
       </Routes>
       {showAddedTaskNotification && (
         <div className="notification" role="status" aria-live="polite">

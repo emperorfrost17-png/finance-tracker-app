@@ -11,11 +11,15 @@ interface OverviewPageProps {
   transactions: Transaction[];
   setIsAddTransactionOpen: (isOpen: boolean) => void;
   sortByDateAscending: Transaction[];
+  accountName: string;
+  currency: string;
 }
 export function OverviewPage({
   transactions,
   setIsAddTransactionOpen,
   sortByDateAscending,
+  accountName,
+  currency,
 }: OverviewPageProps) {
   let availableBalance = 0;
   let totalIncome = 0;
@@ -30,12 +34,12 @@ export function OverviewPage({
       <Sidebar />
 
       <section className="main-content">
-        <Header title="Overview" />
+        <Header title="Overview" name={accountName} />
 
         <div className="overview-content">
           <section className="welcome-row">
             <div>
-              <p className="welcome-eyebrow">Good morning, Maya</p>
+              <p className="welcome-eyebrow">Good morning, {accountName}</p>
               <h1>
                 A clearer month
                 <br />
@@ -57,20 +61,21 @@ export function OverviewPage({
             <div className="balance-copy">
               <span className="panel-kicker">Available balance</span>
               <strong>
-                $
+                {currency}
                 {availableBalance >= 1000
                   ? `${(availableBalance / 1000).toFixed(1)}K`
                   : `${availableBalance.toFixed(2)}`}
               </strong>
               <p>
-                <span className="status-pill">On track</span> for your {dayjs().format("MMMM")} budget
+                <span className="status-pill">On track</span> for your{" "}
+                {dayjs().format("MMMM")} budget
               </p>
             </div>
             <div className="balance-stats">
               <div>
                 <span>Income</span>
                 <strong>
-                  $
+                  {currency}
                   {totalIncome >= 1000
                     ? `${(totalIncome / 1000).toFixed(1)}K`
                     : `${totalIncome.toFixed(2)}`}
@@ -79,7 +84,7 @@ export function OverviewPage({
               <div>
                 <span>Spent</span>
                 <strong>
-                  $
+                  {currency}
                   {totalExpenses >= 1000
                     ? `${(totalExpenses / 1000).toFixed(1)}K`
                     : `${totalExpenses.toFixed(2)}`}
@@ -152,7 +157,7 @@ export function OverviewPage({
                                 className={`category-dot category-dot--${data.tone}`}
                               />
                               <strong>{category}</strong>
-                              <small>${data.amount.toFixed(2)}</small>
+                              <small>{currency}{data.amount.toFixed(2)}</small>
                             </div>
                             <span
                               className={`category-bar category-bar--${data.tone}`}
@@ -251,8 +256,8 @@ export function OverviewPage({
                           }
                         >
                           {transaction.amount.expense > 0
-                            ? `-$${transaction.amount.expense.toFixed(2)}`
-                            : `+$${transaction.amount.income.toFixed(2)}`}
+                            ? `-${currency}${transaction.amount.expense.toFixed(2)}`
+                            : `+${currency}${transaction.amount.income.toFixed(2)}`}
                         </strong>
                         <small>{dayjs(transaction.date).format("MMM D")}</small>
                       </div>
