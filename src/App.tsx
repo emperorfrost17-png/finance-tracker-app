@@ -67,9 +67,9 @@ function App() {
   const [currency, setCurrency] = useState(() => {
     try {
       const storedCurrency = localStorage.getItem("currency");
-      return storedCurrency ? JSON.parse(storedCurrency) : "$";
+      return storedCurrency ? JSON.parse(storedCurrency) : "USD";
     } catch {
-      return "$";
+      return "USD";
     }
     
   });

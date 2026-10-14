@@ -2,6 +2,7 @@ import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import type { Transaction } from "../App";
 import { useEffect, useState } from "react";
+import { formatMoney } from "../components/formatMoney";
 import "./BudgetPage.css";
 
 interface Budget {
@@ -164,12 +165,12 @@ export function BudgetPage({ transactions, accountName, currency }: { transactio
             <div className="summary-card">
               <i>◎</i>
               <span>Planned this month</span>
-              <strong>{currency}{totalBudgetLimitForMonth.toFixed(2)} </strong>
+              <strong>{formatMoney(totalBudgetLimitForMonth, currency)}</strong>
             </div>
             <div className="summary-card">
               <i>▣</i>
               <span>Spent so far</span>
-              <strong>{currency}{spentBudgetForMonth.toFixed(2)}</strong>
+              <strong>{formatMoney(spentBudgetForMonth, currency)}</strong>
             </div>
             <div className="summary-card">
               <i>✦</i>
@@ -225,9 +226,9 @@ export function BudgetPage({ transactions, accountName, currency }: { transactio
                     </span>
                   </div>
                   <p>{remainingPercent.toFixed(1)} % of room left</p>
-                  <strong className="budget-amount">{currency}{spent.toFixed(2)}</strong>
+                  <strong className="budget-amount">{formatMoney(spent, currency)}</strong>
                   <div className="budget-card__meta">
-                    <span>of {currency}{budget.limit.toFixed(2)} used</span>
+                    <span>of {formatMoney(budget.limit, currency)} used</span>
                     <b className="budget-percent">
                       {progressPercent.toFixed(1)}%
                     </b>

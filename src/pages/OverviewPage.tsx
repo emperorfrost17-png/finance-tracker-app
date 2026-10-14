@@ -5,6 +5,7 @@ import { NoSpendingYet } from "../components/NoSpendingYet";
 import { BarChart } from "../components/BarChart";
 import dayjs from "dayjs";
 import { Link } from "react-router";
+import { formatMoney } from "../components/formatMoney";
 import "./OverviewPage.css";
 
 interface OverviewPageProps {
@@ -61,10 +62,7 @@ export function OverviewPage({
             <div className="balance-copy">
               <span className="panel-kicker">Available balance</span>
               <strong>
-                {currency}
-                {availableBalance >= 1000
-                  ? `${(availableBalance / 1000).toFixed(1)}K`
-                  : `${availableBalance.toFixed(2)}`}
+                {formatMoney(availableBalance, currency)}
               </strong>
               <p>
                 <span className="status-pill">On track</span> for your{" "}
@@ -75,19 +73,13 @@ export function OverviewPage({
               <div>
                 <span>Income</span>
                 <strong>
-                  {currency}
-                  {totalIncome >= 1000
-                    ? `${(totalIncome / 1000).toFixed(1)}K`
-                    : `${totalIncome.toFixed(2)}`}
+                  {formatMoney(totalIncome, currency)}
                 </strong>
               </div>
               <div>
                 <span>Spent</span>
                 <strong>
-                  {currency}
-                  {totalExpenses >= 1000
-                    ? `${(totalExpenses / 1000).toFixed(1)}K`
-                    : `${totalExpenses.toFixed(2)}`}
+                  {formatMoney(totalExpenses, currency)}
                 </strong>
               </div>
               <div>
@@ -157,7 +149,7 @@ export function OverviewPage({
                                 className={`category-dot category-dot--${data.tone}`}
                               />
                               <strong>{category}</strong>
-                              <small>{currency}{data.amount.toFixed(2)}</small>
+                              <small>{formatMoney(data.amount, currency)}</small>
                             </div>
                             <span
                               className={`category-bar category-bar--${data.tone}`}
@@ -256,8 +248,8 @@ export function OverviewPage({
                           }
                         >
                           {transaction.amount.expense > 0
-                            ? `-${currency}${transaction.amount.expense.toFixed(2)}`
-                            : `+${currency}${transaction.amount.income.toFixed(2)}`}
+                            ? `-${formatMoney(transaction.amount.expense, currency)}`
+                            : `+${formatMoney(transaction.amount.income, currency)}`}
                         </strong>
                         <small>{dayjs(transaction.date).format("MMM D")}</small>
                       </div>

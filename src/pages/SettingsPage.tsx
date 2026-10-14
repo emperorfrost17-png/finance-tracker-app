@@ -48,12 +48,12 @@ export function SettingsPage({ accountName, setAccountName, currency, setCurrenc
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
                 >
-                  <option value="$">USD — US Dollar</option>
-                  <option value="€">EUR — Euro</option>
-                  <option value="£">GBP — Pound Sterling</option>
-                  <option value="C$">CAD — Canadian Dollar</option>
-                  <option value="A$">AUD — Australian Dollar</option>
-                  <option value="₵">GHC - Ghana Cedis</option>
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="GBP">GBP — Pound Sterling</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                  <option value="AUD">AUD — Australian Dollar</option>
+                  <option value="GHS">GHS — Ghana Cedis</option>
                 </select>
               </div>
               <div className="settings-field">

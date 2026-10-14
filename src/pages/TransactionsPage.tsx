@@ -1,6 +1,7 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import { NothingMatches } from "../components/NothingMatches";
+import { formatMoney } from "../components/formatMoney";
 import type { Transaction } from "../App";
 import dayjs from "dayjs";
 import "./TransactionsPage.css";
@@ -195,8 +196,8 @@ export function TransactionsPage({
                         }
                       >
                         {transaction.amount.income > 0
-                          ? `+${currency}${transaction.amount.income.toFixed(2)}`
-                          : `-${currency}${transaction.amount.expense.toFixed(2)}`}
+                          ? `+${formatMoney(transaction.amount.income, currency)}`
+                          : `-${formatMoney(transaction.amount.expense, currency)}`}
                       </strong>
                       <small>{dayjs(transaction.date).format("MMM D")}</small>
                     </div>
