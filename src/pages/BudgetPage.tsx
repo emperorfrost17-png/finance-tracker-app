@@ -1,98 +1,26 @@
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import type { Transaction } from "../App";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { formatMoney } from "../components/formatMoney";
+import type { Budget } from "../App";
 import "./BudgetPage.css";
 
-interface Budget {
-  id: string;
-  name: string;
-  icon: string;
-  limit: number;
-  remaining: number;
-  tone: string;
+interface BudgetProps {
+  transactions: Transaction[];
+  accountName: string;
+  currency: string;
+  budgets: Budget[];
+  setBudgets: (prevBudgets: Budget[] | ((prev: Budget[]) => Budget[])) => void;
 }
 
-export function BudgetPage({ transactions, accountName, currency }: { transactions: Transaction[]; accountName: string; currency: string }) {
-  const createdDefaultBudgets = () => {
-    return [
-      {
-        id: crypto.randomUUID(),
-        name: "Housing",
-        icon: "◎",
-        limit: 2000,
-        remaining: 100,
-        tone: "coral",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Food",
-        icon: "▣",
-        limit: 540,
-        remaining: 100,
-        tone: "gold",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Transportation",
-        icon: "✦",
-        limit: 180,
-        remaining: 100,
-        tone: "coral",
-      },
-
-      {
-        id: crypto.randomUUID(),
-        name: "Personal Spending",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Savings & Investments",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Healthcare",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Other",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Wellness",
-        icon: "✦",
-        limit: 160,
-        remaining: 100,
-        tone: "olive",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Entertainment",
-        icon: "●",
-        limit: 100,
-        remaining: 100,
-        tone: "plum",
-      },
-    ];
-  };
-
+export function BudgetPage({
+  transactions,
+  accountName,
+  currency,
+  budgets,
+  setBudgets,
+}: BudgetProps) {
   const handleBudgetLimitChange = (
     budgetId: string,
     event: React.ChangeEvent<HTMLInputElement>,
@@ -104,20 +32,6 @@ export function BudgetPage({ transactions, accountName, currency }: { transactio
       ),
     );
   };
-
-  const [budgets, setBudgets] = useState<Budget[]>(() => {
-    try {
-      const savedBudgets = localStorage.getItem("budgets");
-      if (savedBudgets) {
-        return JSON.parse(savedBudgets) as Budget[];
-      }
-    } catch (error) {
-      console.error("Failed to load saved budgets.", error);
-      return createdDefaultBudgets();
-    }
-
-    return createdDefaultBudgets();
-  });
 
   useEffect(() => {
     localStorage.setItem("budgets", JSON.stringify(budgets));
@@ -226,7 +140,9 @@ export function BudgetPage({ transactions, accountName, currency }: { transactio
                     </span>
                   </div>
                   <p>{remainingPercent.toFixed(1)} % of room left</p>
-                  <strong className="budget-amount">{formatMoney(spent, currency)}</strong>
+                  <strong className="budget-amount">
+                    {formatMoney(spent, currency)}
+                  </strong>
                   <div className="budget-card__meta">
                     <span>of {formatMoney(budget.limit, currency)} used</span>
                     <b className="budget-percent">
@@ -245,7 +161,8 @@ export function BudgetPage({ transactions, accountName, currency }: { transactio
                       className="budget-progress__fill"
                       style={{
                         width: `${progressPercent}%`,
-                        backgroundColor: toneByCategory[budget.name] ?? "#75a1ae",
+                        backgroundColor:
+                          toneByCategory[budget.name] ?? "#75a1ae",
                       }}
                     />
                   </div>

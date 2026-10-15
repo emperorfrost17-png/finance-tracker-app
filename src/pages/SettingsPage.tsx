@@ -2,7 +2,17 @@ import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import "./SettingsPage.css";
 
-export function SettingsPage({ accountName, setAccountName, currency, setCurrency }: { accountName: string; setAccountName: (name: string) => void; currency: string; setCurrency: (currency: string) => void }) {
+export function SettingsPage({
+  accountName,
+  setAccountName,
+  currency,
+  setCurrency,
+}: {
+  accountName: string;
+  setAccountName: (name: string) => void;
+  currency: string;
+  setCurrency: (currency: string) => void;
+}) {
   return (
     <main className="App settings-page">
       <Sidebar />
@@ -79,11 +89,7 @@ export function SettingsPage({ accountName, setAccountName, currency, setCurrenc
                 restore the starter view.
               </p>
             </div>
-            <button
-              type="button"
-              className="reset-control"
-              disabled
-            >
+            <button type="button" className="reset-control" disabled>
               <i className="fa-solid fa-rotate-left" aria-hidden="true"></i>
               <span>Reset data</span>
             </button>

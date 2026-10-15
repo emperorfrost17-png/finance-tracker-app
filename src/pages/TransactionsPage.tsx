@@ -42,7 +42,6 @@ export function TransactionsPage({
   accountName,
   currency,
 }: TransactionsPageProps) {
-  
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -60,7 +59,7 @@ export function TransactionsPage({
     setCategoryFilter(event.target.value);
   };
   // Keep transactions that match the selected type and category filters.
-  
+
   // Function to handle the deletion of a transaction by its ID
   const handleDeleteTransaction = (transactionId: string) => {
     setTransactions((currentTransactions: Transaction[]) =>
@@ -82,8 +81,8 @@ export function TransactionsPage({
                 <p>{sortByDateAscending.length} entries in your space</p>
               ) : (
                 <p>
-                  {sortByDateAscending.length} of {transactions.length}{" "}
-                  entries in your space
+                  {sortByDateAscending.length} of {transactions.length} entries
+                  in your space
                 </p>
               )}
               <h2>Transactions</h2>
@@ -130,7 +129,6 @@ export function TransactionsPage({
                 </span>
                 <select
                   className="transaction-filter-select"
-                  
                   aria-label="Filter by type"
                   id="all-types"
                   value={typeFilter}

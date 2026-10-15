@@ -297,7 +297,7 @@
   position: relative;
   z-index: 1;
   display: block;
-  height: 5px;
+  height: 10px;
   margin-top: 5px;
   border-radius: 5px;
 }
@@ -342,7 +342,7 @@
   color: #7189b5;
 }
 .budget-track {
-  height: 5px;
+  height: 10px;
   margin-top: 6px;
   border-radius: 5px;
   background: #ebe9e2;
@@ -351,15 +351,29 @@
   display: block;
   height: 100%;
   border-radius: 5px;
+  
 }
 .budget-fill--coral {
   background: #d9795d;
+
 }
-.budget-fill--gold {
-  background: #e9ac45;
+.budget-fill--lavender {
+  background: #a78bca;
 }
 .budget-fill--blue {
   background: #7890be;
+}
+.budget-fill--peach {
+  background: #d79c57;
+}
+.budget-fill--olive {
+  background: #9aaa68;
+}
+.budget-fill--pink {
+  background: #bd92a2;
+}
+.budget-fill--mint {
+  background: #5f9b8e;
 }
 .activity-list {
   margin-top: 14px;

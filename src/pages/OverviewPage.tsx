@@ -6,6 +6,7 @@ import { BarChart } from "../components/BarChart";
 import dayjs from "dayjs";
 import { Link } from "react-router";
 import { formatMoney } from "../components/formatMoney";
+import type { Budget } from "../App";
 import "./OverviewPage.css";
 
 interface OverviewPageProps {
@@ -14,6 +15,8 @@ interface OverviewPageProps {
   sortByDateAscending: Transaction[];
   accountName: string;
   currency: string;
+  budgets: Budget[];
+
 }
 export function OverviewPage({
   transactions,
@@ -21,6 +24,7 @@ export function OverviewPage({
   sortByDateAscending,
   accountName,
   currency,
+  budgets
 }: OverviewPageProps) {
   let availableBalance = 0;
   let totalIncome = 0;
@@ -30,6 +34,15 @@ export function OverviewPage({
     totalExpenses += transaction.amount.expense;
     availableBalance = totalIncome - totalExpenses;
   });
+  const budgetsWithSpent = budgets
+  .map((budget) => {
+    const spent = transactions
+      .filter((t) => t.category === budget.name && t.type === "Expense")
+      .reduce((total, t) => total + t.amount.expense, 0);
+    return { ...budget, spent };
+  })
+  .sort((a, b) => b.spent - a.spent) // highest spent first
+  .slice(0, 4);
   return (
     <main className="App">
       <Sidebar />
@@ -61,9 +74,7 @@ export function OverviewPage({
           <section className="balance-banner">
             <div className="balance-copy">
               <span className="panel-kicker">Available balance</span>
-              <strong>
-                {formatMoney(availableBalance, currency)}
-              </strong>
+              <strong>{formatMoney(availableBalance, currency)}</strong>
               <p>
                 <span className="status-pill">On track</span> for your{" "}
                 {dayjs().format("MMMM")} budget
@@ -72,15 +83,11 @@ export function OverviewPage({
             <div className="balance-stats">
               <div>
                 <span>Income</span>
-                <strong>
-                  {formatMoney(totalIncome, currency)}
-                </strong>
+                <strong>{formatMoney(totalIncome, currency)}</strong>
               </div>
               <div>
                 <span>Spent</span>
-                <strong>
-                  {formatMoney(totalExpenses, currency)}
-                </strong>
+                <strong>{formatMoney(totalExpenses, currency)}</strong>
               </div>
               <div>
                 <span>Savings rate</span>
@@ -149,7 +156,9 @@ export function OverviewPage({
                                 className={`category-dot category-dot--${data.tone}`}
                               />
                               <strong>{category}</strong>
-                              <small>{formatMoney(data.amount, currency)}</small>
+                              <small>
+                                {formatMoney(data.amount, currency)}
+                              </small>
                             </div>
                             <span
                               className={`category-bar category-bar--${data.tone}`}
@@ -176,27 +185,35 @@ export function OverviewPage({
                 </Link>
               </div>
               <div className="budget-list">
-                {[
-                  ["Housing", "$1,420.00", "$2K", "78%", "coral"],
-                  ["Food", "$165.72", "$540.00", "32%", "gold"],
-                  ["Transport", "$72.00", "$180.00", "40%", "coral"],
-                  ["Shopping", "$128.00", "$300.00", "43%", "blue"],
-                ].map(([name, spent, total, width, color]) => (
+                {budgetsWithSpent.map(({ name, limit, tone, spent }) => {
+                 
+                
+                 const usedPercent =
+                limit > 0 ? (spent / limit) * 100 : 0;
+              
+              const progressPercent = Math.min(
+                // this ensures that the progress bar does not go below 0% or above 100%
+                Math.max(usedPercent, 0),
+                100,
+              );
+                 
+                return (
+                  
                   <div className="budget-row" key={name}>
                     <div>
                       <strong>{name}</strong>
                       <span>
-                        <b className={`text--${color}`}>{spent}</b> / {total}
+                        <b className={spent > limit ? `text--${tone}` : ``}>{formatMoney(spent, currency)}</b> / {formatMoney(limit, currency)}
                       </span>
                     </div>
                     <div className="budget-track">
                       <i
-                        className={`budget-fill budget-fill--${color}`}
-                        style={{ width }}
+                        className={`budget-fill budget-fill--${tone}`}
+                        style={{ width: `${progressPercent}%` }}
                       />
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
             </section>
 

@@ -31,6 +31,14 @@ export interface Transaction {
   type: "Expense" | "Income";
   createdAt: string; // ISO string representation of the date and time when the transaction was created
 }
+export interface Budget {
+  id: string;
+  name: string;
+  icon: string;
+  limit: number;
+  remaining: number;
+  tone: string;
+}
 
 function App() {
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
@@ -48,7 +56,6 @@ function App() {
     } catch {
       return "Nathan";
     }
-    
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
@@ -71,8 +78,98 @@ function App() {
     } catch {
       return "USD";
     }
-    
   });
+  const createdDefaultBudgets = () => {
+    return [
+      {
+        id: crypto.randomUUID(),
+        name: "Housing",
+        icon: "◎",
+        limit: 2000,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Food",
+        icon: "▣",
+        limit: 540,
+        remaining: 100,
+        tone: "coral",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Transportation",
+        icon: "✦",
+        limit: 180,
+        remaining: 100,
+        tone: "blue",
+      },
+
+      {
+        id: crypto.randomUUID(),
+        name: "Personal Spending",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "lavender",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Savings & Investments",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "peach",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Healthcare",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "pink",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Other",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Wellness",
+        icon: "✦",
+        limit: 160,
+        remaining: 100,
+        tone: "mint",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Entertainment",
+        icon: "●",
+        limit: 100,
+        remaining: 100,
+        tone: "coral",
+      },
+    ];
+  };
+  const [budgets, setBudgets] = useState<Budget[]>(() => {
+    try {
+      const savedBudgets = localStorage.getItem("budgets");
+      if (savedBudgets) {
+        return JSON.parse(savedBudgets) as Budget[];
+      }
+    } catch (error) {
+      console.error("Failed to load saved budgets.", error);
+      return createdDefaultBudgets();
+    }
+
+    return createdDefaultBudgets();
+  });
+  
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
@@ -147,11 +244,12 @@ function App() {
           path="/"
           element={
             <OverviewPage
-            transactions={transactions}
-            sortByDateAscending={sortByDateAscending}
+              transactions={transactions}
+              sortByDateAscending={sortByDateAscending}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               accountName={accountName}
               currency={currency}
+              budgets={budgets}
             />
           }
         />
@@ -159,7 +257,7 @@ function App() {
           path="/transactions"
           element={
             <TransactionsPage
-            transactions={transactions}
+              transactions={transactions}
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
@@ -176,8 +274,29 @@ function App() {
             />
           }
         />
-        <Route path="/settings" element={<SettingsPage accountName={accountName} setAccountName={setAccountName} currency={currency} setCurrency={setCurrency} />} />
-        <Route path="/budget" element={<BudgetPage transactions={transactions} accountName={accountName} currency={currency} />} />
+        <Route
+          path="/settings"
+          element={
+            <SettingsPage
+              accountName={accountName}
+              setAccountName={setAccountName}
+              currency={currency}
+              setCurrency={setCurrency}
+            />
+          }
+        />
+        <Route
+          path="/budget"
+          element={
+            <BudgetPage
+              transactions={transactions}
+              accountName={accountName}
+              currency={currency}
+              budgets={budgets}
+              setBudgets={setBudgets}
+            />
+          }
+        />
       </Routes>
       {showAddedTaskNotification && (
         <div className="notification" role="status" aria-live="polite">
