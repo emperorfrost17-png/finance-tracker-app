@@ -1,18 +1,27 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
+import { useState } from "react";
 import "./SettingsPage.css";
 
+interface SettingsPageProps {
+  accountName: string;
+  setAccountName: (name: string) => void;
+  currency: string;
+  setCurrency: (currency: string) => void;
+}
 export function SettingsPage({
   accountName,
   setAccountName,
   currency,
   setCurrency,
-}: {
-  accountName: string;
-  setAccountName: (name: string) => void;
-  currency: string;
-  setCurrency: (currency: string) => void;
-}) {
+}: SettingsPageProps) {
+  const [resetConfirmation, setResetConfirmation] = useState(false);
+  const handleResetData = () => {
+    localStorage.clear();
+    setResetConfirmation(false);
+    window.location.reload();
+    console.log("Data reset");
+  }
   return (
     <main className="App settings-page">
       <Sidebar />
@@ -89,10 +98,22 @@ export function SettingsPage({
                 restore the starter view.
               </p>
             </div>
-            <button type="button" className="reset-control" disabled>
-              <i className="fa-solid fa-rotate-left" aria-hidden="true"></i>
-              <span>Reset data</span>
-            </button>
+            {resetConfirmation ? (
+              <div className="reset-confirmation">
+                <p>Are you sure you want to reset your data?</p>
+                <button type="button" className="reset-confirmation__confirm" onClick={handleResetData}>
+                  Yes, reset data
+                </button>
+                <button type="button" className="reset-confirmation__cancel" onClick={() => setResetConfirmation(false)}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button type="button" className="reset-control" onClick={() => setResetConfirmation(true)}>
+                <i className="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                <span>Reset data</span>
+              </button>
+            )}  
           </section>
 
           <p className="settings-privacy">
