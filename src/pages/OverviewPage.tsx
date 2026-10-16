@@ -145,10 +145,13 @@ export function OverviewPage({
                       //ignore the key and just sort by the value (total expense) in descending order
                       .sort(([, a], [, b]) => b.amount - a.amount) // Sort by highest spending
                       .map(([category, data]) => {
-                        const percentage = (
-                          (data.amount / totalExpenses) *
-                          100
-                        ).toFixed(1);
+                        
+                        const progressPercent = budgetsWithSpent.find((b) => b.name === category)
+                          ? Math.min(
+                              (data.amount / budgetsWithSpent.find((b) => b.name === category)!.limit) * 100,
+                              100
+                            ) : 0;
+                        
                         return (
                           <div className="category-row" key={category}>
                             <div>
@@ -162,7 +165,7 @@ export function OverviewPage({
                             </div>
                             <span
                               className={`category-bar category-bar--${data.tone}`}
-                              style={{ width: `${percentage}%` }}
+                              style={{ width: `${progressPercent}%` }}
                             />
                           </div>
                         );
@@ -203,12 +206,12 @@ export function OverviewPage({
                     <div>
                       <strong>{name}</strong>
                       <span>
-                        <b className={spent > limit ? `text--${tone}` : ``}>{formatMoney(spent, currency)}</b> / {formatMoney(limit, currency)}
+                        <b className={spent >= limit ? `text--coral` : `text--${tone}`}>{formatMoney(spent, currency)}</b> / {formatMoney(limit, currency)}
                       </span>
                     </div>
                     <div className="budget-track">
                       <i
-                        className={`budget-fill budget-fill--${tone}`}
+                        className={ spent >= limit ? `budget-fill budget-fill--coral` : `budget-fill budget-fill--${tone}` }
                         style={{ width: `${progressPercent}%` }}
                       />
                     </div>

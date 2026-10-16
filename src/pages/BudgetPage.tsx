@@ -145,7 +145,7 @@ export function BudgetPage({
                   </strong>
                   <div className="budget-card__meta">
                     <span>of {formatMoney(budget.limit, currency)} used</span>
-                    <b className="budget-percent">
+                    <b className="budget-percent" style={{ color: spent >= budget.limit ? "#d97b5e" : toneByCategory[budget.name] ?? "#75a1ae" }}>
                       {progressPercent.toFixed(1)}%
                     </b>
                   </div>
@@ -162,7 +162,7 @@ export function BudgetPage({
                       style={{
                         width: `${progressPercent}%`,
                         backgroundColor:
-                          toneByCategory[budget.name] ?? "#75a1ae",
+                         spent >= budget.limit ? "#d97b5e" : toneByCategory[budget.name] ?? "#75a1ae",
                       }}
                     />
                   </div>
