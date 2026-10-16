@@ -169,12 +169,15 @@ function App() {
 
     return createdDefaultBudgets();
   });
-  
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTaskToEdit(transaction);
     setIsEditTransactionOpen(true);
   };
+  const byNewestFirst = (a: Transaction, b: Transaction) =>
+    dayjs(b.date).diff(dayjs(a.date)) ||
+    dayjs(b.createdAt).diff(dayjs(a.createdAt));
+
   const filteredTransactions = () => {
     return transactions.filter((transaction) => {
       const typeMatches =
@@ -196,8 +199,10 @@ function App() {
       return typeMatches && categoryMatches && searchMatches;
     });
   };
-  const sortByDateAscending = [...filteredTransactions()].sort((a, b) =>
-    dayjs(a.date).diff(dayjs(b.date)),
+
+  const sortedTransactions = [...transactions].sort(byNewestFirst);
+  const filteredSortedTransactions = [...filteredTransactions()].sort(
+    byNewestFirst,
   );
   useEffect(() => {
     const isActive =
@@ -222,6 +227,10 @@ function App() {
     localStorage.setItem("accountName", JSON.stringify(accountName));
     localStorage.setItem("currency", JSON.stringify(currency));
   }, [transactions, accountName, currency]);
+  useEffect(() => {
+    localStorage.setItem("budgets", JSON.stringify(budgets));
+  }, [budgets]);
+
   return (
     <>
       {isAddTransactionOpen && (
@@ -245,7 +254,7 @@ function App() {
           element={
             <OverviewPage
               transactions={transactions}
-              sortByDateAscending={sortByDateAscending}
+              sortedTransactions={sortedTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               accountName={accountName}
               currency={currency}
@@ -262,9 +271,9 @@ function App() {
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
               setShowDeleteTaskNotification={setShowDeleteTaskNotification}
-              sortByDateAscending={sortByDateAscending}
               typeFilter={typeFilter}
               categoryFilter={categoryFilter}
+              filteredSortedTransactions={filteredSortedTransactions}
               searchQuery={searchQuery}
               setTypeFilter={setTypeFilter}
               setCategoryFilter={setCategoryFilter}

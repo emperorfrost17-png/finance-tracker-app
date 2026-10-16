@@ -12,8 +12,8 @@ import "./OverviewPage.css";
 interface OverviewPageProps {
   transactions: Transaction[];
   setIsAddTransactionOpen: (isOpen: boolean) => void;
-  sortByDateAscending: Transaction[];
   accountName: string;
+  sortedTransactions: Transaction[];
   currency: string;
   budgets: Budget[];
 
@@ -21,8 +21,8 @@ interface OverviewPageProps {
 export function OverviewPage({
   transactions,
   setIsAddTransactionOpen,
-  sortByDateAscending,
   accountName,
+  sortedTransactions,
   currency,
   budgets
 }: OverviewPageProps) {
@@ -44,7 +44,7 @@ export function OverviewPage({
   .sort((a, b) => b.spent - a.spent) // highest spent first
   .slice(0, 4);
   return (
-    <main className="App">
+    <main className="App overview-page">
       <Sidebar />
 
       <section className="main-content">
@@ -144,7 +144,7 @@ export function OverviewPage({
                     Object.entries(byCategory)
                       //ignore the key and just sort by the value (total expense) in descending order
                       .sort(([, a], [, b]) => b.amount - a.amount) // Sort by highest spending
-                      .map(([category, data]) => {
+                      .map(([category, data], index) => {
                         
                         const progressPercent = budgetsWithSpent.find((b) => b.name === category)
                           ? Math.min(
@@ -153,7 +153,7 @@ export function OverviewPage({
                             ) : 0;
                         
                         return (
-                          <div className="category-row" key={category}>
+                          <div className="category-row" key={category} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
                             <div>
                               <span
                                 className={`category-dot category-dot--${data.tone}`}
@@ -188,7 +188,7 @@ export function OverviewPage({
                 </Link>
               </div>
               <div className="budget-list">
-                {budgetsWithSpent.map(({ name, limit, tone, spent }) => {
+                {budgetsWithSpent.map(({ name, limit, tone, spent }, index) => {
                  
                 
                  const usedPercent =
@@ -202,7 +202,7 @@ export function OverviewPage({
                  
                 return (
                   
-                  <div className="budget-row" key={name}>
+                  <div className="budget-row" key={name} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
                     <div>
                       <strong>{name}</strong>
                       <span>
@@ -248,8 +248,8 @@ export function OverviewPage({
                     </button>
                   </div>
                 ) : (
-                  sortByDateAscending.slice(0, 5).map((transaction) => (
-                    <div className="activity-row" key={transaction.id}>
+                  sortedTransactions.slice(0, 5).map((transaction, index) => (
+                    <div className="activity-row" key={transaction.id} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
                       <span
                         className={`activity-icon activity-icon--${transaction.tone}`}
                       >

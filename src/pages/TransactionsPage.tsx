@@ -22,8 +22,8 @@ interface TransactionsPageProps {
   setTypeFilter: (typeFilter: "All types" | "Expense" | "Income") => void;
   setCategoryFilter: (categoryFilter: string) => void;
   setSearchQuery: (searchQuery: string) => void;
-  sortByDateAscending: Transaction[];
   accountName: string;
+  filteredSortedTransactions: Transaction[];
   currency: string;
 }
 export function TransactionsPage({
@@ -38,9 +38,9 @@ export function TransactionsPage({
   setTypeFilter,
   setCategoryFilter,
   setSearchQuery,
-  sortByDateAscending,
   accountName,
   currency,
+  filteredSortedTransactions,
 }: TransactionsPageProps) {
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -77,11 +77,11 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              {sortByDateAscending.length === transactions.length ? (
-                <p>{sortByDateAscending.length} entries in your space</p>
+              {filteredSortedTransactions.length === transactions.length ? (
+                <p>{filteredSortedTransactions.length} entries in your space</p>
               ) : (
                 <p>
-                  {sortByDateAscending.length} of {transactions.length} entries
+                  {filteredSortedTransactions.length} of {transactions.length} entries
                   in your space
                 </p>
               )}
@@ -165,10 +165,14 @@ export function TransactionsPage({
                 </select>
               </div>
             </div>
-            {sortByDateAscending.length === 0 && <NothingMatches />}
+            {filteredSortedTransactions.length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
-              {sortByDateAscending.map((transaction) => (
-                <li className="transaction-row" key={transaction.id}>
+              {filteredSortedTransactions.map((transaction: Transaction, index: number) => (
+                <li
+                  className="transaction-row"
+                  key={transaction.id}
+                  style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}
+                >
                   <span
                     className={`transaction-icon transaction-icon--${transaction.tone}`}
                     aria-hidden="true"

@@ -1,7 +1,6 @@
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import type { Transaction } from "../App";
-import { useEffect } from "react";
 import { formatMoney } from "../components/formatMoney";
 import type { Budget } from "../App";
 import "./BudgetPage.css";
@@ -33,10 +32,7 @@ export function BudgetPage({
     );
   };
 
-  useEffect(() => {
-    localStorage.setItem("budgets", JSON.stringify(budgets));
-  }, [budgets]);
-
+ 
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,
     0,
@@ -94,7 +90,7 @@ export function BudgetPage({
           </section>
 
           <section className="budget-grid">
-            {budgets.map((budget) => {
+            {budgets.map((budget, index) => {
               const spent = transactions
                 .filter(
                   (transaction) =>
@@ -116,7 +112,7 @@ export function BudgetPage({
               );
 
               return (
-                <article className="budget-card" key={budget.id}>
+                <article className="budget-card" key={budget.id} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
                   <div className="budget-card__heading">
                     <div>
                       <i className={`budget-dot budget-dot--${budget.tone}`}>
