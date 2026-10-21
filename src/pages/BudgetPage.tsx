@@ -24,7 +24,8 @@ export function BudgetPage({
     budgetId: string,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const newLimit = parseFloat(event.target.value);
+    const parsed = parseFloat(event.target.value);
+    const newLimit = Number.isNaN(parsed) ? 0 : Math.max(0, parsed); // Ensure the limit is not negative
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
         budget.id === budgetId ? { ...budget, limit: newLimit } : budget,
@@ -32,7 +33,6 @@ export function BudgetPage({
     );
   };
 
- 
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,
     0,
@@ -112,7 +112,11 @@ export function BudgetPage({
               );
 
               return (
-                <article className="budget-card" key={budget.id} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
+                <article
+                  className="budget-card"
+                  key={budget.id}
+                  style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}
+                >
                   <div className="budget-card__heading">
                     <div>
                       <i className={`budget-dot budget-dot--${budget.tone}`}>
@@ -141,7 +145,15 @@ export function BudgetPage({
                   </strong>
                   <div className="budget-card__meta">
                     <span>of {formatMoney(budget.limit, currency)} used</span>
-                    <b className="budget-percent" style={{ color: spent >= budget.limit ? "#d97b5e" : toneByCategory[budget.name] ?? "#75a1ae" }}>
+                    <b
+                      className="budget-percent"
+                      style={{
+                        color:
+                          spent >= budget.limit
+                            ? "#d97b5e"
+                            : (toneByCategory[budget.name] ?? "#75a1ae"),
+                      }}
+                    >
                       {progressPercent.toFixed(1)}%
                     </b>
                   </div>
@@ -158,7 +170,9 @@ export function BudgetPage({
                       style={{
                         width: `${progressPercent}%`,
                         backgroundColor:
-                         spent >= budget.limit ? "#d97b5e" : toneByCategory[budget.name] ?? "#75a1ae",
+                          spent >= budget.limit
+                            ? "#d97b5e"
+                            : (toneByCategory[budget.name] ?? "#75a1ae"),
                       }}
                     />
                   </div>

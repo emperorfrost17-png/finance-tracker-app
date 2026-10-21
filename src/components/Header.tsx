@@ -28,7 +28,7 @@ export function Header({ title, name }: HeaderProps) {
           type="button"
           aria-label="Open Maya's profile"
         >
-          <span className="header__avatar">M</span>
+          <span className="header__avatar">{name?.charAt(0).toLocaleUpperCase() ?? "U"}</span>
           <span className="header__name">{name}</span>
         </button>
       </div>
