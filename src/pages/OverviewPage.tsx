@@ -16,7 +16,6 @@ interface OverviewPageProps {
   sortedTransactions: Transaction[];
   currency: string;
   budgets: Budget[];
-
 }
 export function OverviewPage({
   transactions,
@@ -24,7 +23,7 @@ export function OverviewPage({
   accountName,
   sortedTransactions,
   currency,
-  budgets
+  budgets,
 }: OverviewPageProps) {
   let availableBalance = 0;
   let totalIncome = 0;
@@ -35,14 +34,14 @@ export function OverviewPage({
     availableBalance = totalIncome - totalExpenses;
   });
   const budgetsWithSpent = budgets
-  .map((budget) => {
-    const spent = transactions
-      .filter((t) => t.category === budget.name && t.type === "Expense")
-      .reduce((total, t) => total + t.amount.expense, 0);
-    return { ...budget, spent };
-  })
-  .sort((a, b) => b.spent - a.spent) // highest spent first
-  .slice(0, 4);
+    .map((budget) => {
+      const spent = transactions
+        .filter((t) => t.category === budget.name && t.type === "Expense")
+        .reduce((total, t) => total + t.amount.expense, 0);
+      return { ...budget, spent };
+    })
+    .sort((a, b) => b.spent - a.spent) // highest spent first
+    .slice(0, 4);
   return (
     <main className="App overview-page">
       <Sidebar />
@@ -145,15 +144,20 @@ export function OverviewPage({
                       //ignore the key and just sort by the value (total expense) in descending order
                       .sort(([, a], [, b]) => b.amount - a.amount) // Sort by highest spending
                       .map(([category, data], index) => {
-                        
-                        const progressPercent = budgetsWithSpent.find((b) => b.name === category)
-                          ? Math.min(
-                              (data.amount / budgetsWithSpent.find((b) => b.name === category)!.limit) * 100,
-                              100
-                            ) : 0;
-                        
+                        const budget = budgets.find((b) => b.name === category);
+                        const progressPercent =
+                          budget && budget.limit > 0
+                            ? Math.min((data.amount / budget.limit) * 100, 100)
+                            : 0;
+
                         return (
-                          <div className="category-row" key={category} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
+                          <div
+                            className="category-row"
+                            key={category}
+                            style={{
+                              animationDelay: `${Math.min(index * 35, 280)}ms`,
+                            }}
+                          >
                             <div>
                               <span
                                 className={`category-dot category-dot--${data.tone}`}
@@ -189,34 +193,48 @@ export function OverviewPage({
               </div>
               <div className="budget-list">
                 {budgetsWithSpent.map(({ name, limit, tone, spent }, index) => {
-                 
-                
-                 const usedPercent =
-                limit > 0 ? (spent / limit) * 100 : 0;
-              
-              const progressPercent = Math.min(
-                // this ensures that the progress bar does not go below 0% or above 100%
-                Math.max(usedPercent, 0),
-                100,
-              );
-                 
-                return (
-                  
-                  <div className="budget-row" key={name} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
-                    <div>
-                      <strong>{name}</strong>
-                      <span>
-                        <b className={spent >= limit ? `text--coral` : `text--${tone}`}>{formatMoney(spent, currency)}</b> / {formatMoney(limit, currency)}
-                      </span>
+                  const usedPercent = limit > 0 ? (spent / limit) * 100 : 0;
+
+                  const progressPercent = Math.min(
+                    // this ensures that the progress bar does not go below 0% or above 100%
+                    Math.max(usedPercent, 0),
+                    100,
+                  );
+
+                  return (
+                    <div
+                      className="budget-row"
+                      key={name}
+                      style={{
+                        animationDelay: `${Math.min(index * 35, 280)}ms`,
+                      }}
+                    >
+                      <div>
+                        <strong>{name}</strong>
+                        <span>
+                          <b
+                            className={
+                              spent >= limit ? `text--coral` : `text--${tone}`
+                            }
+                          >
+                            {formatMoney(spent, currency)}
+                          </b>{" "}
+                          / {formatMoney(limit, currency)}
+                        </span>
+                      </div>
+                      <div className="budget-track">
+                        <i
+                          className={
+                            spent >= limit
+                              ? `budget-fill budget-fill--coral`
+                              : `budget-fill budget-fill--${tone}`
+                          }
+                          style={{ width: `${progressPercent}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="budget-track">
-                      <i
-                        className={ spent >= limit ? `budget-fill budget-fill--coral` : `budget-fill budget-fill--${tone}` }
-                        style={{ width: `${progressPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                )})}
+                  );
+                })}
               </div>
             </section>
 
@@ -249,7 +267,13 @@ export function OverviewPage({
                   </div>
                 ) : (
                   sortedTransactions.slice(0, 5).map((transaction, index) => (
-                    <div className="activity-row" key={transaction.id} style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}>
+                    <div
+                      className="activity-row"
+                      key={transaction.id}
+                      style={{
+                        animationDelay: `${Math.min(index * 35, 280)}ms`,
+                      }}
+                    >
                       <span
                         className={`activity-icon activity-icon--${transaction.tone}`}
                       >

@@ -2,6 +2,16 @@
   box-sizing: border-box;
 }
 
+::selection {
+  color: #203b3a;
+  background: #f8d995;
+}
+
+::-moz-selection {
+  color: #203b3a;
+  background: #f8d995;
+}
+
 :root {
   --font-display: "Fraunces", serif;
   --font-body: "DM Sans", sans-serif;
