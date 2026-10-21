@@ -11,12 +11,14 @@ interface EditTransactionProps {
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
   setShowEditTaskNotification: (showEditTaskNotification: boolean) => void;
+  currency: string;
 }
 export function EditTransaction({
   setEditTransaction,
   taskToEdit,
   setTransactions,
   setShowEditTaskNotification,
+  currency,
 }: EditTransactionProps) {
   const [newTitle, setNewTitle] = useState("");
   const [newMerchant, setNewMerchant] = useState("");
@@ -166,7 +168,7 @@ export function EditTransaction({
             </div>
 
             <div>
-              <label htmlFor="amount">Amount (USD)</label>
+              <label htmlFor="amount">Amount ({currency})</label>
               <input
                 id="amount"
                 className="transaction-input"

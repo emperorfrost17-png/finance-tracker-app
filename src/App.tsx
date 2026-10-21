@@ -226,10 +226,8 @@ function App() {
     localStorage.setItem("transactions", JSON.stringify(transactions));
     localStorage.setItem("accountName", JSON.stringify(accountName));
     localStorage.setItem("currency", JSON.stringify(currency));
-  }, [transactions, accountName, currency]);
-  useEffect(() => {
     localStorage.setItem("budgets", JSON.stringify(budgets));
-  }, [budgets]);
+  }, [transactions, accountName, currency, budgets]);
 
   return (
     <>
@@ -238,6 +236,7 @@ function App() {
           setAddTransaction={setIsAddTransactionOpen}
           setTransactions={setTransactions}
           setShowAddedTaskNotification={setShowAddedTaskNotification}
+          currency={currency}
         />
       )}
       {isEditTransactionOpen && (
@@ -246,6 +245,7 @@ function App() {
           taskToEdit={TaskToEdit}
           setTransactions={setTransactions}
           setShowEditTaskNotification={setShowEditTaskNotification}
+          currency={currency}
         />
       )}
       <Routes>

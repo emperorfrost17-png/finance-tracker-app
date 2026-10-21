@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import type { Transaction } from "../App";
+import {formatMoney} from "./formatMoney";
 import dayjs from "dayjs";
 import {
   Chart as ChartJS,
@@ -12,7 +13,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
+export const BarChart = ({ transactions, currency }: { transactions: Transaction[]; currency: string }) => {
   const currentDay = dayjs().date();
   const daysInMonth = dayjs().daysInMonth();
   //? Generate an array of days for the current month (1 to daysInMonth)
@@ -88,7 +89,7 @@ export const BarChart = ({ transactions }: { transactions: Transaction[] }) => {
         callbacks: {
           title: (items) =>
             dayjs().date(Number(items[0].label)).format("MMM D"),
-          label: (context) => `$${(context.parsed.y ?? 0).toFixed(2)}`,
+          label: (context) => formatMoney(context.parsed.y ?? 0, currency),
         },
       },
     },

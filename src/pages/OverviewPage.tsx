@@ -108,7 +108,7 @@ export function OverviewPage({
           </section>
 
           <div className="overview-grid overview-grid--top">
-            <BarChart transactions={transactions} />
+            <BarChart transactions={transactions} currency={currency} />
 
             <section className="dashboard-panel category-panel">
               <div className="panel-heading">

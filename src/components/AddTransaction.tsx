@@ -13,11 +13,13 @@ interface AddTransactionProps {
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
   setShowAddedTaskNotification: (showAddedTaskNotification: boolean) => void;
+  currency: string;
 }
 export function AddTransaction({
   setAddTransaction,
   setTransactions,
   setShowAddedTaskNotification,
+  currency,
 }: AddTransactionProps) {
   const navigate = useNavigate();
 
@@ -178,7 +180,7 @@ export function AddTransaction({
             </div>
 
             <div>
-              <label htmlFor="amount">Amount (USD)</label>
+              <label htmlFor="amount">Amount ({currency})</label>
               <input
                 id="amount"
                 className="transaction-input"

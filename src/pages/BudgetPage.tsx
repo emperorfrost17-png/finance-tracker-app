@@ -121,7 +121,7 @@ export function BudgetPage({
                       <h3>{budget.name}</h3>
                     </div>
                     <span className="budget-limit">
-                      USD
+                      {currency}{" "}
                       <input
                         type="number"
                         min={0}
