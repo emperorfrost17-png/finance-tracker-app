@@ -353,6 +353,10 @@
   color: #a0b0aa;
   font: 12px var(--font-data);
 }
+.status-pill--over {
+  background: #d97b5e;
+  color: #fff;
+}
 .budget-row b {
   font-weight: 400;
 }

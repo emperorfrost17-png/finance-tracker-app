@@ -1,6 +1,7 @@
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import type { Transaction } from "../App";
+import dayjs from "dayjs";
 import { formatMoney } from "../components/formatMoney";
 import type { Budget } from "../App";
 import "./BudgetPage.css";
@@ -32,6 +33,8 @@ export function BudgetPage({
       ),
     );
   };
+  const isThisMonth = (t: Transaction) =>
+    dayjs(t.date).isSame(dayjs(), "month");
 
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,
@@ -39,7 +42,7 @@ export function BudgetPage({
   );
 
   const spentBudgetForMonth = transactions
-    .filter((transaction) => transaction.type === "Expense")
+    .filter((transaction) => transaction.type === "Expense" && isThisMonth(transaction))
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
   const toneByCategory: Record<string, string> = {
     Housing: "#75a1ae",
@@ -95,7 +98,8 @@ export function BudgetPage({
                 .filter(
                   (transaction) =>
                     transaction.category === budget.name &&
-                    transaction.type === "Expense",
+                    transaction.type === "Expense" &&
+                    isThisMonth(transaction),
                 )
                 .reduce(
                   (total, transaction) => total + transaction.amount.expense,

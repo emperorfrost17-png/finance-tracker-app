@@ -4,20 +4,20 @@ import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 interface EditTransactionProps {
   setEditTransaction: (editTransaction: boolean) => void;
-  taskToEdit: Transaction | null;
+  transactionToEdit: Transaction | null;
   setTransactions: (
     transactions:
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
-  setShowEditTaskNotification: (showEditTaskNotification: boolean) => void;
+  setShowEditTransactionNotification: (showEditTransactionNotification: boolean) => void;
   currency: string;
 }
 export function EditTransaction({
   setEditTransaction,
-  taskToEdit,
+  transactionToEdit,
   setTransactions,
-  setShowEditTaskNotification,
+  setShowEditTransactionNotification,
   currency,
 }: EditTransactionProps) {
   const [newTitle, setNewTitle] = useState("");
@@ -71,21 +71,21 @@ export function EditTransaction({
     Other: "blue",
   };
   useEffect(() => {
-    if (taskToEdit) {
+    if (transactionToEdit) {
       // eslint-disable-next-line
-      setNewTitle(taskToEdit.title);
-      setNewMerchant(taskToEdit.merchant || "");
+      setNewTitle(transactionToEdit.title);
+      setNewMerchant(transactionToEdit.merchant || "");
       setNewAmount(
-        taskToEdit.amount.income > 0
-          ? taskToEdit.amount.income.toString()
-          : taskToEdit.amount.expense.toString(),
+        transactionToEdit.amount.income > 0
+          ? transactionToEdit.amount.income.toString()
+          : transactionToEdit.amount.expense.toString(),
       );
-      setNewType(taskToEdit.type);
-      setNewCategory(taskToEdit.category);
-      setNewDate(dayjs(taskToEdit.date).format("YYYY-MM-DD"));
-      setNewNote(taskToEdit.note || "");
+      setNewType(transactionToEdit.type);
+      setNewCategory(transactionToEdit.category);
+      setNewDate(dayjs(transactionToEdit.date).format("YYYY-MM-DD"));
+      setNewNote(transactionToEdit.note || "");
     }
-  }, [taskToEdit]);
+  }, [transactionToEdit]);
 
   const handleSaveChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -100,7 +100,7 @@ export function EditTransaction({
     }
     setTransactions((currentTransactions) =>
       currentTransactions.map((transaction) => {
-        if (transaction.id === taskToEdit?.id) {
+        if (transaction.id === transactionToEdit?.id) {
           return {
             ...transaction,
             title: newTitle.trim(),
@@ -120,7 +120,7 @@ export function EditTransaction({
       }),
     );
     setEditTransaction(false);
-    setShowEditTaskNotification(true);
+    setShowEditTransactionNotification(true);
   };
   return (
     <div className="transaction-modal-backdrop" aria-hidden="false">

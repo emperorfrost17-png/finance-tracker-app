@@ -25,23 +25,49 @@ export function OverviewPage({
   currency,
   budgets,
 }: OverviewPageProps) {
-  let availableBalance = 0;
-  let totalIncome = 0;
-  let totalExpenses = 0;
-  transactions.forEach((transaction) => {
-    totalIncome += transaction.amount.income;
-    totalExpenses += transaction.amount.expense;
-    availableBalance = totalIncome - totalExpenses;
-  });
+  const monthExpenses = transactions
+    .filter(
+      (t) => t.type === "Expense" && dayjs(t.date).isSame(dayjs(), "month"),
+    )
+    .reduce((sum, t) => sum + t.amount.expense, 0);
+  const totalIncomeForMonth = transactions
+    .filter(
+      (t) => t.type === "Income" && dayjs(t.date).isSame(dayjs(), "month"),
+    )
+    .reduce((sum, t) => sum + t.amount.income, 0);
+  const availableBalanceForMonth = totalIncomeForMonth - monthExpenses;
+  const totalBudgetLimit = budgets.reduce((sum, b) => sum + b.limit, 0);
+  const onTrack = monthExpenses <= totalBudgetLimit;
   const budgetsWithSpent = budgets
     .map((budget) => {
       const spent = transactions
-        .filter((t) => t.category === budget.name && t.type === "Expense")
+        .filter(
+          (t) =>
+            t.category === budget.name &&
+            t.type === "Expense" &&
+            dayjs(t.date).isSame(dayjs(), "month"),
+        )
         .reduce((total, t) => total + t.amount.expense, 0);
       return { ...budget, spent };
     })
     .sort((a, b) => b.spent - a.spent) // highest spent first
     .slice(0, 4);
+  const isMorning = dayjs().hour() >= 5 && dayjs().hour() < 12;
+  const isAfternoon = dayjs().hour() >= 12 && dayjs().hour() < 17;
+  const isEvening = dayjs().hour() >= 17 && dayjs().hour() < 21;
+  const isNight = dayjs().hour() >= 21 || dayjs().hour() < 5;
+
+  const greeting = () => {
+    if (isMorning) return "Good morning";
+    if (isAfternoon) return "Good afternoon";
+    if (isEvening) return "Good evening";
+    if (isNight) return "Good night";
+    return "Hello";
+  };
+  const transactionsThisMonth = transactions.filter((t) =>
+    dayjs(t.date).isSame(dayjs(), "month"),
+  );
+  
   return (
     <main className="App overview-page">
       <Sidebar />
@@ -52,7 +78,9 @@ export function OverviewPage({
         <div className="overview-content">
           <section className="welcome-row">
             <div>
-              <p className="welcome-eyebrow">Good morning, {accountName}</p>
+              <p className="welcome-eyebrow">
+                {greeting()}, {accountName}
+              </p>
               <h1>
                 A clearer month
                 <br />
@@ -73,27 +101,32 @@ export function OverviewPage({
           <section className="balance-banner">
             <div className="balance-copy">
               <span className="panel-kicker">Available balance</span>
-              <strong>{formatMoney(availableBalance, currency)}</strong>
+              <strong>{formatMoney(availableBalanceForMonth, currency)}</strong>
               <p>
-                <span className="status-pill">On track</span> for your{" "}
-                {dayjs().format("MMMM")} budget
+                <span
+                  className={`status-pill ${onTrack ? "" : "status-pill--over"}`}
+                >
+                  {onTrack ? "On track" : "Over budget"}
+                </span>{" "}
+                for your {dayjs().format("MMMM")} budget
               </p>
             </div>
             <div className="balance-stats">
               <div>
                 <span>Income</span>
-                <strong>{formatMoney(totalIncome, currency)}</strong>
+                <strong>{formatMoney(totalIncomeForMonth, currency)}</strong>
               </div>
               <div>
                 <span>Spent</span>
-                <strong>{formatMoney(totalExpenses, currency)}</strong>
+                <strong>{formatMoney(monthExpenses, currency)}</strong>
               </div>
               <div>
                 <span>Savings rate</span>
                 <strong>
-                  {totalIncome > 0
+                  {totalIncomeForMonth > 0
                     ? (
-                        ((totalIncome - totalExpenses) / totalIncome) *
+                        ((totalIncomeForMonth - monthExpenses) /
+                          totalIncomeForMonth) *
                         100
                       ).toFixed(1)
                     : "0.0"}
@@ -102,7 +135,7 @@ export function OverviewPage({
               </div>
               <div>
                 <span>Transactions</span>
-                <strong>{transactions.length}</strong>
+                <strong>{transactionsThisMonth.length}</strong>
               </div>
             </div>
           </section>
@@ -121,7 +154,7 @@ export function OverviewPage({
                 </Link>
               </div>
               <div className="category-list">
-                {totalExpenses === 0 && <NoSpendingYet />}
+                {monthExpenses === 0 && <NoSpendingYet />}
 
                 {(() => {
                   // Group expenses by category
@@ -130,7 +163,11 @@ export function OverviewPage({
                     { amount: number; tone: string }
                   > = {};
                   transactions
-                    .filter((t) => t.amount.expense > 0)
+                    .filter(
+                      (t) =>
+                        t.amount.expense > 0 &&
+                        dayjs(t.date).isSame(dayjs(), "month"),
+                    )
                     .forEach((t) => {
                       if (!byCategory[t.category]) {
                         byCategory[t.category] = { amount: 0, tone: t.tone };

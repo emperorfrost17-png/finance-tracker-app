@@ -12,13 +12,13 @@ interface AddTransactionProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
-  setShowAddedTaskNotification: (showAddedTaskNotification: boolean) => void;
+  setShowAddedTransactionNotification: (showAddedTransactionNotification: boolean) => void;
   currency: string;
 }
 export function AddTransaction({
   setAddTransaction,
   setTransactions,
-  setShowAddedTaskNotification,
+  setShowAddedTransactionNotification,
   currency,
 }: AddTransactionProps) {
   const navigate = useNavigate();
@@ -125,7 +125,7 @@ export function AddTransaction({
       ...prevTransactions,
     ]);
     setAddTransaction(false);
-    setShowAddedTaskNotification(true);
+    setShowAddedTransactionNotification(true);
     navigate("/transactions");
   };
   return (

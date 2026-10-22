@@ -14,7 +14,7 @@ interface TransactionsPageProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
-  setShowDeleteTaskNotification: (showDeleteTaskNotification: boolean) => void;
+  setShowDeleteTransactionNotification: (showDeleteTransactionNotification: boolean) => void;
   handleEditTransaction: (transaction: Transaction) => void;
   typeFilter: "All types" | "Expense" | "Income";
   categoryFilter: string;
@@ -31,7 +31,7 @@ export function TransactionsPage({
   setTransactions,
   setIsAddTransactionOpen,
   handleEditTransaction,
-  setShowDeleteTaskNotification,
+  setShowDeleteTransactionNotification,
   typeFilter,
   categoryFilter,
   searchQuery,
@@ -209,7 +209,7 @@ export function TransactionsPage({
                       aria-label={`Delete ${transaction.title}`}
                       onClick={() => {
                         handleDeleteTransaction(transaction.id);
-                        setShowDeleteTaskNotification(true);
+                        setShowDeleteTransactionNotification(true);
                       }}
                     >
                       <i className="fa-regular fa-trash-can"></i>

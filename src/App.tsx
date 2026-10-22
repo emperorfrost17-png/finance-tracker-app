@@ -59,12 +59,12 @@ function App() {
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
-  const [TaskToEdit, setTaskToEdit] = useState<Transaction | null>(null);
-  const [showAddedTaskNotification, setShowAddedTaskNotification] =
+  const [TransactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
+  const [showAddedTransactionNotification, setShowAddedTransactionNotification] =
     useState(false);
-  const [showEditTaskNotification, setShowEditTaskNotification] =
+  const [showEditTransactionNotification, setShowEditTransactionNotification] =
     useState(false);
-  const [showDeleteTaskNotification, setShowDeleteTaskNotification] =
+  const [showDeleteTransactionNotification, setShowDeleteTransactionNotification] =
     useState(false);
   const [typeFilter, setTypeFilter] = useState<
     "All types" | "Expense" | "Income"
@@ -171,7 +171,7 @@ function App() {
   });
 
   const handleEditTransaction = (transaction: Transaction) => {
-    setTaskToEdit(transaction);
+    setTransactionToEdit(transaction);
     setIsEditTransactionOpen(true);
   };
   const byNewestFirst = (a: Transaction, b: Transaction) =>
@@ -206,20 +206,20 @@ function App() {
   );
   useEffect(() => {
     const isActive =
-      showAddedTaskNotification ||
-      showEditTaskNotification ||
-      showDeleteTaskNotification;
+      showAddedTransactionNotification ||
+      showEditTransactionNotification ||
+      showDeleteTransactionNotification;
     if (!isActive) return;
     const timer = setTimeout(() => {
-      setShowAddedTaskNotification(false);
-      setShowEditTaskNotification(false);
-      setShowDeleteTaskNotification(false);
+      setShowAddedTransactionNotification(false);
+      setShowEditTransactionNotification(false);
+      setShowDeleteTransactionNotification(false);
     }, 3000);
     return () => clearTimeout(timer);
   }, [
-    showAddedTaskNotification,
-    showEditTaskNotification,
-    showDeleteTaskNotification,
+    showAddedTransactionNotification,
+    showEditTransactionNotification,
+    showDeleteTransactionNotification,
   ]);
 
   useEffect(() => {
@@ -235,16 +235,16 @@ function App() {
         <AddTransaction
           setAddTransaction={setIsAddTransactionOpen}
           setTransactions={setTransactions}
-          setShowAddedTaskNotification={setShowAddedTaskNotification}
+          setShowAddedTransactionNotification={setShowAddedTransactionNotification}
           currency={currency}
         />
       )}
       {isEditTransactionOpen && (
         <EditTransaction
           setEditTransaction={setIsEditTransactionOpen}
-          taskToEdit={TaskToEdit}
+          transactionToEdit={TransactionToEdit}
           setTransactions={setTransactions}
-          setShowEditTaskNotification={setShowEditTaskNotification}
+          setShowEditTransactionNotification={setShowEditTransactionNotification}
           currency={currency}
         />
       )}
@@ -270,7 +270,7 @@ function App() {
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
-              setShowDeleteTaskNotification={setShowDeleteTaskNotification}
+              setShowDeleteTransactionNotification={setShowDeleteTransactionNotification}
               typeFilter={typeFilter}
               categoryFilter={categoryFilter}
               filteredSortedTransactions={filteredSortedTransactions}
@@ -307,19 +307,19 @@ function App() {
           }
         />
       </Routes>
-      {showAddedTaskNotification && (
+      {showAddedTransactionNotification && (
         <div className="notification" role="status" aria-live="polite">
           <i className="fa-solid fa-check" aria-hidden="true"></i>
           <p>Transaction added</p>
         </div>
       )}
-      {showEditTaskNotification && (
+      {showEditTransactionNotification && (
         <div className="notification" role="status" aria-live="polite">
           <i className="fa-solid fa-check" aria-hidden="true"></i>
           <p>Transaction updated</p>
         </div>
       )}
-      {showDeleteTaskNotification && (
+      {showDeleteTransactionNotification && (
         <div className="notification" role="status" aria-live="polite">
           <i className="fa-solid fa-check" aria-hidden="true"></i>
           <p>Transaction deleted</p>
