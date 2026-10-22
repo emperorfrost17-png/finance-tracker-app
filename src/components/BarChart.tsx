@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import type { Transaction } from "../App";
-import {formatMoney} from "./formatMoney";
+import { formatMoney } from "./formatMoney";
 import dayjs from "dayjs";
 import {
   Chart as ChartJS,
@@ -13,11 +13,17 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-export const BarChart = ({ transactions, currency }: { transactions: Transaction[]; currency: string }) => {
-  const currentDay = dayjs().date();
-  const daysInMonth = dayjs().daysInMonth();
+export const BarChart = ({
+  transactions,
+  currency,
+}: {
+  transactions: Transaction[];
+  currency: string;
+}) => {
+  const today = dayjs();
+
   //? Generate an array of days for the current month (1 to daysInMonth)
-  const days = Array.from({ length: daysInMonth }, (_, i) =>
+  const days = Array.from({ length: today.daysInMonth() }, (_, i) =>
     (i + 1).toString(),
   );
   //! Calculate daily spending for each day of the month
@@ -41,16 +47,21 @@ export const BarChart = ({ transactions, currency }: { transactions: Transaction
   const lastMonth = dayjs().subtract(1, "month");
 
   const lastMonthTotalSpending = transactions
-    .filter(
-      (t) => dayjs(t.date).isSame(lastMonth, "month") && t.type === "Expense",
-    )
+    .filter((t) => {
+      const d = dayjs(t.date);
+      return (
+        t.type === "Expense" &&
+        d.isSame(lastMonth, "month") &&
+        d.date() <= today.date()
+      );
+    })
     .reduce((sum, t) => sum + t.amount.expense, 0);
-  const spendingChangePercentage =
-    lastMonthTotalSpending === 0
-      ? 0
-      : ((currentMonthTotalSpending - lastMonthTotalSpending) /
-          lastMonthTotalSpending) *
-        100;
+  const hasComparison = lastMonthTotalSpending > 0;
+  const spendingChangePercentage = hasComparison
+    ? ((currentMonthTotalSpending - lastMonthTotalSpending) /
+        lastMonthTotalSpending) *
+      100
+    : 0;
   const isIncrease = spendingChangePercentage > 0;
 
   const data = {
@@ -61,7 +72,7 @@ export const BarChart = ({ transactions, currency }: { transactions: Transaction
         data: dailySpending,
         backgroundColor: days.map((_, index) =>
           // Highlight the last 7 days of the month with a different color
-          index >= Math.max(0, currentDay - 7) && index < currentDay
+          index >= Math.max(0, today.date() - 7) && index < today.date()
             ? "#f8c45c"
             : "#f7e7c8",
         ),
@@ -123,16 +134,23 @@ export const BarChart = ({ transactions, currency }: { transactions: Transaction
           <h2>Spending rhythm</h2>
         </div>
         <span className="panel-note">
-          <span aria-hidden="true">
-            <i
-              className={
-                isIncrease
-                  ? "fa-solid fa-arrow-trend-up"
-                  : "fa-solid fa-arrow-trend-down"
-              }
-            ></i>
-          </span>{" "}
-          {Math.abs(spendingChangePercentage).toFixed(1)}% vs last month
+          {hasComparison ? (
+            <>
+              <span aria-hidden="true">
+                <i
+                  className={
+                    isIncrease
+                      ? "fa-solid fa-arrow-trend-up"
+                      : "fa-solid fa-arrow-trend-down"
+                  }
+                />
+              </span>{" "}
+              {Math.abs(spendingChangePercentage).toFixed(1)}% vs same point
+              last month
+            </>
+          ) : (
+            "No data for last month yet"
+          )}
         </span>
       </div>
       <div
