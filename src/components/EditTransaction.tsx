@@ -89,7 +89,13 @@ export function EditTransaction({
 
   const handleSaveChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!newTitle || !newAmount || !newDate) {
+    const parsedAmount = parseFloat(newAmount);
+    if (
+      !newTitle.trim() ||
+      Number.isNaN(parsedAmount) ||
+      parsedAmount <= 0 ||
+      !newDate
+    ) {
       return;
     }
     setTransactions((currentTransactions) =>
@@ -97,11 +103,11 @@ export function EditTransaction({
         if (transaction.id === taskToEdit?.id) {
           return {
             ...transaction,
-            title: newTitle,
-            merchant: newMerchant,
+            title: newTitle.trim(),
+            merchant: newMerchant.trim() || "Personal",
             amount: {
-              expense: newType === "Expense" ? parseFloat(newAmount) : 0,
-              income: newType === "Income" ? parseFloat(newAmount) : 0,
+              expense: newType === "Expense" ? parsedAmount : 0,
+              income: newType === "Income" ? parsedAmount : 0,
             },
             type: newType,
             category: newCategory,
