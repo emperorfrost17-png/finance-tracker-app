@@ -4,6 +4,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { AddTransaction } from "./components/AddTransaction";
 import { EditTransaction } from "./components/EditTransaction";
+import { createdDefaultBudgets } from "./components/defaultBudgets";
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import dayjs from "dayjs";
@@ -59,13 +60,18 @@ function App() {
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
-  const [TransactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
-  const [showAddedTransactionNotification, setShowAddedTransactionNotification] =
-    useState(false);
+  const [TransactionToEdit, setTransactionToEdit] =
+    useState<Transaction | null>(null);
+  const [
+    showAddedTransactionNotification,
+    setShowAddedTransactionNotification,
+  ] = useState(false);
   const [showEditTransactionNotification, setShowEditTransactionNotification] =
     useState(false);
-  const [showDeleteTransactionNotification, setShowDeleteTransactionNotification] =
-    useState(false);
+  const [
+    showDeleteTransactionNotification,
+    setShowDeleteTransactionNotification,
+  ] = useState(false);
   const [typeFilter, setTypeFilter] = useState<
     "All types" | "Expense" | "Income"
   >("All types");
@@ -79,82 +85,21 @@ function App() {
       return "USD";
     }
   });
-  const createdDefaultBudgets = () => {
-    return [
-      {
-        id: crypto.randomUUID(),
-        name: "Housing",
-        icon: "◎",
-        limit: 2000,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Food",
-        icon: "▣",
-        limit: 540,
-        remaining: 100,
-        tone: "coral",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Transportation",
-        icon: "✦",
-        limit: 180,
-        remaining: 100,
-        tone: "blue",
-      },
 
-      {
-        id: crypto.randomUUID(),
-        name: "Personal Spending",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "lavender",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Savings & Investments",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "peach",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Healthcare",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "pink",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Other",
-        icon: "●",
-        limit: 300,
-        remaining: 100,
-        tone: "blue",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Wellness",
-        icon: "✦",
-        limit: 160,
-        remaining: 100,
-        tone: "mint",
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Entertainment",
-        icon: "●",
-        limit: 100,
-        remaining: 100,
-        tone: "coral",
-      },
-    ];
+  const [focusMonth, setFocusMonth] = useState<string>(() => {
+    const fallback = dayjs().format("YYYY-MM");
+    try {
+      const stored = localStorage.getItem("focusMonth");
+      const parsed = stored ? JSON.parse(stored) : fallback;
+      // Check if the parsed value is in the correct format (YYYY-MM)
+      // If not, return the fallback value
+      return /^\d{4}-\d{2}$/.test(parsed) ? parsed : fallback;
+    } catch {
+      return fallback;
+    }
+  });
+  const handleFocusMonthChange = (newMonth: string) => {
+    setFocusMonth(newMonth);
   };
   const [budgets, setBudgets] = useState<Budget[]>(() => {
     try {
@@ -227,7 +172,8 @@ function App() {
     localStorage.setItem("accountName", JSON.stringify(accountName));
     localStorage.setItem("currency", JSON.stringify(currency));
     localStorage.setItem("budgets", JSON.stringify(budgets));
-  }, [transactions, accountName, currency, budgets]);
+    localStorage.setItem("focusMonth", JSON.stringify(focusMonth));
+  }, [transactions, accountName, currency, budgets, focusMonth]);
 
   return (
     <>
@@ -235,7 +181,9 @@ function App() {
         <AddTransaction
           setAddTransaction={setIsAddTransactionOpen}
           setTransactions={setTransactions}
-          setShowAddedTransactionNotification={setShowAddedTransactionNotification}
+          setShowAddedTransactionNotification={
+            setShowAddedTransactionNotification
+          }
           currency={currency}
         />
       )}
@@ -244,7 +192,9 @@ function App() {
           setEditTransaction={setIsEditTransactionOpen}
           transactionToEdit={TransactionToEdit}
           setTransactions={setTransactions}
-          setShowEditTransactionNotification={setShowEditTransactionNotification}
+          setShowEditTransactionNotification={
+            setShowEditTransactionNotification
+          }
           currency={currency}
         />
       )}
@@ -270,7 +220,9 @@ function App() {
               setTransactions={setTransactions}
               setIsAddTransactionOpen={setIsAddTransactionOpen}
               handleEditTransaction={handleEditTransaction}
-              setShowDeleteTransactionNotification={setShowDeleteTransactionNotification}
+              setShowDeleteTransactionNotification={
+                setShowDeleteTransactionNotification
+              }
               typeFilter={typeFilter}
               categoryFilter={categoryFilter}
               filteredSortedTransactions={filteredSortedTransactions}
@@ -291,6 +243,9 @@ function App() {
               setAccountName={setAccountName}
               currency={currency}
               setCurrency={setCurrency}
+              focusMonth={focusMonth}
+              handleFocusMonthChange={handleFocusMonthChange}
+              transactions={transactions}
             />
           }
         />

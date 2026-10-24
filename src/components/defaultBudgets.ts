@@ -1,0 +1,77 @@
+export const createdDefaultBudgets = () => {
+    return [
+      {
+        id: crypto.randomUUID(),
+        name: "Housing",
+        icon: "◎",
+        limit: 2000,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Food",
+        icon: "▣",
+        limit: 540,
+        remaining: 100,
+        tone: "coral",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Transportation",
+        icon: "✦",
+        limit: 180,
+        remaining: 100,
+        tone: "blue",
+      },
+
+      {
+        id: crypto.randomUUID(),
+        name: "Personal Spending",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "lavender",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Savings & Investments",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "peach",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Healthcare",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "pink",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Other",
+        icon: "●",
+        limit: 300,
+        remaining: 100,
+        tone: "blue",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Wellness",
+        icon: "✦",
+        limit: 160,
+        remaining: 100,
+        tone: "mint",
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Entertainment",
+        icon: "●",
+        limit: 100,
+        remaining: 100,
+        tone: "coral",
+      },
+    ];
+  };

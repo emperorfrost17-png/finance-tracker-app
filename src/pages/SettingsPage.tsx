@@ -1,27 +1,47 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
+import { useNavigate } from "react-router";
 import { useState } from "react";
+import dayjs from "dayjs";
 import "./SettingsPage.css";
+import type { Transaction } from "../App";
 
 interface SettingsPageProps {
   accountName: string;
   setAccountName: (name: string) => void;
   currency: string;
   setCurrency: (currency: string) => void;
+  focusMonth: string;
+  handleFocusMonthChange: (month: string) => void;
+  transactions: Transaction[];
 }
 export function SettingsPage({
   accountName,
   setAccountName,
   currency,
   setCurrency,
+  focusMonth,
+  handleFocusMonthChange,
+  transactions,
 }: SettingsPageProps) {
   const [resetConfirmation, setResetConfirmation] = useState(false);
+  const navigate = useNavigate();
+
   const handleResetData = () => {
     localStorage.clear();
     setResetConfirmation(false);
+    navigate("/");
     window.location.reload();
-    console.log("Data reset");
-  }
+  };
+  const monthOptions = Array.from(
+    new Set([
+      dayjs().format("YYYY-MM"),
+      focusMonth,
+      ...transactions.map((t) => dayjs(t.date).format("YYYY-MM")),
+    ]),
+  )
+    .sort()
+    .reverse(); // newest first
   return (
     <main className="App settings-page">
       <Sidebar />
@@ -80,12 +100,22 @@ export function SettingsPage({
                   <strong>Focus month</strong>
                   <span>The month shown on your overview</span>
                 </div>
-                <input
-                  type="month"
-                  className="settings-value settings-month"
-                  defaultValue="2026-10"
-                  aria-label="Focus month"
-                />
+                <select
+                  className="settings-value settings-select"
+                  aria-label="Select focus month"
+                  value={dayjs(focusMonth).month()}
+                  onChange={(e) =>
+                    handleFocusMonthChange(
+                      dayjs().month(parseInt(e.target.value)).format("YYYY-MM"),
+                    )
+                  }
+                >
+                  {monthOptions.map((month) => (
+                    <option key={month} value={dayjs(month).month()}>
+                      {dayjs(month).format("MMMM YYYY")}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </section>
@@ -101,19 +131,31 @@ export function SettingsPage({
             {resetConfirmation ? (
               <div className="reset-confirmation">
                 <p>Are you sure you want to reset your data?</p>
-                <button type="button" className="reset-confirmation__confirm" onClick={handleResetData}>
+                <button
+                  type="button"
+                  className="reset-confirmation__confirm"
+                  onClick={handleResetData}
+                >
                   Yes, reset data
                 </button>
-                <button type="button" className="reset-confirmation__cancel" onClick={() => setResetConfirmation(false)}>
+                <button
+                  type="button"
+                  className="reset-confirmation__cancel"
+                  onClick={() => setResetConfirmation(false)}
+                >
                   Cancel
                 </button>
               </div>
             ) : (
-              <button type="button" className="reset-control" onClick={() => setResetConfirmation(true)}>
+              <button
+                type="button"
+                className="reset-control"
+                onClick={() => setResetConfirmation(true)}
+              >
                 <i className="fa-solid fa-rotate-left" aria-hidden="true"></i>
                 <span>Reset data</span>
               </button>
-            )}  
+            )}
           </section>
 
           <p className="settings-privacy">
