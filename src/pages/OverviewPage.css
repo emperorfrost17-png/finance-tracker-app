@@ -69,16 +69,50 @@
 }
 .month-select {
   display: flex;
-  gap: 9px;
+  gap: 8px;
   align-items: center;
-  padding: 8px 12px;
+  min-height: 40px;
+  padding: 0 12px;
   border: 1px solid #e7e0d6;
-  border-radius: 18px;
+  border-radius: 20px;
   color: #6b8580;
   background: #fffdfa;
 }
-.month-select span:first-child {
-  color: #6e8984;
+.month-select > i:first-child {
+  color: #78918d;
+  font-size: 13px;
+}
+.month-select > i:last-child {
+  color: #78918d;
+  font-size: 10px;
+  pointer-events: none;
+}
+.month-select select {
+  width: 140px;
+  flex: 0 0 140px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #6b8580;
+  background: transparent;
+  font: 700 12px var(--font-body);
+  cursor: pointer;
+  appearance: none;
+}
+.month-select:focus-within {
+  border-color: #8eb4a8;
+  box-shadow: 0 0 0 3px rgba(40, 115, 102, 0.1);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 .add-button {
   min-height: 40px;
@@ -316,6 +350,18 @@
 .category-dot--lavender,
 .category-bar--lavender {
   background: #a78bca;
+}
+.category-dot--peach,
+.category-bar--peach {
+  background: #d79c57;
+}
+.category-dot--pink,
+.category-bar--pink {
+  background: #bd92a2;
+}
+.category-dot--mint,
+.category-bar--mint {
+  background: #5f9b8e;
 }
 .category-bar {
   position: relative;

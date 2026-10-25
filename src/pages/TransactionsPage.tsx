@@ -79,7 +79,7 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              {filteredSortedTransactions.length === transactions.length ? (
+              {filteredSortedTransactions.length === transactions.filter((t) => dayjs(t.date).isSame(focusMonth, "month")).length ? (
                 <p>{filteredSortedTransactions.length} entries in your space</p>
               ) : (
                 <p>

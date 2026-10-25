@@ -141,7 +141,9 @@ function App() {
             .toLowerCase()
             .includes(searchQuery.toLowerCase()));
 
-      return typeMatches && categoryMatches && searchMatches;
+            const focusMonthMatches = dayjs(transaction.date).isSame(focusMonth, "month");
+
+      return typeMatches && categoryMatches && searchMatches && focusMonthMatches;
     });
   };
 
@@ -210,6 +212,7 @@ function App() {
               currency={currency}
               budgets={budgets}
               focusMonth={focusMonth}
+              onFocusMonthChange={handleFocusMonthChange}
             />
           }
         />

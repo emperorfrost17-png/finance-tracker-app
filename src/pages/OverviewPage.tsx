@@ -17,6 +17,7 @@ interface OverviewPageProps {
   currency: string;
   budgets: Budget[];
   focusMonth: string;
+  onFocusMonthChange: (month: string) => void;
 }
 export function OverviewPage({
   transactions,
@@ -26,6 +27,7 @@ export function OverviewPage({
   currency,
   budgets,
   focusMonth,
+  onFocusMonthChange,
 }: OverviewPageProps) {
   const monthExpenses = transactions
     .filter(
@@ -69,6 +71,15 @@ export function OverviewPage({
   const transactionsThisMonth = sortedTransactions.filter((t) =>
     dayjs(t.date).isSame(dayjs(focusMonth), "month"),
   );
+  const focusMonthOptions = Array.from(
+    new Set([
+      dayjs().format("YYYY-MM"),
+      focusMonth,
+      ...transactions.map((transaction) =>
+        dayjs(transaction.date).format("YYYY-MM"),
+      ),
+    ]),
+  ).sort().reverse();
   
   return (
     <main className="App overview-page">
@@ -90,6 +101,22 @@ export function OverviewPage({
               </h1>
             </div>
             <div className="overview-actions">
+              <label className="month-select">
+                <i className="fa-regular fa-calendar" aria-hidden="true" />
+                <span className="visually-hidden">Focus month</span>
+                <select
+                  aria-label="Select focus month"
+                  value={focusMonth}
+                  onChange={(event) => onFocusMonthChange(event.target.value)}
+                >
+                  {focusMonthOptions.map((month) => (
+                    <option key={month} value={month}>
+                      {dayjs(`${month}-01`).format("MMMM YYYY")}
+                    </option>
+                  ))}
+                </select>
+                <i className="fa-solid fa-chevron-down" aria-hidden="true" />
+              </label>
               <button
                 className="add-button"
                 type="button"
@@ -110,7 +137,7 @@ export function OverviewPage({
                 >
                   {onTrack ? "On track" : "Over budget"}
                 </span>{" "}
-                for your {dayjs().format("MMMM")} budget
+                for your {dayjs(focusMonth).format("MMMM")} budget
               </p>
             </div>
             <div className="balance-stats">

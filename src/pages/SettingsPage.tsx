@@ -1,6 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
-import { useNavigate } from "react-router";
 import { useState } from "react";
 import dayjs from "dayjs";
 import "./SettingsPage.css";
@@ -25,14 +24,21 @@ export function SettingsPage({
   transactions,
 }: SettingsPageProps) {
   const [resetConfirmation, setResetConfirmation] = useState(false);
-  const navigate = useNavigate();
 
-  const handleResetData = () => {
-    localStorage.clear();
-    setResetConfirmation(false);
-    navigate("/");
-    window.location.reload();
-  };
+  // List of all localStorage keys used by the app
+  const APP_STORAGE_KEYS = [
+  "transactions",
+  "accountName",
+  "currency",
+  "budgets",
+  "focusMonth",
+];
+
+const handleResetData = () => {
+  // Clear all relevant data from localStorage
+  APP_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+   window.location.assign("/");
+};
   const monthOptions = Array.from(
     new Set([
       dayjs().format("YYYY-MM"),
@@ -103,16 +109,12 @@ export function SettingsPage({
                 <select
                   className="settings-value settings-select"
                   aria-label="Select focus month"
-                  value={dayjs(focusMonth).month()}
-                  onChange={(e) =>
-                    handleFocusMonthChange(
-                      dayjs().month(parseInt(e.target.value)).format("YYYY-MM"),
-                    )
-                  }
+                  value={focusMonth}
+                  onChange={(e) => handleFocusMonthChange(e.target.value)}
                 >
                   {monthOptions.map((month) => (
-                    <option key={month} value={dayjs(month).month()}>
-                      {dayjs(month).format("MMMM YYYY")}
+                    <option key={month} value={month}>
+                       {dayjs(`${month}-01`).format("MMMM YYYY")}
                     </option>
                   ))}
                 </select>

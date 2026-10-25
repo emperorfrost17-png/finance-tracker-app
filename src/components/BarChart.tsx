@@ -46,7 +46,7 @@ export const BarChart = ({
     )
     .reduce((sum, t) => sum + t.amount.expense, 0);
 
-  const lastMonth = dayjs().subtract(1, "month");
+  const lastMonth = dayjs(focusMonth).subtract(1, "month");
 
   const lastMonthTotalSpending = transactions
     .filter((t) => {
