@@ -16,6 +16,7 @@ interface OverviewPageProps {
   sortedTransactions: Transaction[];
   currency: string;
   budgets: Budget[];
+  focusMonth: string;
 }
 export function OverviewPage({
   transactions,
@@ -24,6 +25,7 @@ export function OverviewPage({
   sortedTransactions,
   currency,
   budgets,
+  focusMonth,
 }: OverviewPageProps) {
   const monthExpenses = transactions
     .filter(
@@ -166,7 +168,7 @@ export function OverviewPage({
                     .filter(
                       (t) =>
                         t.amount.expense > 0 &&
-                        dayjs(t.date).isSame(dayjs(), "month"),
+                        dayjs(t.date).isSame(dayjs(focusMonth), "month"),
                     )
                     .forEach((t) => {
                       if (!byCategory[t.category]) {

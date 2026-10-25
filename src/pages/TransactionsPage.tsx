@@ -25,6 +25,7 @@ interface TransactionsPageProps {
   accountName: string;
   filteredSortedTransactions: Transaction[];
   currency: string;
+  focusMonth: string;
 }
 export function TransactionsPage({
   transactions,
@@ -41,6 +42,7 @@ export function TransactionsPage({
   accountName,
   currency,
   filteredSortedTransactions,
+  focusMonth,
 }: TransactionsPageProps) {
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -167,7 +169,8 @@ export function TransactionsPage({
             </div>
             {filteredSortedTransactions.length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
-              {filteredSortedTransactions.map((transaction: Transaction, index: number) => (
+              { filteredSortedTransactions.map((transaction: Transaction, index: number) =>
+              focusMonth === dayjs(transaction.date).format("YYYY-MM") && (
                 <li
                   className="transaction-row"
                   key={transaction.id}

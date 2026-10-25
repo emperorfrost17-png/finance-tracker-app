@@ -209,6 +209,7 @@ function App() {
               accountName={accountName}
               currency={currency}
               budgets={budgets}
+              focusMonth={focusMonth}
             />
           }
         />
@@ -232,6 +233,7 @@ function App() {
               setSearchQuery={setSearchQuery}
               accountName={accountName}
               currency={currency}
+              focusMonth={focusMonth}
             />
           }
         />
