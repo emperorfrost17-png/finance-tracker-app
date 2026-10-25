@@ -260,6 +260,7 @@ function App() {
               currency={currency}
               budgets={budgets}
               setBudgets={setBudgets}
+              focusMonth={focusMonth}
             />
           }
         />

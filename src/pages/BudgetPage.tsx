@@ -12,6 +12,7 @@ interface BudgetProps {
   currency: string;
   budgets: Budget[];
   setBudgets: (prevBudgets: Budget[] | ((prev: Budget[]) => Budget[])) => void;
+  focusMonth: string;
 }
 
 export function BudgetPage({
@@ -20,6 +21,7 @@ export function BudgetPage({
   currency,
   budgets,
   setBudgets,
+  focusMonth,
 }: BudgetProps) {
   const handleBudgetLimitChange = (
     budgetId: string,
@@ -34,7 +36,7 @@ export function BudgetPage({
     );
   };
   const isThisMonth = (t: Transaction) =>
-    dayjs(t.date).isSame(dayjs(), "month");
+    dayjs(t.date).isSame(dayjs(focusMonth), "month");
 
   const totalBudgetLimitForMonth = budgets.reduce(
     (sum, budget) => sum + budget.limit,

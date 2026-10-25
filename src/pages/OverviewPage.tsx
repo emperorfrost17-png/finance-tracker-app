@@ -29,12 +29,12 @@ export function OverviewPage({
 }: OverviewPageProps) {
   const monthExpenses = transactions
     .filter(
-      (t) => t.type === "Expense" && dayjs(t.date).isSame(dayjs(), "month"),
+      (t) => t.type === "Expense" && dayjs(t.date).isSame(dayjs(focusMonth), "month"),
     )
     .reduce((sum, t) => sum + t.amount.expense, 0);
   const totalIncomeForMonth = transactions
     .filter(
-      (t) => t.type === "Income" && dayjs(t.date).isSame(dayjs(), "month"),
+      (t) => t.type === "Income" && dayjs(t.date).isSame(dayjs(focusMonth), "month"),
     )
     .reduce((sum, t) => sum + t.amount.income, 0);
   const availableBalanceForMonth = totalIncomeForMonth - monthExpenses;
@@ -47,7 +47,7 @@ export function OverviewPage({
           (t) =>
             t.category === budget.name &&
             t.type === "Expense" &&
-            dayjs(t.date).isSame(dayjs(), "month"),
+            dayjs(t.date).isSame(dayjs(focusMonth), "month"),
         )
         .reduce((total, t) => total + t.amount.expense, 0);
       return { ...budget, spent };
@@ -66,8 +66,8 @@ export function OverviewPage({
     if (isNight) return "Good night";
     return "Hello";
   };
-  const transactionsThisMonth = transactions.filter((t) =>
-    dayjs(t.date).isSame(dayjs(), "month"),
+  const transactionsThisMonth = sortedTransactions.filter((t) =>
+    dayjs(t.date).isSame(dayjs(focusMonth), "month"),
   );
   
   return (
@@ -143,7 +143,7 @@ export function OverviewPage({
           </section>
 
           <div className="overview-grid overview-grid--top">
-            <BarChart transactions={transactions} currency={currency} />
+            <BarChart transactions={transactions} currency={currency} focusMonth={focusMonth} />
 
             <section className="dashboard-panel category-panel">
               <div className="panel-heading">
@@ -305,7 +305,7 @@ export function OverviewPage({
                     </button>
                   </div>
                 ) : (
-                  sortedTransactions.slice(0, 5).map((transaction, index) => (
+                  transactionsThisMonth.slice(0, 5).map((transaction, index) => (
                     <div
                       className="activity-row"
                       key={transaction.id}

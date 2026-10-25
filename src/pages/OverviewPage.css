@@ -333,7 +333,7 @@
   z-index: 0;
   content: "";
   display: block;
-  height: 5px;
+  height: 10px;
   border-radius: 5px;
   background: #eeeae1;
 }

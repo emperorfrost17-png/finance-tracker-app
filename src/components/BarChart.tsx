@@ -16,9 +16,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 export const BarChart = ({
   transactions,
   currency,
+  focusMonth,
 }: {
   transactions: Transaction[];
   currency: string;
+  focusMonth: string;
 }) => {
   const today = dayjs();
 
@@ -33,14 +35,14 @@ export const BarChart = ({
       .filter(
         (t) =>
           dayjs(t.date).date() === parseInt(day) &&
-          dayjs(t.date).isSame(dayjs(), "month") &&
+          dayjs(t.date).isSame(focusMonth, "month") &&
           t.type === "Expense",
       )
       .reduce((sum, t) => sum + t.amount.expense, 0);
   });
   const currentMonthTotalSpending = transactions
     .filter(
-      (t) => dayjs(t.date).isSame(dayjs(), "month") && t.type === "Expense",
+      (t) => dayjs(t.date).isSame(focusMonth, "month") && t.type === "Expense",
     )
     .reduce((sum, t) => sum + t.amount.expense, 0);
 
