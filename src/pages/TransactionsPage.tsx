@@ -70,7 +70,13 @@ export function TransactionsPage({
       ),
     );
   };
+const monthTransactions = transactions.filter((t) =>
+  dayjs(t.date).isSame(dayjs(focusMonth), "month"),
+);
 
+const visibleTransactions = filteredSortedTransactions.filter((t) =>
+  dayjs(t.date).isSame(dayjs(focusMonth), "month"),
+);
   return (
     <main className="App transactions-page">
       <Sidebar />
@@ -79,14 +85,14 @@ export function TransactionsPage({
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              {filteredSortedTransactions.length === transactions.filter((t) => dayjs(t.date).isSame(focusMonth, "month")).length ? (
-                <p>{filteredSortedTransactions.length} entries in your space</p>
-              ) : (
-                <p>
-                  {filteredSortedTransactions.length} of {transactions.length} entries
-                  in your space
-                </p>
-              )}
+              {visibleTransactions.length === monthTransactions.length ? (
+  <p>{visibleTransactions.length} entries in {dayjs(focusMonth).format("MMMM")}</p>
+) : (
+  <p>
+    {visibleTransactions.length} of {monthTransactions.length} entries in{" "}
+    {dayjs(focusMonth).format("MMMM")}
+  </p>
+)}
               <h2>Transactions</h2>
             </div>
             <button
@@ -170,7 +176,7 @@ export function TransactionsPage({
             {filteredSortedTransactions.length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
               { filteredSortedTransactions.map((transaction: Transaction, index: number) =>
-              focusMonth === dayjs(transaction.date).format("YYYY-MM") && (
+            (
                 <li
                   className="transaction-row"
                   key={transaction.id}
