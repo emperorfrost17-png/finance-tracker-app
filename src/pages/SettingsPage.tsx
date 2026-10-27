@@ -14,6 +14,14 @@ interface SettingsPageProps {
   handleFocusMonthChange: (month: string) => void;
   transactions: Transaction[];
 }
+// List of all localStorage keys used by the app
+const APP_STORAGE_KEYS = [
+  "transactions",
+  "accountName",
+  "currency",
+  "budgets",
+  "focusMonth",
+];
 export function SettingsPage({
   accountName,
   setAccountName,
@@ -25,20 +33,11 @@ export function SettingsPage({
 }: SettingsPageProps) {
   const [resetConfirmation, setResetConfirmation] = useState(false);
 
-  // List of all localStorage keys used by the app
-  const APP_STORAGE_KEYS = [
-  "transactions",
-  "accountName",
-  "currency",
-  "budgets",
-  "focusMonth",
-];
-
-const handleResetData = () => {
-  // Clear all relevant data from localStorage
-  APP_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-   window.location.assign("/");
-};
+  const handleResetData = () => {
+    // Clear all relevant data from localStorage
+    APP_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+    window.location.assign("/");
+  };
   const monthOptions = Array.from(
     new Set([
       dayjs().format("YYYY-MM"),
@@ -114,7 +113,7 @@ const handleResetData = () => {
                 >
                   {monthOptions.map((month) => (
                     <option key={month} value={month}>
-                       {dayjs(`${month}-01`).format("MMMM YYYY")}
+                      {dayjs(`${month}-01`).format("MMMM YYYY")}
                     </option>
                   ))}
                 </select>

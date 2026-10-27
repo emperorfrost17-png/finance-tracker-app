@@ -23,9 +23,11 @@ export const BarChart = ({
   focusMonth: string;
 }) => {
   const today = dayjs();
+  const focusMonthDate = dayjs(focusMonth);
+  const isCurrentMonth = focusMonthDate.isSame(today, "month");
 
   //? Generate an array of days for the current month (1 to daysInMonth)
-  const days = Array.from({ length: today.daysInMonth() }, (_, i) =>
+  const days = Array.from({ length: focusMonthDate.daysInMonth() }, (_, i) =>
     (i + 1).toString(),
   );
   //! Calculate daily spending for each day of the month
@@ -51,10 +53,11 @@ export const BarChart = ({
   const lastMonthTotalSpending = transactions
     .filter((t) => {
       const d = dayjs(t.date);
+      const cutOff = isCurrentMonth ? today.date() : focusMonthDate.daysInMonth();
       return (
         t.type === "Expense" &&
         d.isSame(lastMonth, "month") &&
-        d.date() <= today.date()
+        d.date() <= cutOff
       );
     })
     .reduce((sum, t) => sum + t.amount.expense, 0);
@@ -74,7 +77,9 @@ export const BarChart = ({
         data: dailySpending,
         backgroundColor: days.map((_, index) =>
           // Highlight the last 7 days of the month with a different color
-          index >= Math.max(0, today.date() - 7) && index < today.date()
+          isCurrentMonth &&
+          index >= Math.max(0, today.date() - 7) &&
+          index < today.date()
             ? "#f8c45c"
             : "#f7e7c8",
         ),
@@ -101,7 +106,7 @@ export const BarChart = ({
         bodyFont: { family: "DM Sans", size: 12, weight: "bold" },
         callbacks: {
           title: (items) =>
-            dayjs().date(Number(items[0].label)).format("MMM D"),
+            focusMonthDate.date(Number(items[0].label)).format("MMM D"),
           label: (context) => formatMoney(context.parsed.y ?? 0, currency),
         },
       },
@@ -132,7 +137,7 @@ export const BarChart = ({
     <section className="dashboard-panel spending-panel">
       <div className="panel-heading">
         <div>
-          <span className="panel-kicker">This month</span>
+          <span className="panel-kicker">{isCurrentMonth ? "This month" : focusMonthDate.format("MMMM YYYY")}</span>
           <h2>Spending rhythm</h2>
         </div>
         <span className="panel-note">
@@ -147,8 +152,10 @@ export const BarChart = ({
                   }
                 />
               </span>{" "}
-              {Math.abs(spendingChangePercentage).toFixed(1)}% vs same point
-              last month
+              {Math.abs(spendingChangePercentage).toFixed(1)}% 
+              {isCurrentMonth
+                ? " vs same point last month"
+                : " vs last month"}
             </>
           ) : (
             "No data for last month yet"
@@ -167,7 +174,11 @@ export const BarChart = ({
           <i /> Daily spending
         </span>
         <span>
-          <i /> Recent days
+          {isCurrentMonth && (
+            <>
+              <i /> Recent days
+            </>
+          )}
         </span>
       </div>
     </section>

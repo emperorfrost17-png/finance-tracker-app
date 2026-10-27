@@ -5,7 +5,6 @@ export const createdDefaultBudgets = () => {
         name: "Housing",
         icon: "◎",
         limit: 2000,
-        remaining: 100,
         tone: "blue",
       },
       {
@@ -13,7 +12,6 @@ export const createdDefaultBudgets = () => {
         name: "Food",
         icon: "▣",
         limit: 540,
-        remaining: 100,
         tone: "coral",
       },
       {
@@ -21,7 +19,6 @@ export const createdDefaultBudgets = () => {
         name: "Transportation",
         icon: "✦",
         limit: 180,
-        remaining: 100,
         tone: "blue",
       },
 
@@ -30,7 +27,6 @@ export const createdDefaultBudgets = () => {
         name: "Personal Spending",
         icon: "●",
         limit: 300,
-        remaining: 100,
         tone: "lavender",
       },
       {
@@ -38,7 +34,6 @@ export const createdDefaultBudgets = () => {
         name: "Savings & Investments",
         icon: "●",
         limit: 300,
-        remaining: 100,
         tone: "peach",
       },
       {
@@ -46,7 +41,6 @@ export const createdDefaultBudgets = () => {
         name: "Healthcare",
         icon: "●",
         limit: 300,
-        remaining: 100,
         tone: "pink",
       },
       {
@@ -54,7 +48,6 @@ export const createdDefaultBudgets = () => {
         name: "Other",
         icon: "●",
         limit: 300,
-        remaining: 100,
         tone: "blue",
       },
       {
@@ -62,7 +55,6 @@ export const createdDefaultBudgets = () => {
         name: "Wellness",
         icon: "✦",
         limit: 160,
-        remaining: 100,
         tone: "mint",
       },
       {
@@ -70,7 +62,6 @@ export const createdDefaultBudgets = () => {
         name: "Entertainment",
         icon: "●",
         limit: 100,
-        remaining: 100,
         tone: "coral",
       },
     ];

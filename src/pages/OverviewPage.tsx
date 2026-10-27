@@ -31,12 +31,15 @@ export function OverviewPage({
 }: OverviewPageProps) {
   const monthExpenses = transactions
     .filter(
-      (t) => t.type === "Expense" && dayjs(t.date).isSame(dayjs(focusMonth), "month"),
+      (t) =>
+        t.type === "Expense" &&
+        dayjs(t.date).isSame(dayjs(focusMonth), "month"),
     )
     .reduce((sum, t) => sum + t.amount.expense, 0);
   const totalIncomeForMonth = transactions
     .filter(
-      (t) => t.type === "Income" && dayjs(t.date).isSame(dayjs(focusMonth), "month"),
+      (t) =>
+        t.type === "Income" && dayjs(t.date).isSame(dayjs(focusMonth), "month"),
     )
     .reduce((sum, t) => sum + t.amount.income, 0);
   const availableBalanceForMonth = totalIncomeForMonth - monthExpenses;
@@ -56,18 +59,9 @@ export function OverviewPage({
     })
     .sort((a, b) => b.spent - a.spent) // highest spent first
     .slice(0, 4);
-  const isMorning = dayjs().hour() >= 5 && dayjs().hour() < 12;
-  const isAfternoon = dayjs().hour() >= 12 && dayjs().hour() < 17;
-  const isEvening = dayjs().hour() >= 17 && dayjs().hour() < 21;
-  const isNight = dayjs().hour() >= 21 || dayjs().hour() < 5;
 
-  const greeting = () => {
-    if (isMorning) return "Good morning";
-    if (isAfternoon) return "Good afternoon";
-    if (isEvening) return "Good evening";
-    if (isNight) return "Good night";
-    return "Hello";
-  };
+    const hour = dayjs().hour();
+  const greeting = hour >= 5 && hour < 12 ? "Good morning" : hour >= 12 && hour < 18 ? "Good afternoon" : hour >= 18 && hour < 22 ? "Good evening" : "Good night";
   const transactionsThisMonth = sortedTransactions.filter((t) =>
     dayjs(t.date).isSame(dayjs(focusMonth), "month"),
   );
@@ -79,8 +73,10 @@ export function OverviewPage({
         dayjs(transaction.date).format("YYYY-MM"),
       ),
     ]),
-  ).sort().reverse();
-  
+  )
+    .sort()
+    .reverse();
+
   return (
     <main className="App overview-page">
       <Sidebar />
@@ -92,7 +88,7 @@ export function OverviewPage({
           <section className="welcome-row">
             <div>
               <p className="welcome-eyebrow">
-                {greeting()}, {accountName}
+                {greeting}, {accountName}
               </p>
               <h1>
                 A clearer month
@@ -110,8 +106,9 @@ export function OverviewPage({
                   onChange={(event) => onFocusMonthChange(event.target.value)}
                 >
                   {focusMonthOptions.map((month) => (
+                    // \u00a0 is for  Add a non-breaking space before and after the month name for better spacing in the dropdown
                     <option key={month} value={month}>
-                      {dayjs(`${month}-01`).format("MMMM YYYY")}
+                      {`\u00a0${dayjs(`${month}-01`).format("MMMM YYYY")}\u00a0`}
                     </option>
                   ))}
                 </select>
@@ -170,7 +167,11 @@ export function OverviewPage({
           </section>
 
           <div className="overview-grid overview-grid--top">
-            <BarChart transactions={transactions} currency={currency} focusMonth={focusMonth} />
+            <BarChart
+              transactions={transactions}
+              currency={currency}
+              focusMonth={focusMonth}
+            />
 
             <section className="dashboard-panel category-panel">
               <div className="panel-heading">
@@ -315,7 +316,7 @@ export function OverviewPage({
                 </Link>
               </div>
               <div className="activity-list">
-                {transactions.length === 0 ? (
+                {transactionsThisMonth.length === 0 ? (
                   <div className="activity-empty">
                     <span className="activity-empty-icon" aria-hidden="true">
                       <i className="fa-solid fa-arrow-right-arrow-left" />
@@ -332,39 +333,45 @@ export function OverviewPage({
                     </button>
                   </div>
                 ) : (
-                  transactionsThisMonth.slice(0, 5).map((transaction, index) => (
-                    <div
-                      className="activity-row"
-                      key={transaction.id}
-                      style={{
-                        animationDelay: `${Math.min(index * 35, 280)}ms`,
-                      }}
-                    >
-                      <span
-                        className={`activity-icon activity-icon--${transaction.tone}`}
+                  transactionsThisMonth
+                    .slice(0, 5)
+                    .map((transaction, index) => (
+                      <div
+                        className="activity-row"
+                        key={transaction.id}
+                        style={{
+                          animationDelay: `${Math.min(index * 35, 280)}ms`,
+                        }}
                       >
-                        <i
-                          className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
-                        />
-                      </span>
-                      <div>
-                        <strong>{transaction.title}</strong>
-                        <small>{transaction.note}</small>
-                      </div>
-                      <div className="activity-amount">
-                        <strong
-                          className={
-                            transaction.amount.income > 0 ? "income" : "expense"
-                          }
+                        <span
+                          className={`activity-icon activity-icon--${transaction.tone}`}
                         >
-                          {transaction.amount.expense > 0
-                            ? `-${formatMoney(transaction.amount.expense, currency)}`
-                            : `+${formatMoney(transaction.amount.income, currency)}`}
-                        </strong>
-                        <small>{dayjs(transaction.date).format("MMM D")}</small>
+                          <i
+                            className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+                          />
+                        </span>
+                        <div>
+                          <strong>{transaction.title}</strong>
+                          <small>{transaction.note}</small>
+                        </div>
+                        <div className="activity-amount">
+                          <strong
+                            className={
+                              transaction.amount.income > 0
+                                ? "income"
+                                : "expense"
+                            }
+                          >
+                            {transaction.amount.expense > 0
+                              ? `-${formatMoney(transaction.amount.expense, currency)}`
+                              : `+${formatMoney(transaction.amount.income, currency)}`}
+                          </strong>
+                          <small>
+                            {dayjs(transaction.date).format("MMM D")}
+                          </small>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    ))
                 )}
               </div>
             </section>

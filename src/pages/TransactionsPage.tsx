@@ -14,7 +14,9 @@ interface TransactionsPageProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
-  setShowDeleteTransactionNotification: (showDeleteTransactionNotification: boolean) => void;
+  setShowDeleteTransactionNotification: (
+    showDeleteTransactionNotification: boolean,
+  ) => void;
   handleEditTransaction: (transaction: Transaction) => void;
   typeFilter: "All types" | "Expense" | "Income";
   categoryFilter: string;
@@ -70,13 +72,11 @@ export function TransactionsPage({
       ),
     );
   };
-const monthTransactions = transactions.filter((t) =>
-  dayjs(t.date).isSame(dayjs(focusMonth), "month"),
-);
+  const monthTransactions = transactions.filter((t) =>
+    dayjs(t.date).isSame(dayjs(focusMonth), "month"),
+  );
 
-const visibleTransactions = filteredSortedTransactions.filter((t) =>
-  dayjs(t.date).isSame(dayjs(focusMonth), "month"),
-);
+  
   return (
     <main className="App transactions-page">
       <Sidebar />
@@ -85,14 +85,17 @@ const visibleTransactions = filteredSortedTransactions.filter((t) =>
         <div className="transactions-content">
           <div className="transactions-intro">
             <div>
-              {visibleTransactions.length === monthTransactions.length ? (
-  <p>{visibleTransactions.length} entries in {dayjs(focusMonth).format("MMMM")}</p>
-) : (
-  <p>
-    {visibleTransactions.length} of {monthTransactions.length} entries in{" "}
-    {dayjs(focusMonth).format("MMMM")}
-  </p>
-)}
+              {filteredSortedTransactions.length === monthTransactions.length ? (
+                <p>
+                  {filteredSortedTransactions.length} entries in{" "}
+                  {dayjs(focusMonth).format("MMMM")}
+                </p>
+              ) : (
+                <p>
+                  {filteredSortedTransactions.length} of {monthTransactions.length}{" "}
+                  entries in {dayjs(focusMonth).format("MMMM")}
+                </p>
+              )}
               <h2>Transactions</h2>
             </div>
             <button
@@ -175,65 +178,66 @@ const visibleTransactions = filteredSortedTransactions.filter((t) =>
             </div>
             {filteredSortedTransactions.length === 0 && <NothingMatches />}
             <ul className="transaction-list" aria-label="Transaction list">
-              { filteredSortedTransactions.map((transaction: Transaction, index: number) =>
-            (
-                <li
-                  className="transaction-row"
-                  key={transaction.id}
-                  style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}
-                >
-                  <span
-                    className={`transaction-icon transaction-icon--${transaction.tone}`}
-                    aria-hidden="true"
+              {filteredSortedTransactions.map(
+                (transaction: Transaction, index: number) => (
+                  <li
+                    className="transaction-row"
+                    key={transaction.id}
+                    style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}
                   >
-                    <i
-                      className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
-                    />
-                  </span>
-                  <div className="transaction-info">
-                    <strong>{transaction.title}</strong>
-                    <small>
-                      <span>{transaction.merchant}</span>
-                      <span className="transaction-meta-separator">•</span>
-                      <span>{transaction.category}</span>
-                    </small>
-                    <p>{transaction.note}</p>
-                  </div>
-                  <div className="transaction-amount">
-                    <div className="transaction-amount-values">
-                      <strong
-                        className={
-                          transaction.amount.income > 0 ? "income" : "expense"
-                        }
-                      >
-                        {transaction.amount.income > 0
-                          ? `+${formatMoney(transaction.amount.income, currency)}`
-                          : `-${formatMoney(transaction.amount.expense, currency)}`}
-                      </strong>
-                      <small>{dayjs(transaction.date).format("MMM D")}</small>
+                    <span
+                      className={`transaction-icon transaction-icon--${transaction.tone}`}
+                      aria-hidden="true"
+                    >
+                      <i
+                        className={`fa-solid ${transaction.type === "Income" ? "fa-arrow-up" : "fa-arrow-down"}`}
+                      />
+                    </span>
+                    <div className="transaction-info">
+                      <strong>{transaction.title}</strong>
+                      <small>
+                        <span>{transaction.merchant}</span>
+                        <span className="transaction-meta-separator">•</span>
+                        <span>{transaction.category}</span>
+                      </small>
+                      <p>{transaction.note}</p>
                     </div>
-                    <button
-                      type="button"
-                      className="transaction-delete"
-                      aria-label={`Delete ${transaction.title}`}
-                      onClick={() => {
-                        handleDeleteTransaction(transaction.id);
-                        setShowDeleteTransactionNotification(true);
-                      }}
-                    >
-                      <i className="fa-regular fa-trash-can"></i>
-                    </button>
-                    <button
-                      type="button"
-                      className="transaction-edit"
-                      aria-label={`Edit ${transaction.title}`}
-                      onClick={() => handleEditTransaction(transaction)}
-                    >
-                      <i className="fa-regular fa-pen-to-square"></i>
-                    </button>
-                  </div>
-                </li>
-              ))}
+                    <div className="transaction-amount">
+                      <div className="transaction-amount-values">
+                        <strong
+                          className={
+                            transaction.amount.income > 0 ? "income" : "expense"
+                          }
+                        >
+                          {transaction.amount.income > 0
+                            ? `+${formatMoney(transaction.amount.income, currency)}`
+                            : `-${formatMoney(transaction.amount.expense, currency)}`}
+                        </strong>
+                        <small>{dayjs(transaction.date).format("MMM D")}</small>
+                      </div>
+                      <button
+                        type="button"
+                        className="transaction-delete"
+                        aria-label={`Delete ${transaction.title}`}
+                        onClick={() => {
+                          handleDeleteTransaction(transaction.id);
+                          setShowDeleteTransactionNotification(true);
+                        }}
+                      >
+                        <i className="fa-regular fa-trash-can"></i>
+                      </button>
+                      <button
+                        type="button"
+                        className="transaction-edit"
+                        aria-label={`Edit ${transaction.title}`}
+                        onClick={() => handleEditTransaction(transaction)}
+                      >
+                        <i className="fa-regular fa-pen-to-square"></i>
+                      </button>
+                    </div>
+                  </li>
+                ),
+              )}
             </ul>
           </section>
         </div>

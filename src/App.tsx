@@ -37,7 +37,6 @@ export interface Budget {
   name: string;
   icon: string;
   limit: number;
-  remaining: number;
   tone: string;
 }
 

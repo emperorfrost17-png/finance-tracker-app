@@ -46,6 +46,7 @@ export function BudgetPage({
   const spentBudgetForMonth = transactions
     .filter((transaction) => transaction.type === "Expense" && isThisMonth(transaction))
     .reduce((sum, transaction) => sum + transaction.amount.expense, 0);
+    
   const toneByCategory: Record<string, string> = {
     Housing: "#75a1ae",
     Transportation: "#75a1ae",

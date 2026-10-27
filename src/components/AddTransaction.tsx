@@ -105,7 +105,7 @@ export function AddTransaction({
 
     const newTransaction: Transaction = {
       id: crypto.randomUUID(),
-      title: title,
+      title: title.trim(),
       merchant: !merchant.trim() ? "Personal" : merchant,
       amount: {
         expense: type === "Expense" ? parsedAmount : 0,
