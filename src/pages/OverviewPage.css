@@ -327,6 +327,30 @@
   color: #819995;
   font: 12px var(--font-data);
 }
+.category-row small.text--coral {
+  color: #db765c;
+}
+.category-row small.text--gold {
+  color: #dca346;
+}
+.category-row small.text--blue {
+  color: #7189b5;
+}
+.category-row small.text--olive {
+  color: #9aaa68;
+}
+.category-row small.text--lavender {
+  color: #a78bca;
+}
+.category-row small.text--peach {
+  color: #d79c57;
+}
+.category-row small.text--pink {
+  color: #bd92a2;
+}
+.category-row small.text--mint {
+  color: #5f9b8e;
+}
 .category-dot {
   width: 7px;
   height: 7px;
@@ -420,6 +444,21 @@
 }
 .text--blue {
   color: #7189b5;
+}
+.text--olive {
+  color: #9aaa68;
+}
+.text--lavender {
+  color: #a78bca;
+}
+.text--peach {
+  color: #d79c57;
+}
+.text--pink {
+  color: #bd92a2;
+}
+.text--mint {
+  color: #5f9b8e;
 }
 .budget-track {
   height: 10px;

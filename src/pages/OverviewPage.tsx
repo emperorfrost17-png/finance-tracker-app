@@ -204,6 +204,10 @@ export function OverviewPage({
                       }
                       byCategory[t.category].amount += t.amount.expense;
                     });
+                    const budgetLimits: Record<string, number> = {};
+                  budgets.forEach((budget) => {
+                    budgetLimits[budget.name] = budget.limit;
+                  });
 
                   // Converts your object into an array of [key, value] pairs:
                   return (
@@ -230,12 +234,12 @@ export function OverviewPage({
                                 className={`category-dot category-dot--${data.tone}`}
                               />
                               <strong>{category}</strong>
-                              <small>
+                              <small className={ data.amount >= budgetLimits[category] ? `text--coral` : `text--${data.tone}` }>
                                 {formatMoney(data.amount, currency)}
                               </small>
                             </div>
                             <span
-                              className={`category-bar category-bar--${data.tone}`}
+                              className={data.amount >= budgetLimits[category] ? `category-bar category-bar--coral` : `category-bar category-bar--${data.tone}`}
                               style={{ width: `${progressPercent}%` }}
                             />
                           </div>
