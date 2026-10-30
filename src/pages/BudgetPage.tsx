@@ -80,7 +80,7 @@ export function BudgetPage({
           <section className="budget-summary">
             <div className="summary-card">
               <i>◎</i>
-              <span>Planned this month</span>
+              <span><b>Monthly budget</b>  (Limits apply to every month.)</span>
               <strong>{formatMoney(totalBudgetLimitForMonth, currency)}</strong>
             </div>
             <div className="summary-card">
