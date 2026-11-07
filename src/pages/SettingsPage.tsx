@@ -9,7 +9,7 @@ interface SettingsPageProps {
   accountName: string;
   setAccountName: (name: string) => void;
   currency: string;
-  setCurrency: (currency: string) => void;
+  handleCurrencyChange: (newCurrency: string) => void;
   focusMonth: string;
   handleFocusMonthChange: (month: string) => void;
   transactions: Transaction[];
@@ -26,10 +26,10 @@ export function SettingsPage({
   accountName,
   setAccountName,
   currency,
-  setCurrency,
   focusMonth,
   handleFocusMonthChange,
   transactions,
+  handleCurrencyChange,
 }: SettingsPageProps) {
   const [resetConfirmation, setResetConfirmation] = useState(false);
 
@@ -90,7 +90,7 @@ export function SettingsPage({
                   className="settings-value settings-select"
                   aria-label="Select currency"
                   value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
+                  onChange={(e) => handleCurrencyChange(e.target.value)}
                 >
                   <option value="USD">USD — US Dollar</option>
                   <option value="EUR">EUR — Euro</option>
@@ -110,6 +110,7 @@ export function SettingsPage({
                   aria-label="Select focus month"
                   value={focusMonth}
                   onChange={(e) => handleFocusMonthChange(e.target.value)}
+                  
                 >
                   {monthOptions.map((month) => (
                     <option key={month} value={month}>

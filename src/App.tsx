@@ -41,6 +41,8 @@ export interface Budget {
 }
 
 function App() {
+  const apiKey = "36eed77c9d934277aeb4459d";
+  const api = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const storedTransactions = localStorage.getItem("transactions");
@@ -113,6 +115,53 @@ function App() {
 
     return createdDefaultBudgets();
   });
+  const handleCurrencyChange = async (newCurrency: string) => {
+    if (newCurrency === currency) return;
+    console.log(`Converting from ${currency} to ${newCurrency}`);
+
+    try {
+      const response = await fetch(api);
+      if (!response.ok) throw new Error("Could not load exchange rates");
+
+      const data: { conversion_rates: Record<string, number> } =
+        await response.json();
+
+      const fromRate = data.conversion_rates[currency];
+      const toRate = data.conversion_rates[newCurrency];
+
+      if (!fromRate || !toRate) {
+        throw new Error(
+          `Missing exchange rate for ${currency} or ${newCurrency}`,
+        );
+      }
+
+      const factor = toRate / fromRate;
+
+      setTransactions((current) =>
+        current.map((transaction) => ({
+          ...transaction,
+          amount: {
+            ...transaction.amount,
+            expense:
+              transaction.type === "Expense"
+                ? transaction.amount.expense * factor
+                : transaction.amount.expense,
+            income:
+              transaction.type === "Income"
+                ? transaction.amount.income * factor
+                : transaction.amount.income,
+          },
+        })),
+      );
+      setBudgets((current) =>
+        current.map((b) => ({ ...b, limit: b.limit * factor })),
+      );
+
+      setCurrency(newCurrency);
+    } catch (error) {
+      console.error("Currency conversion failed.", error);
+    }
+  };
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTransactionToEdit(transaction);
@@ -140,9 +189,14 @@ function App() {
             .toLowerCase()
             .includes(searchQuery.toLowerCase()));
 
-            const focusMonthMatches = dayjs(transaction.date).isSame(focusMonth, "month");
+      const focusMonthMatches = dayjs(transaction.date).isSame(
+        focusMonth,
+        "month",
+      );
 
-      return typeMatches && categoryMatches && searchMatches && focusMonthMatches;
+      return (
+        typeMatches && categoryMatches && searchMatches && focusMonthMatches
+      );
     });
   };
 
@@ -246,7 +300,7 @@ function App() {
               accountName={accountName}
               setAccountName={setAccountName}
               currency={currency}
-              setCurrency={setCurrency}
+              handleCurrencyChange={handleCurrencyChange}
               focusMonth={focusMonth}
               handleFocusMonthChange={handleFocusMonthChange}
               transactions={transactions}
