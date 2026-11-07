@@ -41,8 +41,8 @@ export interface Budget {
 }
 
 function App() {
-  const apiKey = "36eed77c9d934277aeb4459d";
-  const api = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+const API_KEY = import.meta.env.VITE_EXCHANGE_API_KEY;
+const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const storedTransactions = localStorage.getItem("transactions");
@@ -120,7 +120,7 @@ function App() {
     console.log(`Converting from ${currency} to ${newCurrency}`);
 
     try {
-      const response = await fetch(api);
+      const response = await fetch(API_URL);
       if (!response.ok) throw new Error("Could not load exchange rates");
 
       const data: { conversion_rates: Record<string, number> } =
