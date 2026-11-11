@@ -43,6 +43,7 @@ export interface Budget {
 function App() {
 const API_KEY = import.meta.env.VITE_EXCHANGE_API_KEY;
 const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
+const roundMoney = (amount: number) => Math.round(amount * 100) / 100;
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const storedTransactions = localStorage.getItem("transactions");
@@ -144,17 +145,17 @@ const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
             ...transaction.amount,
             expense:
               transaction.type === "Expense"
-                ? transaction.amount.expense * factor
+                ? roundMoney(transaction.amount.expense * factor)
                 : transaction.amount.expense,
             income:
               transaction.type === "Income"
-                ? transaction.amount.income * factor
+                ? roundMoney(transaction.amount.income * factor)
                 : transaction.amount.income,
           },
         })),
       );
       setBudgets((current) =>
-        current.map((b) => ({ ...b, limit: b.limit * factor })),
+        current.map((b) => ({ ...b, limit: roundMoney(b.limit * factor) })),
       );
 
       setCurrency(newCurrency);
