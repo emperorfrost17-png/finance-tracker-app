@@ -77,7 +77,7 @@ export function SettingsPage({
                 <input
                   type="text"
                   className="settings-value"
-                  defaultValue={accountName}
+                  value={accountName}
                   onChange={(e) => setAccountName(e.target.value)}
                 />
               </div>

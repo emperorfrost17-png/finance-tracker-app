@@ -55,9 +55,9 @@ const roundMoney = (amount: number) => Math.round(amount * 100) / 100;
   const [accountName, setAccountName] = useState(() => {
     try {
       const storedAccountName = localStorage.getItem("accountName");
-      return storedAccountName ? JSON.parse(storedAccountName) : "Nathan";
+      return storedAccountName ? JSON.parse(storedAccountName) : "User";
     } catch {
-      return "Nathan";
+      return "User";
     }
   });
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
