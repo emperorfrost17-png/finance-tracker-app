@@ -60,4 +60,4 @@ Everything except currency switching works without a key.
 
 ## What I learned
 
-Mostly that "it works" and "it's correct" are different things. Most of the time went into the details: keeping every page agreeing on which month it's showing, handling empty states, and making sure a cleared input doesn't quietly corrupt saved data.
+Mostly that "it works" and "it's correct" are extremely different things. Most of the time went into the details: keeping every page agreeing on which month it's showing, handling empty states, and making sure a cleared input doesn't quietly corrupt saved data and also how to handle complex data.
