@@ -101,10 +101,44 @@
 
 @media (max-width: 560px) {
   .header {
+    min-height: 60px;
     padding: 0 16px;
+  }
+
+  .header__eyebrow {
+    display: none;
+  }
+
+  .header h1 {
+    font-size: 18px;
   }
 
   .header__name {
     display: none;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 760px) {
+  .header {
+    min-height: 66px;
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .header {
+    min-height: 54px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .header__eyebrow,
+  .header__name {
+    display: none;
+  }
+
+  .header h1 {
+    font-size: 18px;
   }
 }

@@ -297,3 +297,40 @@
     text-align: left;
   }
 }
+
+@media (max-width: 600px), (orientation: landscape) and (max-height: 500px) {
+  .settings-content {
+    width: calc(100% - 32px);
+    padding: 22px 0 104px;
+  }
+
+  .settings-intro h2 {
+    font-size: 36px;
+  }
+
+  .settings-card,
+  .reset-card {
+    border-radius: 16px;
+  }
+
+  .settings-card__header {
+    padding: 20px 18px;
+  }
+
+  .settings-fields {
+    padding: 20px 18px;
+  }
+
+  .reset-card {
+    gap: 18px;
+    padding: 20px 18px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-content {
+    max-width: 672px;
+    padding-top: 18px;
+    padding-bottom: 92px;
+  }
+}

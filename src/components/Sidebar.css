@@ -189,28 +189,102 @@
   font-size: 12px;
 }
 
-@media (max-width: 560px) {
+@media (min-width: 601px) and (max-width: 1024px) {
   .sidebar {
-    position: static;
+    width: 205px;
+    flex-basis: 205px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .brand-copy strong {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px), (orientation: landscape) and (max-height: 500px) {
+  .sidebar {
+    position: fixed;
+    z-index: 30;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    flex-basis: 100%;
+    flex: 0 0 auto;
     height: auto;
     min-height: auto;
     max-height: none;
-    padding: 14px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    border-top: 1px solid #e8e4db;
+    color: #35504f;
+    background: #fffdfa;
+    box-shadow: 0 -5px 18px rgba(40, 58, 53, 0.08);
+  }
+
+  .sidebar__top,
+  .sidebar__label,
+  .sidebar__bottom {
+    display: none;
   }
 
   .sidebar__nav {
-    margin-top: 24px;
+    display: flex;
+    width: 100%;
+    margin: 0;
   }
 
   .sidebar__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex: 1 1 0;
+    justify-content: space-around;
+    gap: 2px;
   }
 
-  .sidebar__label--personal,
-  .sidebar__label--personal + .sidebar__list,
-  .sidebar__bottom {
-    display: none;
+  .sidebar__list li {
+    flex: 1 1 0;
+  }
+
+  .sidebar__item {
+    min-height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 2px;
+    border-radius: 14px;
+    color: #66827e;
+    font-size: 10px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .sidebar__item:hover {
+    color: #294d4b;
+    background: #f6f3ed;
+  }
+
+  .sidebar__item--active,
+  .sidebar__item--active:hover {
+    color: #213f40;
+    background: #f8e9c9;
+  }
+
+  .sidebar__icon {
+    width: auto;
+    font-size: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .sidebar {
+    right: 0;
+    left: 0;
+    width: min(100%, 720px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .sidebar__nav {
+    margin-top: 0;
   }
 }

@@ -643,3 +643,191 @@
     margin-right: 0;
   }
 }
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .overview-content {
+    padding: 32px 26px 56px;
+  }
+
+  .overview-grid--top,
+  .overview-grid--bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-row h1 {
+    font-size: 34px;
+  }
+
+  .balance-banner {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 600px), (orientation: landscape) and (max-height: 500px) {
+  .App.overview-page {
+    display: block;
+  }
+
+  .overview-content {
+    padding: 20px 16px 104px;
+  }
+
+  .welcome-row {
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .welcome-eyebrow {
+    margin-bottom: 7px;
+    font-size: 12px;
+  }
+
+  .welcome-row h1 {
+    font-size: 30px;
+    letter-spacing: -0.5px;
+  }
+
+  .overview-actions {
+    width: 100%;
+    justify-content: flex-start;
+    padding-bottom: 0;
+  }
+
+  .month-select {
+    min-height: 38px;
+    padding: 0 9px;
+  }
+
+  .month-select select {
+    width: 138px;
+    flex-basis: 138px;
+    font-size: 11px;
+  }
+
+  .overview-actions .add-button {
+    min-height: 38px;
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+
+  .balance-banner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    min-height: 0;
+    margin-bottom: 16px;
+    padding: 22px 20px;
+    border-radius: 14px;
+  }
+
+  .balance-copy strong {
+    font-size: 42px;
+  }
+
+  .balance-copy p {
+    font-size: 12px;
+  }
+
+  .balance-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    align-content: start;
+  }
+
+  .balance-stats span {
+    font-size: 11px;
+  }
+
+  .balance-stats strong {
+    font-size: 13px;
+  }
+
+  .overview-grid {
+    gap: 16px;
+  }
+
+  .overview-grid--top {
+    margin-bottom: 16px;
+  }
+
+  .dashboard-panel {
+    min-height: 0;
+    padding: 20px 18px;
+    border-radius: 14px;
+  }
+
+  .panel-heading h2 {
+    font-size: 18px;
+  }
+
+  .panel-note {
+    font-size: 11px;
+  }
+
+  .bar-chart {
+    height: 160px;
+    margin: 18px 0 2px;
+  }
+
+  .spending-panel,
+  .category-panel,
+  .budget-panel,
+  .activity-panel {
+    min-height: 0;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .overview-content {
+    padding: 18px 24px 92px;
+  }
+
+  .overview-grid--top,
+  .overview-grid--bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-row {
+    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .welcome-row h1 {
+    font-size: 28px;
+  }
+
+  .overview-actions {
+    width: auto;
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
+
+  .balance-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 132px;
+    padding: 18px 20px;
+  }
+
+  .balance-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .balance-copy strong {
+    font-size: 38px;
+  }
+
+  .balance-stats {
+    flex: 0 0 42%;
+    margin: 0;
+  }
+
+  .bar-chart {
+    height: 140px;
+  }
+}

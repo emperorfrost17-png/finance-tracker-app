@@ -252,3 +252,92 @@
     display: none;
   }
 }
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .budgets-content {
+    padding: 34px 26px 56px;
+  }
+
+  .budget-summary,
+  .budget-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .budget-summary .summary-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px), (orientation: landscape) and (max-height: 500px) {
+  .budgets-content {
+    padding: 22px 16px 104px;
+  }
+
+  .budgets-intro h2 {
+    font-size: 36px;
+  }
+
+  .budgets-intro span {
+    font-size: 13px;
+  }
+
+  .budget-summary {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    min-height: 136px;
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .summary-card strong {
+    font-size: 25px;
+  }
+
+  .budget-grid {
+    gap: 14px;
+  }
+
+  .budget-card {
+    min-width: 0;
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .budget-card h3 {
+    font-size: 19px;
+  }
+
+  .budget-card__heading > div {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .budget-limit {
+    gap: 3px;
+    padding: 7px;
+    font-size: 10px;
+  }
+
+  .budget-limit input {
+    width: 52px;
+    font-size: 10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .budgets-content {
+    padding: 18px 24px 92px;
+  }
+
+  .budget-summary,
+  .budget-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .budget-summary .summary-card:last-child {
+    grid-column: auto;
+  }
+}
