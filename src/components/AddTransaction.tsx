@@ -12,7 +12,9 @@ interface AddTransactionProps {
       | Transaction[]
       | ((currentTransactions: Transaction[]) => Transaction[]),
   ) => void;
-  setShowAddedTransactionNotification: (showAddedTransactionNotification: boolean) => void;
+  setShowAddedTransactionNotification: (
+    showAddedTransactionNotification: boolean,
+  ) => void;
   currency: string;
 }
 export function AddTransaction({
@@ -118,7 +120,6 @@ export function AddTransaction({
       // Assign tone based on category, defaulting to "gray" if not found
       tone: toneByCategory[category] || "blue",
       createdAt: dayjs().toISOString(),
-      
     };
     setTransactions((prevTransactions) => [
       newTransaction,

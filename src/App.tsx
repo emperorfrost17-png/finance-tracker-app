@@ -41,9 +41,9 @@ export interface Budget {
 }
 
 function App() {
-const API_KEY = import.meta.env.VITE_EXCHANGE_API_KEY;
-const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
-const roundMoney = (amount: number) => Math.round(amount * 100) / 100;
+  const API_KEY = import.meta.env.VITE_EXCHANGE_API_KEY;
+  const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
+  const roundMoney = (amount: number) => Math.round(amount * 100) / 100;
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const storedTransactions = localStorage.getItem("transactions");
@@ -182,9 +182,8 @@ const roundMoney = (amount: number) => Math.round(amount * 100) / 100;
         transaction.category === categoryFilter;
       const searchMatches =
         transaction.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        transaction.category
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
+        (transaction.note &&
+          transaction.note.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (transaction.merchant &&
           transaction.merchant
             .toLowerCase()
